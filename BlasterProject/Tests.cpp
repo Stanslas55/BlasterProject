@@ -74,7 +74,7 @@ void Tests::normalize()
     Vector3 B = Vector3().normalize(A);
 
     std::cout << "\nA apres B = Vector3().normalize(A): " << A << "\nB apres B = Vector3().normalize(A): " << B;
-
+    // Test
     A.normalize();
     std::cout << "\nA apres : A.normalize(): " << A << std::endl;
 }
