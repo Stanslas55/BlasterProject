@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <math.h>
 
 class Vector3{
 	private:		
@@ -23,7 +24,7 @@ class Vector3{
 		// Normalize this vector.		
 		void normalize(); 
 		// Return a new vector which is the normalized pV.
-		static Vector3 normalize(const Vector3& pV); 
+		static Vector3 normalize(Vector3& pV); 
 
 		void print(std::ostream& flux);
 		Vector3& operator=(const Vector3& pOther);		

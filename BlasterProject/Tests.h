@@ -9,6 +9,7 @@ class Tests
 		void multiplication();
 		void division();
 		void dot();
+		void normalize();
 
 	public:
 		Tests();

@@ -16,11 +16,12 @@ void Tests::tests()
     multiplication();
     division();
     dot();
+    normalize();
 }
 
 void Tests::addition()
 {
-    std::cout << "Test addition" << std::endl;
+    std::cout << "\nTest addition" << std::endl;
     Vector3 A = Vector3(1, 2, 3);
     Vector3 B = Vector3(-1, -2, -3);
     Vector3 result = A + B;
@@ -29,7 +30,7 @@ void Tests::addition()
 
 void Tests::substraction()
 {
-    std::cout << "Test soustraction" << std::endl;
+    std::cout << "\nTest soustraction" << std::endl;
     Vector3 A = Vector3(1, 2, 3);    
     Vector3 B = Vector3(-1, -2, -3);
     Vector3 result = A - B;
@@ -38,7 +39,7 @@ void Tests::substraction()
 
 void Tests::multiplication()
 {
-    std::cout << "Test multiplication" << std::endl;
+    std::cout << "\nTest multiplication" << std::endl;
     Vector3 A = Vector3(1, 2, 3);
     float scalar = 10;
     Vector3 result = A * scalar;
@@ -47,7 +48,7 @@ void Tests::multiplication()
 
 void Tests::division()
 {
-    std::cout << "Test division" << std::endl;
+    std::cout << "\nTest division" << std::endl;
     Vector3 A = Vector3(1, 2, 3);
     float scalar = 2;
     Vector3 result = A / scalar;
@@ -56,9 +57,24 @@ void Tests::division()
 
 void Tests::dot()
 {
-    std::cout << "Test produit scalaire" << std::endl;
+    std::cout << "\nTest produit scalaire" << std::endl;
     Vector3 A = Vector3(1, 1, 1);
     Vector3 B = Vector3(-1, -1, -1);
     float result = A * B;
     std::cout << A << " . " << B << " = " << result << std::endl;    
+}
+
+void Tests::normalize()
+{
+    std::cout << "\nTest normalize" << std::endl;
+
+    Vector3 A = Vector3(5, 10, 6);
+    std::cout << "\nA de base: " << A;
+
+    Vector3 B = Vector3().normalize(A);
+
+    std::cout << "\nA apres B = Vector3().normalize(A): " << A << "\nB apres B = Vector3().normalize(A): " << B;
+
+    A.normalize();
+    std::cout << "\nA apres : A.normalize(): " << A << std::endl;
 }

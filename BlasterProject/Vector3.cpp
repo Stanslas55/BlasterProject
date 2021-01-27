@@ -51,8 +51,27 @@ Vector3 Vector3::division(float pScalar) {
 	return Vector3(data[0] / pScalar, data[1] / pScalar, data[2] / pScalar);
 }
 
+void Vector3::normalize()
+{
+	float norme;
+	norme = sqrt(x() * x() + y() * y() + z() * z());
+	
+	*this = this->division(norme);
+}
+
+Vector3 Vector3::normalize(Vector3& pV)
+{
+	float norme;
+	Vector3 result = pV;
+
+	norme = sqrt(pV.x() * pV.x() + pV.y() * pV.y() + pV.z() * pV.z());
+	result = result.division(norme);
+
+	return result;
+}
+
 void Vector3::print(std::ostream& pFlux) {
-	pFlux << "(" << this->x() << ", " << this->y() << ", " << this->z() << ")";
+	pFlux << "(" << x() << ", " << y() << ", " << z() << ")";
 }
 
 Vector3& Vector3::operator=(const Vector3& pOther) {
@@ -71,14 +90,7 @@ Vector3& Vector3::operator=(const Vector3& pOther) {
 	return *this;
 }
 
-// TODO: Écrire la fonction.
-Vector3 normalize(const Vector3& pOther) {
-	return Vector3();
-}
-// TODO: Écrire la fonction.
-Vector3 normalize() {
-	return Vector3();
-}
+
 
 std::ostream& operator<<(std::ostream& pFlux, Vector3 pV) {
 	pV.print(pFlux);
