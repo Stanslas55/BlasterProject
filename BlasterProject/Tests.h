@@ -1,5 +1,5 @@
 #pragma once
-#include "Vector3.hpp"
+#include "Vector3/Vector3.hpp"
 
 class Tests
 {
@@ -10,8 +10,7 @@ class Tests
 		void division();
 		void dot();
 		void cross();
-		void normalize();
-		
+		void normalize();		
 
 	public:
 		Tests();
