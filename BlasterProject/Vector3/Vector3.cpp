@@ -1,21 +1,21 @@
 #include "Vector3.hpp"
 
 Vector3::Vector3() {
-	data = new float[3];
+	data = new double[3];
 	data[0] = 0;
 	data[1] = 0;
 	data[2] = 0;
 }
 
 Vector3::Vector3(const Vector3& pV) {
-	data = new float[3];
+	data = new double[3];
 	data[0] = pV.data[0];
 	data[1] = pV.data[1];
 	data[2] = pV.data[2];	
 }
 
-Vector3::Vector3(float pX, float pY, float pZ) {
-	data = new float[3];
+Vector3::Vector3(double pX, double pY, double pZ) {
+	data = new double[3];
 	data[0] = pX;
 	data[1] = pY;
 	data[2] = pZ;
@@ -34,15 +34,15 @@ Vector3 Vector3::substraction(Vector3& pV) {
 	return Vector3(data[0] - pV.data[0], data[1] - pV.data[1], data[2] - pV.data[2]);
 }
 
-float Vector3::dot(Vector3& pV) {
+double Vector3::dot(Vector3& pV) {
 	return pV.data[0] * data[0] + pV.data[1] * data[1] + pV.data[2] * data[2];
 }
 
-Vector3 Vector3::multiplication(float pScalar) {
+Vector3 Vector3::multiplication(double pScalar) {
 	return Vector3(data[0] * pScalar, data[1] * pScalar, data[2] * pScalar);
 }
 
-Vector3 Vector3::division(float pScalar) {
+Vector3 Vector3::division(double pScalar) {
 	if (pScalar == 0)
 	{
 		std::cout << "Division par 0 !" << std::endl;
@@ -58,7 +58,7 @@ Vector3 Vector3::cross(Vector3& pV)
 
 void Vector3::normalize()
 {
-	float norme;
+	double norme;
 	norme = sqrt(x() * x() + y() * y() + z() * z());
 	
 	*this = this->division(norme);
@@ -66,7 +66,7 @@ void Vector3::normalize()
 
 Vector3 Vector3::normalize(Vector3& pV)
 {
-	float norme;
+	double norme;
 	Vector3 result = pV;
 
 	norme = sqrt(pV.x() * pV.x() + pV.y() * pV.y() + pV.z() * pV.z());
@@ -85,7 +85,7 @@ Vector3& Vector3::operator=(const Vector3& pOther) {
 	}
 
 	if (data == nullptr) {
-		data = new float[3];
+		data = new double[3];
 	}
 
 	data[0] = pOther.data[0];
@@ -94,8 +94,6 @@ Vector3& Vector3::operator=(const Vector3& pOther) {
 
 	return *this;
 }
-
-
 
 std::ostream& operator<<(std::ostream& pFlux, Vector3 pV) {
 	pV.print(pFlux);
@@ -110,14 +108,14 @@ Vector3 operator-(Vector3 pA, Vector3 pB) {
 	return pA.substraction(pB);	
 }
 
-Vector3 operator*(Vector3 pA, float pScalar) {
+Vector3 operator*(Vector3 pA, double pScalar) {
 	return pA.multiplication(pScalar);
 }
 
-Vector3 operator/(Vector3 pA, float pScalar) {
+Vector3 operator/(Vector3 pA, double pScalar) {
 	return pA.division(pScalar);	
 }
 
-float operator*(Vector3 pA, Vector3 pB){
+double operator*(Vector3 pA, Vector3 pB){
 	return pA.dot(pB);
 }

@@ -18,6 +18,7 @@ void Tests::tests()
     dot();
     cross();
     normalize();
+    intersectionSphere();
 }
 
 void Tests::addition()
@@ -61,7 +62,7 @@ void Tests::dot()
     std::cout << "\nTest dot product" << std::endl;
     Vector3 A = Vector3(1, 1, 1);
     Vector3 B = Vector3(-1, -1, -1);
-    float result = A * B;
+    double result = A * B;
     std::cout << A << " . " << B << " = " << result << std::endl;    
 }
 
@@ -87,4 +88,31 @@ void Tests::normalize()
    
     A.normalize();
     std::cout << "\nA apres : A.normalize(): " << A << std::endl;
+}
+
+void Tests::intersectionSphere()
+{
+    std::cout << "\nTest intersection sphere" << std::endl;
+    size_t indice, size;
+    Vector3 center = Vector3(5, 5, 5);
+    double radius = 1;
+    Sphere sphere = Sphere(center, radius);
+
+    Vector3 origin = Vector3(0, 0, 0);
+    Vector3 end = Vector3(5, 5, 5);
+    Ray ray = Ray(origin, end);
+
+    std::vector<Vector3> intersections;
+
+    intersections = sphere.intersect(ray);
+    size = intersections.size();
+
+    std::cout << "\nSphere: {Center: " << center << ", Radius: " << radius << "}" << std::endl;
+    std::cout << "Ray: {Origin: " << origin << ", Direction: " << ray.gDirection() << "}";
+
+    for (indice = 0; indice < size; indice++)
+    {
+        std::cout << "\nIntersection point : " << intersections[indice];
+    }
+    std::cout << std::endl;
 }

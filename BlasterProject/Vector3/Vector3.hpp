@@ -4,23 +4,23 @@
 
 class Vector3{
 	private:		
-		float* data = nullptr;	
+		double* data = nullptr;	
 
 	public:	
-		inline float& x() { return data[0]; }
-		inline float& y() { return data[1]; }
-		inline float& z() { return data[2]; }
+		inline double& x() { return data[0]; }
+		inline double& y() { return data[1]; }
+		inline double& z() { return data[2]; }
 
 		Vector3();
 		Vector3(const Vector3& pV);
-		Vector3(float pX, float pY, float pZ);
+		Vector3(double pX, double pY, double pZ);
 		~Vector3();
 
 		Vector3 addition(const Vector3& pV);
 		Vector3 substraction(Vector3& pV);
-		float dot(Vector3& pV);
-		Vector3 multiplication(float pScalar);
-		Vector3 division(float pScalar);
+		double dot(Vector3& pV);
+		Vector3 multiplication(double pScalar);
+		Vector3 division(double pScalar);
 		Vector3 cross(Vector3& pV);
 		// Normalize this vector.		
 		void normalize(); 
@@ -35,6 +35,6 @@ std::ostream& operator<<(std::ostream& pFlux, Vector3 pV);
 Vector3 operator+(Vector3 pA, Vector3 pB);
 Vector3 operator-(Vector3 pA, Vector3 pB);
 
-Vector3 operator*(Vector3 pA, float pScalar);
-Vector3 operator/(Vector3 pA, float pScalar);
-float operator*(Vector3 pA, Vector3 pB);
+Vector3 operator*(Vector3 pA, double pScalar);
+Vector3 operator/(Vector3 pA, double pScalar);
+double operator*(Vector3 pA, Vector3 pB);
