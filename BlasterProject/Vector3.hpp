@@ -21,6 +21,7 @@ class Vector3{
 		float dot(Vector3& pV);
 		Vector3 multiplication(float pScalar);
 		Vector3 division(float pScalar);
+		Vector3 cross(Vector3& pV);
 		// Normalize this vector.		
 		void normalize(); 
 		// Return a new vector which is the normalized pV.

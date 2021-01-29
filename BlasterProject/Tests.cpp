@@ -16,6 +16,7 @@ void Tests::tests()
     multiplication();
     division();
     dot();
+    cross();
     normalize();
 }
 
@@ -57,11 +58,20 @@ void Tests::division()
 
 void Tests::dot()
 {
-    std::cout << "\nTest produit scalaire" << std::endl;
+    std::cout << "\nTest dot product" << std::endl;
     Vector3 A = Vector3(1, 1, 1);
     Vector3 B = Vector3(-1, -1, -1);
     float result = A * B;
     std::cout << A << " . " << B << " = " << result << std::endl;    
+}
+
+void Tests::cross()
+{
+    std::cout << "\nTest cross product" << std::endl;
+    Vector3 A = Vector3(2, 2, 2);
+    Vector3 B = Vector3(-1, 1, 3);
+    Vector3 result = A.cross(B);
+    std::cout << A << " ^ " << B << " = " << result << std::endl;
 }
 
 void Tests::normalize()
@@ -74,7 +84,7 @@ void Tests::normalize()
     Vector3 B = Vector3().normalize(A);
 
     std::cout << "\nA apres B = Vector3().normalize(A): " << A << "\nB apres B = Vector3().normalize(A): " << B;
-    // Test
+   
     A.normalize();
     std::cout << "\nA apres : A.normalize(): " << A << std::endl;
 }

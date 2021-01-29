@@ -51,6 +51,11 @@ Vector3 Vector3::division(float pScalar) {
 	return Vector3(data[0] / pScalar, data[1] / pScalar, data[2] / pScalar);
 }
 
+Vector3 Vector3::cross(Vector3& pV)
+{	
+	return Vector3(data[1] * pV.data[2] - data[2] * pV.data[1], data[2] * pV.data[0] - data[0] * pV.data[2], data[0] * pV.data[1] - data[1] * pV.data[0]);
+}
+
 void Vector3::normalize()
 {
 	float norme;
