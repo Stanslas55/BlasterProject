@@ -30,11 +30,11 @@ Vector3 Vector3::addition(const Vector3& pV) {
 	return Vector3(data[0] + pV.data[0], data[1] + pV.data[1], data[2] + pV.data[2]);
 }
 
-Vector3 Vector3::substraction(Vector3& pV) {
+Vector3 Vector3::substraction(const Vector3& pV) {
 	return Vector3(data[0] - pV.data[0], data[1] - pV.data[1], data[2] - pV.data[2]);
 }
 
-double Vector3::dot(Vector3& pV) {
+double Vector3::dot(const Vector3& pV) {
 	return pV.data[0] * data[0] + pV.data[1] * data[1] + pV.data[2] * data[2];
 }
 

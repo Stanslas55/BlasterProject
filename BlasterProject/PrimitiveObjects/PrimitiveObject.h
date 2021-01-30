@@ -5,10 +5,13 @@
 #include "Ray.hpp"
 
 class PrimitiveObject {
-	public:
-
-	protected:
-		// This function returns the number of intersection for a given radius.
+	protected:		
+          /**
+         *  \fn     intersect
+         *  \brief  This function returns the intersection points for a given radius.
+         *
+         *  \param[in]      pRay            The Ray we're searching the intersections with the PrimitiveObject.
+         *  \return         std::vector<Vector3>    vector containing the intersection points.
+         */
 		virtual std::vector<Vector3> intersect(Ray pRay) = 0;
 };
-

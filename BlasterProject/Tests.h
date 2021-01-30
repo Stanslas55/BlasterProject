@@ -19,6 +19,11 @@ class Tests
 	public:
 		Tests();
 		~Tests();
-
+		/**
+		 *  \fn     tests
+		 *  \brief  Runs unitary tests of all implemented functions.
+		 *		 
+		 *  \return         void    This function returns nothing.
+		 */
 		void tests();
 };

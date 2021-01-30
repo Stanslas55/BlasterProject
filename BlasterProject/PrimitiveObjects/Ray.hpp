@@ -14,7 +14,13 @@ class Ray {
 
 		Ray();
 		Ray(Vector3 pOrigin, Vector3 pEnd);
-		// Origin + Direction * t = Point 
+		/**
+		 *  \fn     point
+		 *  \brief  Calculates the coordinate of a point according to pT step: origin + direction * pT
+		 *
+		 *  \param[in]      pT              The step to apply.				
+		 *  \return         Vector3			Returns the calculated point.
+		 */
 		Vector3 point(double pT) const { return origin + direction * pT; }
 };
 
