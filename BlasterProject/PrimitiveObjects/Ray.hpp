@@ -12,8 +12,13 @@ class Ray {
 		inline Vector3& gEnd() { return end; }
 		inline Vector3& gDirection() { return direction; }
 
+		inline const Vector3& gOrigin() const { return origin; }
+		inline const Vector3& gEnd() const { return end; }
+		inline const Vector3& gDirection() const { return direction; }
+
 		Ray();
-		Ray(Vector3 pOrigin, Vector3 pEnd);
+		Ray(const Vector3& pOrigin, const Vector3& pDirection);	
+		static Ray fromLine(const Vector3& pOrigin, const Vector3& pEnd);
 		/**
 		 *  \fn     point
 		 *  \brief  Calculates the coordinate of a point according to pT step: origin + direction * pT
@@ -22,5 +27,6 @@ class Ray {
 		 *  \return         Vector3			Returns the calculated point.
 		 */
 		Vector3 point(double pT) const { return origin + direction * pT; }
+		void print(std::ostream& pFlux);
 };
-
+std::ostream& operator<<(std::ostream& pFlux, Ray pRay);

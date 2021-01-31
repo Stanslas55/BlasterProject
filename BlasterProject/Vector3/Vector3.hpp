@@ -3,10 +3,11 @@
 #include <math.h>
 
 class Vector3{
-	private:		
+	private:			
 		double* data = nullptr;	
 
 	public:	
+		
 		inline double& x() { return data[0]; }
 		inline double& y() { return data[1]; }
 		inline double& z() { return data[2]; }
@@ -15,6 +16,7 @@ class Vector3{
 		Vector3(const Vector3& pV);
 		Vector3(double pX, double pY, double pZ);
 		~Vector3();
+
 		/**
 		 *  \fn     addition
 		 *  \brief  Add a Vector3 to another Vector3.
@@ -23,6 +25,7 @@ class Vector3{
 		 *  \return         Vector3			The resulting added Vector3.
 		 */
 		Vector3 addition(const Vector3& pV);
+
 		/**
 		 *  \fn     substraction
 		 *  \brief  Substracts a Vector3 to another one.
@@ -31,6 +34,7 @@ class Vector3{
 		 *  \return         Vector3         The resulting substracted Vector3.
 		 */
 		Vector3 substraction(const Vector3& pV);
+
 		/**
 		 *  \fn     dot
 		 *  \brief  Performs the dot product between 2 Vector3.
@@ -39,6 +43,7 @@ class Vector3{
 		 *  \return         double			The resulting dot product.
 		 */
 		double dot(const Vector3& pV);
+
 		/**
 		 *  \fn     multiplication
 		 *  \brief  Multiplies a Vector3 with a double.
@@ -47,6 +52,7 @@ class Vector3{
 		 *  \return         Vector3			The resulting multiplied Vector3.
 		 */
 		Vector3 multiplication(double pScalar);
+
 		/**
 		 *  \fn     division
 		 *  \brief  Divides a VEctor3 by a double.
@@ -55,6 +61,7 @@ class Vector3{
 		 *  \return         Vector3		    The resulting divided Vector3.
 		 */
 		Vector3 division(double pScalar);
+
 		/**
 		 *  \fn     cross
 		 *  \brief  Performs the cross product between 2 Vector3.
@@ -62,13 +69,15 @@ class Vector3{
 		 *  \param[in]      pV              The Vector3 which will be used to perform the cross product. this ^ pV.		
 		 *  \return         Vector3			The resulting cross product.
 		 */
-		Vector3 cross(Vector3& pV);		
+		Vector3 cross(const Vector3& pV) const;	
+
 		/**
 		 *  \fn     normalize
 		 *  \brief  Normalizes the vector. The object is modified.
 		 *		
 		 */
 		void normalize(); 	
+
 		/**
 		 *  \fn     normalize
 		 *  \brief  Normalizes a copy of pV. Usage: Vector3().normalize(pV);
@@ -76,7 +85,8 @@ class Vector3{
 		 *  \param[in]      pV              The Vector3 to be normalized.		
 		 *  \return         Vector3			The resulting normalized Vector3.
 		 */
-		static Vector3 normalize(Vector3& pV); 
+		static Vector3 normalize(const Vector3& pV); 
+
 		/**
 		 *  \fn     print
 		 *  \brief  Print a Vector3.

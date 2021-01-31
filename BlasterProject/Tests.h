@@ -2,6 +2,7 @@
 #include "Vector3/Vector3.hpp"
 #include "PrimitiveObjects/Ray.hpp"
 #include "PrimitiveObjects/Sphere.hpp"
+#include "PrimitiveObjects/Plane.h"
 
 
 class Tests
@@ -14,7 +15,9 @@ class Tests
 		void dot();
 		void cross();
 		void normalize();	
+
 		void intersectionSphere();
+		void intersectionPlane();
 
 	public:
 		Tests();

@@ -7,10 +7,31 @@ Ray::Ray()
 	direction = Vector3(0, 0, 0);
 }
 
-Ray::Ray(Vector3 pOrigin, Vector3 pEnd) {
+Ray::Ray(const Vector3& pOrigin, const Vector3& pDirection) {
+	
+	origin = pOrigin;
+	end = Vector3(0, 0, 0);
+	direction = pDirection;
+}
+
+Ray Ray::fromLine(const Vector3& pOrigin, const Vector3& pEnd)
+{
+	Ray ray;
 	Vector3 substraction = pEnd - pOrigin;
 
-	origin = pOrigin;
-	end = pEnd;	
-	direction = Vector3().normalize(substraction);
+	ray.origin = pOrigin;
+	ray.end = pEnd;
+	ray.direction = Vector3::normalize(substraction);
+	return ray;
+}
+
+void Ray::print(std::ostream& pFlux)
+{
+	pFlux << "Ray: {Origin: " << origin << ", Direction: " << direction << "}";
+}
+
+std::ostream& operator<<(std::ostream& pFlux, Ray pRay)
+{
+	pRay.print(pFlux);
+	return pFlux;
 }

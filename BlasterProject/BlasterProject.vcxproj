@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PrimitiveObjects\Plane.cpp" />
     <ClCompile Include="PrimitiveObjects\PrimitiveObject.cpp" />
     <ClCompile Include="PrimitiveObjects\Ray.cpp" />
     <ClCompile Include="PrimitiveObjects\Sphere.cpp" />
@@ -159,6 +160,7 @@
     <ClCompile Include="Vector3\Vector3.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="PrimitiveObjects\Plane.h" />
     <ClInclude Include="PrimitiveObjects\PrimitiveObject.h" />
     <ClInclude Include="PrimitiveObjects\Ray.hpp" />
     <ClInclude Include="PrimitiveObjects\Sphere.hpp" />

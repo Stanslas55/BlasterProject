@@ -2,9 +2,9 @@
 
 Vector3::Vector3() {
 	data = new double[3];
-	data[0] = 0;
-	data[1] = 0;
-	data[2] = 0;
+	data[0] = -10;
+	data[1] = -10;
+	data[2] = -10;
 }
 
 Vector3::Vector3(const Vector3& pV) {
@@ -51,7 +51,7 @@ Vector3 Vector3::division(double pScalar) {
 	return Vector3(data[0] / pScalar, data[1] / pScalar, data[2] / pScalar);
 }
 
-Vector3 Vector3::cross(Vector3& pV)
+Vector3 Vector3::cross(const Vector3& pV) const
 {	
 	return Vector3(data[1] * pV.data[2] - data[2] * pV.data[1], data[2] * pV.data[0] - data[0] * pV.data[2], data[0] * pV.data[1] - data[1] * pV.data[0]);
 }
@@ -64,12 +64,12 @@ void Vector3::normalize()
 	*this = this->division(norme);
 }
 
-Vector3 Vector3::normalize(Vector3& pV)
+Vector3 Vector3::normalize(const Vector3& pV)
 {
 	double norme;
 	Vector3 result = pV;
 
-	norme = sqrt(pV.x() * pV.x() + pV.y() * pV.y() + pV.z() * pV.z());
+	norme = sqrt(pV.data[0] * pV.data[0] + pV.data[1] * pV.data[1] + pV.data[2] * pV.data[2]);
 	result = result.division(norme);
 
 	return result;

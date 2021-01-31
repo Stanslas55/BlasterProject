@@ -4,7 +4,8 @@
 #include "../Vector3/Vector3.hpp"
 #include "Ray.hpp"
 
-class PrimitiveObject {
+class PrimitiveObject {   
+
 	protected:		
           /**
          *  \fn     intersect
@@ -13,5 +14,9 @@ class PrimitiveObject {
          *  \param[in]      pRay            The Ray we're searching the intersections with the PrimitiveObject.
          *  \return         std::vector<Vector3>    vector containing the intersection points.
          */
-		virtual std::vector<Vector3> intersect(Ray pRay) = 0;
+		virtual std::vector<Vector3> intersect(const Ray& pRay) = 0;
+
+    public:
+        // Add a material.
+        // Add a Transfrom.
 };
