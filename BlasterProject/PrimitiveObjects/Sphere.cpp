@@ -2,23 +2,23 @@
 
 Sphere::Sphere()
 {
-    center = Vector3(0, 0, 0);
-    radius = 1;
+    m_center = Vector3(0, 0, 0);
+    m_radius = 1;
 }
 
 Sphere::Sphere(const Vector3& pCenter, double pRadius) {
-    center = pCenter;
-    radius = pRadius;
+    m_center = pCenter;
+    m_radius = pRadius;
 }
 // https://ibb.co/TY0W1n2
 // According to the schema, L will be the direction Vector going from the origin of the ray, and going to the center of the sphere.
 // tc stands for "t-cut"
-std::vector<Vector3> Sphere::intersect(const Ray& pRay) {
+std::vector<Vector3> Sphere::intersect(const Ray& pRay) const {
     std::vector<Vector3> result;
-    double radius = gRadius(), d, tc, t1c;
-    Vector3 L = gCenter() - pRay.gOrigin();   
+    double radius = m_radius, d, tc, t1c;
+    Vector3 L = m_center - pRay.origin();   
 
-    tc = L * pRay.gDirection();
+    tc = L * pRay.direction();
 
     if (tc < 0)
     {
@@ -40,12 +40,11 @@ std::vector<Vector3> Sphere::intersect(const Ray& pRay) {
     return result;
 }
 
-void Sphere::print(std::ostream& pFlux)
-{        
-    pFlux << "\nSphere: {Center: " << center << ", Radius: " << radius << "}" << std::endl;            
+void Sphere::print(std::ostream& pFlux) const {        
+    pFlux << "\nSphere: {Center: " << m_center << ", Radius: " << m_radius << "}" << std::endl;            
 }
 
-std::ostream& operator<<(std::ostream& pFlux, Sphere pSphere)
+std::ostream& operator<<(std::ostream& pFlux, const Sphere& pSphere) 
 {   
     pSphere.print(pFlux);
     return pFlux;   

@@ -10,7 +10,7 @@
 int main(int argc, char* argv[]) {	
 
 	Tests test;
-	test.tests();
+	test.tests();	
 	
 	return EXIT_SUCCESS;
 }

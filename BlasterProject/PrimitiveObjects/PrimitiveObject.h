@@ -14,7 +14,7 @@ class PrimitiveObject {
          *  \param[in]      pRay            The Ray we're searching the intersections with the PrimitiveObject.
          *  \return         std::vector<Vector3>    vector containing the intersection points.
          */
-		virtual std::vector<Vector3> intersect(const Ray& pRay) = 0;
+		virtual std::vector<Vector3> intersect(const Ray& pRay) const = 0;
 
     public:
         // Add a material.

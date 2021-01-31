@@ -3,18 +3,18 @@
 
 class Ray {
 	private:
-		Vector3 origin;
-		Vector3 end;		
-		Vector3 direction;
+		Vector3 m_origin;
+		Vector3 m_end;		
+		Vector3 m_direction;
 
 	public:
-		inline Vector3& gOrigin() { return origin; }
-		inline Vector3& gEnd() { return end; }
-		inline Vector3& gDirection() { return direction; }
+		inline Vector3& origin() { return m_origin; }
+		inline Vector3& end() { return m_end; }
+		inline Vector3& direction() { return m_direction; }
 
-		inline const Vector3& gOrigin() const { return origin; }
-		inline const Vector3& gEnd() const { return end; }
-		inline const Vector3& gDirection() const { return direction; }
+		inline const Vector3& origin() const { return m_origin; }
+		inline const Vector3& end() const { return m_end; }
+		inline const Vector3& direction() const { return m_direction; }
 
 		Ray();
 		Ray(const Vector3& pOrigin, const Vector3& pDirection);	
@@ -26,7 +26,7 @@ class Ray {
 		 *  \param[in]      pT              The step to apply.				
 		 *  \return         Vector3			Returns the calculated point.
 		 */
-		Vector3 point(double pT) const { return origin + direction * pT; }
-		void print(std::ostream& pFlux);
+		Vector3 point(double pT) const { return m_origin + m_direction * pT; }
+		void print(std::ostream& pFlux) const;
 };
-std::ostream& operator<<(std::ostream& pFlux, Ray pRay);
+std::ostream& operator<<(std::ostream& pFlux, const Ray& pRay);

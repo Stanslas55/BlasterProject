@@ -22,7 +22,8 @@ Vector3::Vector3(double pX, double pY, double pZ) {
 }
 
 Vector3::~Vector3() {
-	delete[] data;
+	if(data)	delete[] data;
+
 	data = nullptr;
 }
 
@@ -34,7 +35,7 @@ Vector3 Vector3::substraction(const Vector3& pV) {
 	return Vector3(data[0] - pV.data[0], data[1] - pV.data[1], data[2] - pV.data[2]);
 }
 
-double Vector3::dot(const Vector3& pV) {
+double Vector3::dot(const Vector3& pV) const{
 	return pV.data[0] * data[0] + pV.data[1] * data[1] + pV.data[2] * data[2];
 }
 
@@ -56,6 +57,11 @@ Vector3 Vector3::cross(const Vector3& pV) const
 	return Vector3(data[1] * pV.data[2] - data[2] * pV.data[1], data[2] * pV.data[0] - data[0] * pV.data[2], data[0] * pV.data[1] - data[1] * pV.data[0]);
 }
 
+Vector3 Vector3::cross(const Vector3& pA, const Vector3& pB)
+{
+	return Vector3();
+}
+
 void Vector3::normalize()
 {
 	double norme;
@@ -75,7 +81,7 @@ Vector3 Vector3::normalize(const Vector3& pV)
 	return result;
 }
 
-void Vector3::print(std::ostream& pFlux) {
+void Vector3::print(std::ostream& pFlux) const {
 	pFlux << "(" << x() << ", " << y() << ", " << z() << ")";
 }
 
@@ -106,6 +112,10 @@ Vector3 operator+(Vector3 pA, Vector3 pB) {
 
 Vector3 operator-(Vector3 pA, Vector3 pB) {
 	return pA.substraction(pB);	
+	/*
+	Vector3 res(pA);
+	res.substraction(pB);
+	return res;*/
 }
 
 Vector3 operator*(Vector3 pA, double pScalar) {

@@ -17,6 +17,7 @@ void Tests::tests() {
     normalize();
     intersectionSphere();
     intersectionPlane();
+    intersectionQuadri();
 }
 
 void Tests::addition() {
@@ -98,53 +99,99 @@ void Tests::intersectionSphere() {
     size = intersections.size();
 
     std::cout << sphere;
-    std::cout << ray;
-    
+    std::cout << ray;    
 
-    for (indice = 0; indice < size; indice++)
-    {
+    for (indice = 0; indice < size; indice++) {
         std::cout << "\nIntersection point : " << intersections[indice];
     }
     std::cout << std::endl;
 }
 
 void Tests::intersectionPlane() {
-    std::cout << "\nTest plane creation." << std::endl;
-
-    Vector3 tab[4];
-    Vector3 A = Vector3(1, 1, -1);
-    Vector3 B = Vector3(1, -1, -1);
-    Vector3 C = Vector3(-1, -1, -1);
-    Vector3 D = Vector3(-1, 1, -1);   
+    std::cout << "\nTest plane creation." << std::endl;    
     
-    tab[0] = A;
-    tab[1] = B;
-    tab[2] = C;
-    tab[3] = D;
-
-    Plane plane = Plane::fromCorners(tab);
-    std::cout << plane;     
-    
-    Plane testPlane = Plane(Vector3(0, 0, 0), Vector3(0, 1, 0));
+    Plane plane = Plane(Vector3(0, 0, 0), Vector3(0, 1, 0));
     // Test that a ray pointed the wrong way does not intersect. This ray sits above the plane and points in the opposite direction.
     Ray missedRay = Ray(Vector3(0, 3, 0), Vector3(0, 1, 0));
-    std::vector<Vector3> missResult = testPlane.intersect(missedRay);
-    std::cout << "\nTest intersection." << std::endl << testPlane << std::endl;
+    std::vector<Vector3> missResult = plane.intersect(missedRay);
+    std::cout << "\nTest intersection." << std::endl << plane << std::endl;
     std::cout << missedRay << std::endl;
-    if (missResult.size() == 0)
-    {
-        std::cout << "\nPas d'intersection entre le Rayon et le plan." << std::endl << std::endl;
+
+    if (missResult.size() == 0) {
+        std::cout << "\nNo intersection between the ray and the plane." << std::endl << std::endl;
     }else {
         std::cout << "\nIntersection: " << missResult[0];
     }
-
     // Test that a ray pointing at the plane will intersect. This ray sits 3 points above the plane and points directly down. if all goes well, the t value will equal 3.
     Ray hittingRay = Ray(Vector3(0, 3, 0), Vector3(0, -1, 0));
-    std::vector<Vector3> hitResult = testPlane.intersect(hittingRay);
-    std::cout << hittingRay;
+    std::vector<Vector3> hitResult = plane.intersect(hittingRay);
+    std::cout << hittingRay; 
+
     if (hitResult.size() == 0) {
-        std::cout << "\nPas d'intersection entre le Rayon et le plan." << std::endl;
+        std::cout << "\nNo intersection between the ray and the plane." << std::endl;
     }else{
         std::cout << "\nIntersection: " << hitResult[0] << std::endl;
     }
+}
+
+void Tests::intersectionQuadri() {
+    std::cout << "\nTest quadri creation." << std::endl;
+
+    Vector3 corners[4], center, normal, testCorners[4];
+    Ray missedRay, hittingRay;
+    std::vector<Vector3> missResult, hitResult;
+    Quadri quadri, testQuadri;
+  
+    //std::cout << quadri;
+   
+    corners[0] = Vector3(1, 1, -1);
+    corners[1] = Vector3(1, -1, -1);
+    corners[2] = Vector3(-1, -1, -1);
+    corners[3] = Vector3(-1, 1, -1);
+    
+    double moyenneX = (corners[0].x() + corners[1].x() + corners[2].x() + corners[3].x()) / 4;
+    double moyenneY = (corners[0].y() + corners[1].y() + corners[2].y() + corners[3].y()) / 4;
+    double moyenneZ = (corners[0].z() + corners[1].z() + corners[2].z() + corners[3].z()) / 4;
+
+    center = Vector3(moyenneX, moyenneY, moyenneZ);
+
+    normal = Vector3::normalize((corners[0] - corners[1]).cross(corners[2] - corners[1]));    
+
+    quadri = Quadri(corners, center, normal);
+
+    std::cout << quadri;    
+
+        
+
+    testCorners[0] = Vector3(-1, 0, -1);
+    testCorners[1] = Vector3(-1, 0, 1);
+    testCorners[2] = Vector3(1, 0, -1);
+    testCorners[3] = Vector3(1, 0, 1);
+
+    testQuadri = Quadri(testCorners, Vector3(0, 0, 0), Vector3(0, 1, 0));
+    std::cout << "\nTest intersection." << std::endl << testQuadri << std::endl;
+    // Test that a ray pointed the wrong way does not intersect. This ray sits above the plane and points in the opposite direction.
+    missedRay = Ray(Vector3(10, 3, -3), Vector3(0, -1, 0));
+    std::cout << missedRay << std::endl;
+
+     missResult = testQuadri.intersect(missedRay);     
+
+    if (missResult.size() == 0) {
+        std::cout << "\nNo intersection between the ray and the quadri." << std::endl << std::endl;
+    }
+    else {
+        std::cout << "\nIntersection: " << missResult[0];
+    }
+    
+    hittingRay = Ray(Vector3(-1, 3, 1), Vector3(0, -1, 0));
+    std::cout << hittingRay << std::endl;
+
+     hitResult = testQuadri.intersect(hittingRay);   
+
+    if (hitResult.size() == 0) {
+        std::cout << "\nNo intersection between the ray and the quadri." << std::endl;
+    }
+    else {
+        std::cout << "\nIntersection: " << hitResult[0] << std::endl;
+    }  
 }

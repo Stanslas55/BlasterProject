@@ -12,6 +12,10 @@ class Vector3{
 		inline double& y() { return data[1]; }
 		inline double& z() { return data[2]; }
 
+		inline const double& x() const { return data[0]; }
+		inline const double& y() const { return data[1]; }
+		inline const double& z() const { return data[2]; }
+
 		Vector3();
 		Vector3(const Vector3& pV);
 		Vector3(double pX, double pY, double pZ);
@@ -42,7 +46,7 @@ class Vector3{
 		 *  \param[in]      pV              The Vector3 which will be used to perform the dot product. this * pV.		
 		 *  \return         double			The resulting dot product.
 		 */
-		double dot(const Vector3& pV);
+		double dot(const Vector3& pV) const;
 
 		/**
 		 *  \fn     multiplication
@@ -69,8 +73,8 @@ class Vector3{
 		 *  \param[in]      pV              The Vector3 which will be used to perform the cross product. this ^ pV.		
 		 *  \return         Vector3			The resulting cross product.
 		 */
-		Vector3 cross(const Vector3& pV) const;	
-
+		Vector3 cross(const Vector3& pV) const;	// TODO:Modifier l'objet de base. et renvoie void
+		static Vector3 cross(const Vector3& pA, const Vector3& pB); // Renvoie le cross
 		/**
 		 *  \fn     normalize
 		 *  \brief  Normalizes the vector. The object is modified.
@@ -94,7 +98,7 @@ class Vector3{
 		 *  \param[in]      pFlux           The flux where the Vector3 has to be printed.		
 		 *  \return         void			This function returns nothing.
 		 */
-		void print(std::ostream& pFlux);
+		void print(std::ostream& pFlux) const;
 		Vector3& operator=(const Vector3& pOther);		
 };
 

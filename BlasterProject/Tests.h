@@ -3,6 +3,7 @@
 #include "PrimitiveObjects/Ray.hpp"
 #include "PrimitiveObjects/Sphere.hpp"
 #include "PrimitiveObjects/Plane.h"
+#include "PrimitiveObjects/Quadri.h"
 
 
 class Tests
@@ -18,6 +19,7 @@ class Tests
 
 		void intersectionSphere();
 		void intersectionPlane();
+		void intersectionQuadri();
 
 	public:
 		Tests();
