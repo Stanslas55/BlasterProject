@@ -31,6 +31,7 @@ std::vector<Vector3> Polygon::intersect(const Ray& pRay) const{
         
         double* vertx = new double[m_nbCorners];
         double* verty = new double[m_nbCorners];
+        double* vertz = new double[m_nbCorners];
 
         double pX = point[0].x();
         double pY = point[0].y();        
@@ -42,15 +43,17 @@ std::vector<Vector3> Polygon::intersect(const Ray& pRay) const{
         for(index = 0; index < m_nbCorners; index++) {
             vertx[index] = m_corners[index].x();
             verty[index] = m_corners[index].y();
+            vertz[index] = m_corners[index].z();
         }                              
         for(i = 0, j = m_nbCorners - 1; i < m_nbCorners; j = i++) {
             if( ((verty[i] > pY) != (verty[j] > pY)) && (pX < (vertx[j] - vertx[i]) * (pY - verty[i]) / (verty[j] - verty[i]) + vertx[i]) )
                 inter = !inter;
-            if (((verty[i] > pZ) != (verty[j] > pZ)) && (pX < (vertx[j] - vertx[i]) * (pZ - verty[i]) / (verty[j] - verty[i]) + vertx[i]))
+            if (((vertz[i] > pZ) != (vertz[j] > pZ)) && (pX < (vertx[j] - vertx[i]) * (pZ - vertz[i]) / (vertz[j] - vertz[i]) + vertx[i]))
                 inter2 = !inter2;
         }
         delete[] vertx;
         delete[] verty;
+        delete[] vertz;
         return (inter % 2 == 0 && inter2 % 2 == 0) ? std::vector<Vector3>() : point; // If a both are even, it's not in the polygon.               
     }
     std::cout << "No intersection between the quadri and the ray." << std::endl;

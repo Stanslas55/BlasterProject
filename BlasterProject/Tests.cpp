@@ -161,20 +161,20 @@ void Tests::intersectionQuadri() {
 
     std::cout << quadri;            
     
-    ////https://www.geogebra.org/3d/exaq2jua
-    //testCorners[0] = Vector3(1, -1, 0);
-    //testCorners[1] = Vector3(-1, -1, 0);
-    //testCorners[2] = Vector3(-1, 1, 0);
-    //testCorners[3] = Vector3(1, 1, 0);
+    //https://www.geogebra.org/3d/exaq2jua
+    testCorners[0] = Vector3(1, -1, 0);
+    testCorners[1] = Vector3(-1, -1, 0);
+    testCorners[2] = Vector3(-1, 1, 0);
+    testCorners[3] = Vector3(1, 1, 0);
 
-    //https://www.geogebra.org/3d/vxcg4nhz
-    testCorners[0] = Vector3(1.33, -5.08, 1);
-    testCorners[1] = Vector3(-3.17, -2.72, 0);
-    testCorners[2] = Vector3(1.49, 3.84, 1);
-    testCorners[3] = Vector3(4, -2, 1.58);
+    ////https://www.geogebra.org/3d/vxcg4nhz
+    //testCorners[0] = Vector3(1.33, -5.08, 1);
+    //testCorners[1] = Vector3(-3.17, -2.72, 0);
+    //testCorners[2] = Vector3(1.49, 3.84, 1);
+    //testCorners[3] = Vector3(4, -2, 1.58);
 
-  /*  testQuadri = Quadri(testCorners, Vector3(0, 0, 0), Vector3(0, 0, 1));*/
-    testQuadri = Quadri(testCorners, Vector3(-0.12, -1.32, 0.67), Vector3(8.91, -0.17, -40.51));
+    testQuadri = Quadri(testCorners, Vector3(0, 0, 0), Vector3(0, 0, 1));
+    /*testQuadri = Quadri(testCorners, Vector3(-0.12, -1.32, 0.67), Vector3(8.91, -0.17, -40.51));*/
     std::cout << "\nTest intersection." << std::endl << testQuadri << std::endl;
     // Test that a ray pointed the wrong way does not intersect. This ray sits above the plane and points in the opposite direction.
     missedRay = Ray(Vector3(-1.1, 3, 0), Vector3(0, 0.5, -1));
@@ -189,8 +189,8 @@ void Tests::intersectionQuadri() {
         std::cout << "\nIntersection: " << missResult[0];
     }
     
-   /* hittingRay = Ray(Vector3(0.5, 0.5, 0.5), Vector3(0, 0.5, -1));*/
-    hittingRay = Ray(Vector3(0.5, -1, 5), Vector3(0, 0.5, -1));
+    hittingRay = Ray(Vector3(0.5, 0.5, 0.5), Vector3(0, 0.5, -1));
+    //hittingRay = Ray(Vector3(0.5, -1, 5), Vector3(0, 0.5, -1));
     std::cout << hittingRay << std::endl;
 
      hitResult = testQuadri.intersect(hittingRay);   
