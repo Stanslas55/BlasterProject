@@ -3,7 +3,7 @@
 class Polygon : public Plane {
 protected:
 	Vector3* m_corners;
-	int m_size;
+	int m_nbCorners;
 
 public:
 	Polygon();

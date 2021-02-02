@@ -29,16 +29,7 @@ Quadri::~Quadri()
 
 std::vector<Vector3> Quadri::intersect(const Ray& pRay) const {
 	
-	std::vector<Vector3> point = Polygon::intersect(pRay);	
-
-	if (point.size() != 0) {
-		std::cout << "Chercher si le point est dans le Quadri." << std::endl;
-		// Rechercher si point[0] appartient au Quadrilatère.
-
-		return std::vector<Vector3>(); // A changer.
-	}
-	std::cout << "No intersection between the quadri and the ray." << std::endl;
-	return std::vector<Vector3>();
+	return Polygon::intersect(pRay);
 }
 
 void Quadri::print(std::ostream& pFlux) const {
@@ -52,10 +43,11 @@ Quadri& Quadri::operator=(const Quadri& pOther) {
 	}	
 	m_center = pOther.m_center;
 	m_normal = pOther.m_normal;
-	corners(0) = pOther.A();
-	corners(1) = pOther.B();
-	corners(2) = pOther.C();
-	corners(3) = pOther.D();
+	m_corners[0] = pOther.A();
+	m_corners[1] = pOther.B();
+	m_corners[2] = pOther.C();
+	m_corners[3] = pOther.D();
+	
 	return *this;
 }
 

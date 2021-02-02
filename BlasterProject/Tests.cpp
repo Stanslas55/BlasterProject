@@ -171,7 +171,7 @@ void Tests::intersectionQuadri() {
     testQuadri = Quadri(testCorners, Vector3(0, 0, 0), Vector3(0, 1, 0));
     std::cout << "\nTest intersection." << std::endl << testQuadri << std::endl;
     // Test that a ray pointed the wrong way does not intersect. This ray sits above the plane and points in the opposite direction.
-    missedRay = Ray(Vector3(10, 3, -3), Vector3(0, -1, 0));
+    missedRay = Ray(Vector3(-1.1, 3, 0), Vector3(0, -1, 0));
     std::cout << missedRay << std::endl;
 
      missResult = testQuadri.intersect(missedRay);     
@@ -183,7 +183,7 @@ void Tests::intersectionQuadri() {
         std::cout << "\nIntersection: " << missResult[0];
     }
     
-    hittingRay = Ray(Vector3(-1, 3, 1), Vector3(0, -1, 0));
+    hittingRay = Ray(Vector3(0.5, 3, 0), Vector3(0, -1, 0));
     std::cout << hittingRay << std::endl;
 
      hitResult = testQuadri.intersect(hittingRay);   

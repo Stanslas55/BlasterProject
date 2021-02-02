@@ -33,4 +33,3 @@ std::ostream& operator<<(std::ostream& pFlux, const Ray& pRay) {
 	pRay.print(pFlux);
 	return pFlux;
 }
-
