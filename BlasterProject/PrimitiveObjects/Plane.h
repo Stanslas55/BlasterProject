@@ -16,7 +16,13 @@ class Plane : public PrimitiveObject {
 		Plane();
 		Plane(const Vector3& pCenter, const Vector3& pNormal);		
 		
-
+		/**
+		 *  \fn     intersect
+		 *  \brief  Search the intersection points between this and a Ray.
+		 *
+		 *  \param[in]      pRay            The to search the intersection with.
+		 *  \return         std::vector<Vector3>			vector containing the intersection points.
+		 */
 		std::vector<Vector3> intersect(const Ray& pRay) const;
 		void print(std::ostream& pFlux) const;
 };

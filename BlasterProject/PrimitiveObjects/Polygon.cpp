@@ -5,8 +5,7 @@ Polygon::Polygon() {
     m_nbCorners = 0;
 }
 
-Polygon::Polygon(int pCorners, const Vector3& pCenter, const Vector3& pNormal):Plane(pCenter, pNormal) {
-   
+Polygon::Polygon(int pCorners, const Vector3& pCenter, const Vector3& pNormal):Plane(pCenter, pNormal) {   
     m_corners = new Vector3[pCorners];
     m_nbCorners = pCorners;
     for (int indice = 0; indice < m_nbCorners; indice++) {
@@ -25,8 +24,7 @@ std::vector<Vector3> Polygon::intersect(const Ray& pRay) const{
     std::vector<Vector3> point = Plane::intersect(pRay);
     
     if (point.size() != 0) {    
-        std::cout << "Intersection plane: " << point[0] << "\nIs it inside the Quadri ?" << std::endl;
-        // Recherche si point[0] appartient au Quadrilatère.
+        std::cout << "Intersection plane: " << point[0] << "\nIs it inside ?" << std::endl;     
         // https://stackoverflow.com/questions/217578/how-can-i-determine-whether-a-2d-point-is-within-a-polygon
         
         double* vertx = new double[m_nbCorners];
@@ -34,8 +32,7 @@ std::vector<Vector3> Polygon::intersect(const Ray& pRay) const{
         double* vertz = new double[m_nbCorners];
 
         double pX = point[0].x();
-        double pY = point[0].y();        
-        
+        double pY = point[0].y();               
         double pZ = point[0].z();
 
         int index = 0, inter = 0, inter2 = 0, i, j;

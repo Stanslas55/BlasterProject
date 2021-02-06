@@ -1,7 +1,6 @@
 #include "Sphere.hpp"
 
-Sphere::Sphere()
-{
+Sphere::Sphere() {
     m_center = Vector3(0, 0, 0);
     m_radius = 1;
 }
@@ -20,15 +19,12 @@ std::vector<Vector3> Sphere::intersect(const Ray& pRay) const {
 
     tc = L * pRay.direction();
 
-    if (tc < 0)
-    {
+    if (tc < 0) {
         std::cout << "\nNo intersection";
         return result;
     }
-
     d = sqrt(L * L - tc * tc);
-    if (d > radius)
-    {
+    if (d > radius) {
         std::cout << "\nNo intersection";
         return result;
     }
@@ -44,8 +40,7 @@ void Sphere::print(std::ostream& pFlux) const {
     pFlux << "\nSphere: {Center: " << m_center << ", Radius: " << m_radius << "}" << std::endl;            
 }
 
-std::ostream& operator<<(std::ostream& pFlux, const Sphere& pSphere) 
-{   
+std::ostream& operator<<(std::ostream& pFlux, const Sphere& pSphere) {   
     pSphere.print(pFlux);
     return pFlux;   
 }

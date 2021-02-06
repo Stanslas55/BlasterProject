@@ -1,21 +1,18 @@
 #include "Ray.hpp"
 
-Ray::Ray()
-{
+Ray::Ray() {
 	m_origin = Vector3(0, 0, 0);
 	m_end = Vector3(0, 0, 0);
 	m_direction = Vector3(0, 0, 0);
 }
 
-Ray::Ray(const Vector3& pOrigin, const Vector3& pDirection) {
-	
+Ray::Ray(const Vector3& pOrigin, const Vector3& pDirection) {	
 	m_origin = pOrigin;
 	m_end = Vector3(0, 0, 0);
 	m_direction = pDirection;
 }
 
-Ray Ray::fromLine(const Vector3& pOrigin, const Vector3& pEnd)
-{
+Ray Ray::fromLine(const Vector3& pOrigin, const Vector3& pEnd) {
 	Ray ray;
 	Vector3 substraction = pEnd - pOrigin;
 

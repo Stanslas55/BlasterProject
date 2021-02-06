@@ -1,7 +1,6 @@
 #include "Plane.h"
 
-Plane::Plane() {  
-    
+Plane::Plane() {      
     m_center = Vector3(0, 0, 0);
     m_normal = Vector3(0, 0, 0);
 }
@@ -28,7 +27,7 @@ std::vector<Vector3> Plane::intersect(const Ray& pRay) const {
     return std::vector<Vector3>();
 }
 
-void Plane::print(std::ostream& pFlux) const{
+void Plane::print(std::ostream& pFlux) const {
     
     std::cout << "\nCenter of the plane : " << center();
     std::cout << "\nNormal vector to the plane : " << normal() << std::endl;

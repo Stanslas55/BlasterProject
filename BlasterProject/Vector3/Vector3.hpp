@@ -23,21 +23,21 @@ class Vector3{
 
 		/**
 		 *  \fn     addition
-		 *  \brief  Add a Vector3 to another Vector3.
+		 *  \brief  Add a Vector3 to this.
 		 *
 		 *  \param[in]      pV              The Vector3 to add to the Vector3.		
-		 *  \return         Vector3			The resulting added Vector3.
+		 *  \return         void			
 		 */
-		Vector3 addition(const Vector3& pV);
+		void addition(const Vector3& pV);
 
 		/**
 		 *  \fn     substraction
-		 *  \brief  Substracts a Vector3 to another one.
+		 *  \brief  Substracts a Vector3 to this.
 		 *
 		 *  \param[in]      pV              The Vector3 to substract to the Vector3.		
-		 *  \return         Vector3         The resulting substracted Vector3.
+		 *  \return         void
 		 */
-		Vector3 substraction(const Vector3& pV);
+		void substraction(const Vector3& pV);
 
 		/**
 		 *  \fn     dot
@@ -50,31 +50,41 @@ class Vector3{
 
 		/**
 		 *  \fn     multiplication
-		 *  \brief  Multiplies a Vector3 with a double.
+		 *  \brief  Multiplies this by a double.
 		 *
 		 *  \param[in]      pScalar         The double which will multiply the Vector3.		
-		 *  \return         Vector3			The resulting multiplied Vector3.
+		 *  \return         void
 		 */
-		Vector3 multiplication(double pScalar);
+		void multiplication(double pScalar);
 
 		/**
 		 *  \fn     division
-		 *  \brief  Divides a VEctor3 by a double.
+		 *  \brief  Divides this by a double.
 		 *
 		 *  \param[in]      pScalar         The double which will divide the Vector3.		
-		 *  \return         Vector3		    The resulting divided Vector3.
+		 *  \return         void
 		 */
-		Vector3 division(double pScalar);
+		void division(double pScalar);
 
 		/**
 		 *  \fn     cross
 		 *  \brief  Performs the cross product between 2 Vector3.
 		 *
-		 *  \param[in]      pV              The Vector3 which will be used to perform the cross product. this ^ pV.		
+		 *  \param[in]      pA              The Vector3 which will be used to perform the cross product. pA ^ pB.		
+		 *  \param[in]      pB              The Vector3 which will be used to perform the cross product. 		
 		 *  \return         Vector3			The resulting cross product.
+		 */		
+		static Vector3 cross(const Vector3& pA, const Vector3& pB); 
+
+		/**
+		 *  \fn     cross
+		 *  \brief  Performs the cross product between this and a Vector3.
+		 *
+		 *  \param[in]      pV              The Vector3 which will be used to perform the cross product. this ^ pV.
+		 *  \return         void			The resulting cross product.
 		 */
-		Vector3 cross(const Vector3& pV) const;	// TODO:Modifier l'objet de base. et renvoie void
-		static Vector3 cross(const Vector3& pA, const Vector3& pB); // Renvoie le cross
+		void cross(const Vector3& pV) const;
+
 		/**
 		 *  \fn     normalize
 		 *  \brief  Normalizes the vector. The object is modified.
@@ -99,10 +109,11 @@ class Vector3{
 		 *  \return         void			This function returns nothing.
 		 */
 		void print(std::ostream& pFlux) const;
-		Vector3& operator=(const Vector3& pOther);		
+		Vector3& operator=(const Vector3& pOther);					
 };
 
 std::ostream& operator<<(std::ostream& pFlux, Vector3 pV);
+const bool operator==(const Vector3& pA, const Vector3& pB);
 Vector3 operator+(Vector3 pA, Vector3 pB);
 Vector3 operator-(Vector3 pA, Vector3 pB);
 
