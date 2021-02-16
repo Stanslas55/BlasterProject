@@ -4,17 +4,19 @@
 
 class Vector3{
 	private:			
-		double* data = nullptr;	
+		double m_data[3]{
+			0.0, 0.0, 0.0
+		};
 
 	public:	
 		
-		inline double& x() { return data[0]; }
-		inline double& y() { return data[1]; }
-		inline double& z() { return data[2]; }
+		inline double& x() { return m_data[0]; }
+		inline double& y() { return m_data[1]; }
+		inline double& z() { return m_data[2]; }
 
-		inline const double& x() const { return data[0]; }
-		inline const double& y() const { return data[1]; }
-		inline const double& z() const { return data[2]; }
+		inline const double& x() const { return m_data[0]; }
+		inline const double& y() const { return m_data[1]; }
+		inline const double& z() const { return m_data[2]; }
 
 		Vector3();
 		Vector3(const Vector3& pV);
@@ -83,7 +85,7 @@ class Vector3{
 		 *  \param[in]      pV              The Vector3 which will be used to perform the cross product. this ^ pV.
 		 *  \return         void			The resulting cross product.
 		 */
-		void cross(const Vector3& pV) const;
+		void cross(const Vector3& pV);
 
 		/**
 		 *  \fn     normalize

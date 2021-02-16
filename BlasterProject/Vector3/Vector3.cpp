@@ -1,53 +1,46 @@
 #include "Vector3.hpp"
 
 Vector3::Vector3() {
-	data = new double[3];
-	data[0] = 0;
-	data[1] = 0;
-	data[2] = 0;
+	m_data[0] = 0.0;
+	m_data[1] = 0.0;
+	m_data[2] = 0.0;
 }
 
 Vector3::Vector3(const Vector3& pV) {
-	data = new double[3];
-	data[0] = pV.data[0];
-	data[1] = pV.data[1];
-	data[2] = pV.data[2];	
+	m_data[0] = pV.m_data[0];
+	m_data[1] = pV.m_data[1];
+	m_data[2] = pV.m_data[2];	
 }
 
 Vector3::Vector3(double pX, double pY, double pZ) {
-	data = new double[3];
-	data[0] = pX;
-	data[1] = pY;
-	data[2] = pZ;
+	m_data[0] = pX;
+	m_data[1] = pY;
+	m_data[2] = pZ;
 }
 
-Vector3::~Vector3() {
-	if(data)	delete[] data;
-
-	data = nullptr;
-}
+Vector3::~Vector3() {}
 
 void Vector3::addition(const Vector3& pV) {	
-	data[0] += pV.data[0];
-	data[1] += pV.data[1];
-	data[2] += pV.data[2];
+	m_data[0] += pV.m_data[0];
+	m_data[1] += pV.m_data[1];
+	m_data[2] += pV.m_data[2];
 }
 
 void Vector3::substraction(const Vector3& pV) {
-	data[0] -= pV.data[0];
-	data[1] -= pV.data[1];
-	data[2] -= pV.data[2];
+	m_data[0] -= pV.m_data[0];
+	m_data[1] -= pV.m_data[1];
+	m_data[2] -= pV.m_data[2];
 }
 
 double Vector3::dot(const Vector3& pV) const{
-	return pV.data[0] * data[0] + pV.data[1] * data[1] + pV.data[2] * data[2];
+	return pV.m_data[0] * m_data[0] + pV.m_data[1] * m_data[1] + pV.m_data[2] * m_data[2];
 }
 
 void Vector3::multiplication(double pScalar) {
 
-	data[0] *= pScalar;
-	data[1] *= pScalar;
-	data[2] *= pScalar;
+	m_data[0] *= pScalar;
+	m_data[1] *= pScalar;
+	m_data[2] *= pScalar;
 }
 
 void Vector3::division(double pScalar) {
@@ -56,21 +49,21 @@ void Vector3::division(double pScalar) {
 		std::cout << "Division par 0 !" << std::endl;
 		exit(-1);
 	}
-	data[0] /= pScalar;
-	data[1] /= pScalar;
-	data[2] /= pScalar;
+	m_data[0] /= pScalar;
+	m_data[1] /= pScalar;
+	m_data[2] /= pScalar;
 }
 
-void Vector3::cross(const Vector3& pV) const {		
+void Vector3::cross(const Vector3& pV) {		
 
 	double x, y, z;
-	x = data[1] * pV.data[2] - data[2] * pV.data[1];
-	y = data[2] * pV.data[0] - data[0] * pV.data[2];
-	z = data[0] * pV.data[1] - data[1] * pV.data[0];	
+	x = m_data[1] * pV.m_data[2] - m_data[2] * pV.m_data[1];
+	y = m_data[2] * pV.m_data[0] - m_data[0] * pV.m_data[2];
+	z = m_data[0] * pV.m_data[1] - m_data[1] * pV.m_data[0];	
 
-	data[0] = x;
-	data[1] = y;
-	data[2] = z;
+	m_data[0] = x;
+	m_data[1] = y;
+	m_data[2] = z;
 }
 
 Vector3 Vector3::cross(const Vector3& pA, const Vector3& pB) {
@@ -81,7 +74,7 @@ Vector3 Vector3::cross(const Vector3& pA, const Vector3& pB) {
 
 void Vector3::normalize() {
 	double norme;
-	Vector3 pTest(data[0], data[1], data[2]);
+	Vector3 pTest(m_data[0], m_data[1], m_data[2]);
 	if (pTest  == Vector3(0, 0, 0)) return; // A vérifier.
 	norme = sqrt(x() * x() + y() * y() + z() * z());
 	
@@ -94,7 +87,7 @@ Vector3 Vector3::normalize(const Vector3& pV) {
 	
 	Vector3 pTest(pV.x(), pV.y(), pV.z());
 	if (pTest == Vector3(0, 0, 0)) return pV; // A vérifier.
-	result.division(sqrt(pV.data[0] * pV.data[0] + pV.data[1] * pV.data[1] + pV.data[2] * pV.data[2]));
+	result.division(sqrt(pV.m_data[0] * pV.m_data[0] + pV.m_data[1] * pV.m_data[1] + pV.m_data[2] * pV.m_data[2]));
 	return result;
 }
 
@@ -107,13 +100,9 @@ Vector3& Vector3::operator=(const Vector3& pOther) {
 		return *this;
 	}
 
-	if (data == nullptr) {
-		data = new double[3];
-	}
-
-	data[0] = pOther.data[0];
-	data[1] = pOther.data[1];
-	data[2] = pOther.data[2];
+	m_data[0] = pOther.m_data[0];
+	m_data[1] = pOther.m_data[1];
+	m_data[2] = pOther.m_data[2];
 
 	return *this;
 }

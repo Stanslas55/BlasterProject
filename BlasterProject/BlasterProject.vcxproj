@@ -151,27 +151,36 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera\Camera.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Matrix4\Matrix4.cpp" />
     <ClCompile Include="PrimitiveObjects\Polygon.cpp" />
     <ClCompile Include="PrimitiveObjects\Plane.cpp" />
     <ClCompile Include="PrimitiveObjects\PrimitiveObject.cpp" />
     <ClCompile Include="PrimitiveObjects\Ray.cpp" />
     <ClCompile Include="PrimitiveObjects\Sphere.cpp" />
     <ClCompile Include="PrimitiveObjects\Quadri.cpp" />
+    <ClCompile Include="Scene\Scene.cpp" />
     <ClCompile Include="Tests.cpp" />
     <ClCompile Include="PrimitiveObjects\Tri.cpp" />
     <ClCompile Include="Vector3\Vector3.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera\Camera.hpp" />
+    <ClInclude Include="Matrix4\Matrix4.hpp" />
     <ClInclude Include="PrimitiveObjects\Polygon.h" />
     <ClInclude Include="PrimitiveObjects\Plane.h" />
     <ClInclude Include="PrimitiveObjects\PrimitiveObject.h" />
     <ClInclude Include="PrimitiveObjects\Ray.hpp" />
     <ClInclude Include="PrimitiveObjects\Sphere.hpp" />
     <ClInclude Include="PrimitiveObjects\Quadri.h" />
+    <ClInclude Include="Scene\Scene.hpp" />
     <ClInclude Include="Tests.h" />
     <ClInclude Include="PrimitiveObjects\Tri.h" />
     <ClInclude Include="Vector3\Vector3.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="INF4034 - Cours 2.pdf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
