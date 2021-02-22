@@ -1,51 +1,17 @@
 #include "Quadri.h"
 
-Quadri::Quadri(): Polygon(4, Vector3::zero, Vector3::zero) {
-	m_corners[0] = Vector3::zero;
-	m_corners[1] = Vector3::zero;
-	m_corners[2] = Vector3::zero;
-	m_corners[3] = Vector3::zero;	
-}
+Quadri::Quadri() : Polygon({ Vector3::zero, Vector3::zero, Vector3::zero, Vector3::zero }, Material::defaultMaterial) {}
 
-Quadri::Quadri(const Quadri& pCopy): Polygon(4, pCopy.m_center, pCopy.m_normal) {
-	m_corners[0] = pCopy.A();
-	m_corners[1] = pCopy.B();
-	m_corners[2] = pCopy.C();
-	m_corners[3] = pCopy.D();
-}
+Quadri::Quadri(const Quadri& pCopy) : Polygon(pCopy) {}
 
-Quadri::Quadri(Vector3 pCorners[4], const Vector3& pCenter, const Vector3& pNormal, const Material& pMaterial) : Polygon(4, pCenter, pNormal, pMaterial) {
+Quadri::Quadri(const std::initializer_list<Vector3>& pCorners, const Material& pMaterial) : Polygon(pCorners, pMaterial) {}
 
-	m_corners[0] = pCorners[0];
-	m_corners[1] = pCorners[1];
-	m_corners[2] = pCorners[2];
-	m_corners[3] = pCorners[3];
-}
+Quadri::Quadri(const Vector3& pA, const Vector3& pB, const Vector3& pC, const Vector3& pD, const Material& pMaterial) : Polygon({ pA, pB, pC, pD }, pMaterial) {}
 
 Quadri::~Quadri() {}
 
 const Collision Quadri::intersect(const Ray& pRay) const {
 	return Polygon::intersect(pRay);
-}
-
-Quadri Quadri::fromPoints(Vector3 pCorners[4]) {
-	
-	Vector3 corners[4], center, normal;
-
-	corners[0] = pCorners[0];
-	corners[1] = pCorners[1];
-	corners[2] = pCorners[2];
-	corners[3] = pCorners[3];
-
-	double moyenneX = (corners[0].x() + corners[1].x() + corners[2].x() + corners[3].x()) / 4;
-	double moyenneY = (corners[0].y() + corners[1].y() + corners[2].y() + corners[3].y()) / 4;
-	double moyenneZ = (corners[0].z() + corners[1].z() + corners[2].z() + corners[3].z()) / 4;
-
-	center = Vector3(moyenneX, moyenneY, moyenneZ);
-	
-	normal = Vector3::normalize(Vector3::cross(corners[0] - corners[1], corners[2] - corners[1]));
-
-	return Quadri(corners, center, normal);
 }
 
 void Quadri::print(std::ostream& pFlux) const {

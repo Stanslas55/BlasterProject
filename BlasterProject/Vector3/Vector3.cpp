@@ -75,22 +75,18 @@ Vector3 Vector3::cross(const Vector3& pA, const Vector3& pB) {
 }
 
 void Vector3::normalize() {
-	double norme;
-	Vector3 pTest(m_data[0], m_data[1], m_data[2]);
-	if (pTest  == Vector3(0, 0, 0)) return; // A vérifier.
-	norme = sqrt(x() * x() + y() * y() + z() * z());
+	if (*this == Vector3::zero)
+		return; // A vérifier.
 	
-	this->division(norme);
+	this->division(sqrt(x() * x() + y() * y() + z() * z()));
 }
 
 Vector3 Vector3::normalize(const Vector3& pV) {
 	
-	Vector3 result(pV);
-	
-	Vector3 pTest(pV.x(), pV.y(), pV.z());
-	if (pTest == Vector3(0, 0, 0)) return pV; // A vérifier.
-	result.division(sqrt(pV.m_data[0] * pV.m_data[0] + pV.m_data[1] * pV.m_data[1] + pV.m_data[2] * pV.m_data[2]));
-	return result;
+	if (pV == Vector3::zero)
+		return Vector3::zero; // A vérifier.
+
+	return pV / sqrt(pV.m_data[0] * pV.m_data[0] + pV.m_data[1] * pV.m_data[1] + pV.m_data[2] * pV.m_data[2]);
 }
 
 const double Vector3::distance(const Vector3& pA, const Vector3& pB) {
@@ -143,6 +139,14 @@ Vector3& Vector3::operator/=(const double& pScalar) {
 	m_data[1] /= pScalar;
 	m_data[2] /= pScalar;
 	return *this;
+}
+
+const Vector3 Vector3::operator-() const {
+	return Vector3(
+		-m_data[0],
+		-m_data[1],
+		-m_data[2]
+	);
 }
 
 const bool operator==(const Vector3& pA, const Vector3& pB) {

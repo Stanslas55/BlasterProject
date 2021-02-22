@@ -7,7 +7,8 @@ private:
 public:
 	Quadri();
 	Quadri(const Quadri& pCopy);
-	Quadri(Vector3 pCorners[4], const Vector3& pCenter, const Vector3& pNormal, const Material& pMaterial = Material::defaultMaterial);
+	Quadri(const std::initializer_list<Vector3>& pCorners, const Material& pMaterial = Material::defaultMaterial);
+	Quadri(const Vector3& pA, const Vector3& pB, const Vector3& pC, const Vector3& pD, const Material& pMaterial = Material::defaultMaterial);
 	~Quadri();
 
 	inline Vector3& A() { return m_corners[0]; }
@@ -29,14 +30,6 @@ public:
 	 */
 	const Collision intersect(const Ray& pRay) const;
 
-	/**
-		*  \fn     fromPoints
-		*  \brief  Creates a Quadri from points.
-		*
-		*  \param[in]      pCorners            Array containing the points.
-		*  \return         Quadri				The created Quadri
-		*/
-	static Quadri fromPoints(Vector3 pCorners[4]);
 	void print(std::ostream& pFlux) const;
 	Quadri& operator=(const Quadri& pOther);
 

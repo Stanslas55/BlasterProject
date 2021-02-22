@@ -93,7 +93,7 @@ void Tests::normalize() {
 
 void Tests::intersectionSphere() {
     std::cout << "\nTest intersection sphere." << std::endl;
-    size_t indice, size;
+
     Vector3 center = Vector3(5, 5, 5);
     double radius = 1;
     Sphere sphere = Sphere(center, radius);
@@ -147,29 +147,31 @@ void Tests::intersectionQuadri() {
     Vector3 corners[4], testCorners[4];
     Ray missedRay, hittingRay;
     Quadri quadri, testQuadri; 
-   
-    corners[0] = Vector3(1, 1, -1);
-    corners[1] = Vector3(1, -1, -1);
-    corners[2] = Vector3(-1, -1, -1);
-    corners[3] = Vector3(-1, 1, -1);    
 
-    quadri = Quadri::fromPoints(corners);
+    quadri = Quadri({
+        Vector3(1, 1, -1),
+        Vector3(1, -1, -1),
+        Vector3(-1, -1, -1),
+        Vector3(-1, 1, -1)
+    });
 
     std::cout << quadri;            
     
     //https://www.geogebra.org/3d/exaq2jua
-    testCorners[0] = Vector3(1, -1, 0);
-    testCorners[1] = Vector3(-1, -1, 0);
-    testCorners[2] = Vector3(-1, 1, 0);
-    testCorners[3] = Vector3(1, 1, 0);
+    testQuadri = Quadri({
+        Vector3(1, -1, 0),
+        Vector3(-1, -1, 0),
+        Vector3(-1, 1, 0),
+        Vector3(1, 1, 0),
+    });
 
     ////https://www.geogebra.org/3d/vxcg4nhz
-    //testCorners[0] = Vector3(1.33, -5.08, 1);
-    //testCorners[1] = Vector3(-3.17, -2.72, 0);
-    //testCorners[2] = Vector3(1.49, 3.84, 1);
-    //testCorners[3] = Vector3(4, -2, 1.58);
-
-    testQuadri = Quadri::fromPoints(testCorners);
+    /*testQuadri = Quadri({
+        Vector3(1.33, -5.08, 1),
+        Vector3(-3.17, -2.72, 0),
+        Vector3(1.49, 3.84, 1),
+        Vector3(4, -2, 1.58)
+    });*/
    
     std::cout << "\nTest intersection." << std::endl << testQuadri << std::endl;
     // Test that a ray pointed the wrong way does not intersect. This ray sits above the plane and points in the opposite direction.
@@ -198,16 +200,15 @@ void Tests::intersectionQuadri() {
 }
 
 void Tests::intersectionTri() {
-//https://www.geogebra.org/3d/wkataghd
-    Vector3 corners[3];
     Ray missedRay, hittingRay;
     Tri tri;
 
-    corners[0] = Vector3(-5.41, 1.59, 0); 
-    corners[1] = Vector3(0, 0, 4);
-    corners[2] = Vector3(3.31, -2.7, 0); 
-
-    tri = Tri::fromPoints(corners);
+    //https://www.geogebra.org/3d/wkataghd
+    tri = Tri({
+        Vector3(-5.41, 1.59, 0),
+        Vector3(0, 0, 4),
+        Vector3(3.31, -2.7, 0)
+    });
 
     std::cout << "\nTest tri creation and intersection." << std::endl << tri << std::endl;
     // Test that a ray pointed the wrong way does not intersect.

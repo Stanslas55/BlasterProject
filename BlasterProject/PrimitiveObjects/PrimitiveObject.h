@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 
-#include "../Vector3/Vector3.hpp"
+#include "Vector3/Vector3.hpp"
 #include "Ray.hpp"
 #include "Material/material.hpp"
 #include "Collision.hpp"
@@ -14,7 +14,9 @@ protected:
 
 public:
 
-    PrimitiveObject(const Material& pMaterial);
+	PrimitiveObject(const Material& pMaterial);
+
+	virtual ~PrimitiveObject() {}
 
     inline const Material& material() const { return m_material; }
     inline Material& material() { return m_material; }

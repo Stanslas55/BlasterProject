@@ -56,7 +56,7 @@ void Scene::takePictureNaive(FIBITMAP** pImage) {
 	for (i = 0; i < wh; i++) {
 
 		const int x = i % w;
-		const int y = int(ceil(double(i) / double(w)));
+		const int y = i / w;
 
 		const Vector3 pos = curPosition + Vector3(x * offset, -y * offset, 0.0);
 
@@ -73,7 +73,7 @@ const Collision Scene::getClosestIntersectionNaive(const Ray& pRay, bool pEarlyS
 	double sqDist = -1.0;
 	double minSqDist = -1.0;
 
-	for (std::shared_ptr<PrimitiveObject> obj : m_objects) {
+	for (const std::shared_ptr<PrimitiveObject>& obj : m_objects) {
 		const Collision curCollision = obj->intersect(pRay);
 
 		if (curCollision.collided()) {
@@ -107,7 +107,7 @@ RGBQUAD Scene::getPixelColor(const Ray& pRay) {
 	/**
 	 * Find closest instersection point
 	 */
-	const Collision closestCollision = getClosestIntersectionNaive(pRay);
+	const Collision& closestCollision = getClosestIntersectionNaive(pRay);
 
 	if (!closestCollision.collided()) {
 		// No collision. Return background color.
@@ -146,11 +146,11 @@ RGBQUAD Scene::getPixelColor(const Ray& pRay) {
 		} else
 			continue;
 
-		const Collision collision = getClosestIntersectionNaive(secondaryRay, true);
+		const Collision& collision = getClosestIntersectionNaive(secondaryRay, true);
 
 		if (collision.collided())
 			continue;
-
+		
 		// TODO apply attenuation function fatt_i
 
 		Id += ls->intensity() * (normal * secondaryRay.direction()) * 0.7;
@@ -162,9 +162,9 @@ RGBQUAD Scene::getPixelColor(const Ray& pRay) {
 	Is *= material.ks();
 
 	return {
-		(BYTE)std::max(std::min(int(std::floor(Ia.x() + Id.x() + Is.x())), 255), 0),
-		(BYTE)std::max(std::min(int(std::floor(Ia.y() + Id.y() + Is.y())), 255), 0),
-		(BYTE)std::max(std::min(int(std::floor(Ia.z() + Id.z() + Is.z())), 255), 0),
+		(BYTE)std::max(std::min(int(std::floor(Ia.z() + Id.z() + Is.z())), 255), 0),		// B
+		(BYTE)std::max(std::min(int(std::floor(Ia.y() + Id.y() + Is.y())), 255), 0),		// G
+		(BYTE)std::max(std::min(int(std::floor(Ia.x() + Id.x() + Is.x())), 255), 0),		// R
 		255
 	};
 }

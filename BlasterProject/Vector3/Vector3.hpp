@@ -178,6 +178,14 @@ class Vector3{
 		 * \return      Vector3&	this divided by pScalar
 		 */
 		Vector3& operator/=(const double& pScalar);
+
+		/**
+		 * \fn      operator-
+		 * \brief   Unary minus operator.
+		 *
+		 * \return      const Vector3	-this
+		 */
+		const Vector3 operator-() const;
 };
 
 /**

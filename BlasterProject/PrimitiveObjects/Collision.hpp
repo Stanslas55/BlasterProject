@@ -14,7 +14,7 @@ private:
 
 public:
 
-	static const Collision noCollision;
+	static const Collision noCollision;		/*< No collision object. */
 
 	/**
 	 * \fn      Collision

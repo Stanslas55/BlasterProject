@@ -1,10 +1,19 @@
 #pragma once
+
 #include "PrimitiveObject.h"
+
+#define _USE_MATH_DEFINES
+
+#include <math.h>
+
 class Plane : public PrimitiveObject {
 
-protected:		
+protected:
 	Vector3 m_center;
 	Vector3 m_normal;
+
+	static const Vector3 _computeCenter(const std::initializer_list<Vector3>& pCorners);
+	static const Vector3 _computeNormal(const std::initializer_list<Vector3>& pCorners);
 
 public:		
 
@@ -15,6 +24,7 @@ public:
 	inline const Vector3& normal() const { return m_normal; }
 
 	Plane();
+	Plane(const Plane& pCopy);
 	Plane(const Vector3& pCenter, const Vector3& pNormal, const Material& pMaterial = Material::defaultMaterial);		
 		
 	/**
