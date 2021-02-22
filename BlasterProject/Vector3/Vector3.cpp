@@ -1,5 +1,7 @@
 #include "Vector3.hpp"
 
+const Vector3 Vector3::zero = Vector3(0.0, 0.0, 0.0);
+
 Vector3::Vector3() {
 	m_data[0] = 0.0;
 	m_data[1] = 0.0;
@@ -91,6 +93,14 @@ Vector3 Vector3::normalize(const Vector3& pV) {
 	return result;
 }
 
+const double Vector3::distance(const Vector3& pA, const Vector3& pB) {
+	return sqrt(pow(pA.m_data[0] - pB.m_data[0], 2) + pow(pA.m_data[1] - pB.m_data[1], 2) + pow(pA.m_data[2] - pB.m_data[2], 2));
+}
+
+const double Vector3::sqDdistance(const Vector3& pA, const Vector3& pB) {
+	return pow(pA.m_data[0] - pB.m_data[0], 2) + pow(pA.m_data[1] - pB.m_data[1], 2) + pow(pA.m_data[2] - pB.m_data[2], 2);
+}
+
 void Vector3::print(std::ostream& pFlux) const {
 	pFlux << "(" << x() << ", " << y() << ", " << z() << ")";
 }
@@ -107,41 +117,75 @@ Vector3& Vector3::operator=(const Vector3& pOther) {
 	return *this;
 }
 
+Vector3& Vector3::operator+=(const Vector3& pV) {
+	m_data[0] += pV.m_data[0];
+	m_data[1] += pV.m_data[1];
+	m_data[2] += pV.m_data[2];
+	return *this;
+}
+
+Vector3& Vector3::operator-=(const Vector3& pV) {
+	m_data[0] -= pV.m_data[0];
+	m_data[1] -= pV.m_data[1];
+	m_data[2] -= pV.m_data[2];
+	return *this;
+}
+
+Vector3& Vector3::operator*=(const double& pScalar) {
+	m_data[0] *= pScalar;
+	m_data[1] *= pScalar;
+	m_data[2] *= pScalar;
+	return *this;
+}
+
+Vector3& Vector3::operator/=(const double& pScalar) {
+	m_data[0] /= pScalar;
+	m_data[1] /= pScalar;
+	m_data[2] /= pScalar;
+	return *this;
+}
+
 const bool operator==(const Vector3& pA, const Vector3& pB) {
 
 	if (pA.x() == pB.x() && pA.y() == pB.y() && pA.z() == pB.z()) return true;
 	return false;	 
 }
 
-std::ostream& operator<<(std::ostream& pFlux, Vector3 pV) {
+const bool operator!=(const Vector3& pA, const Vector3& pB) {
+
+	if (pA.x() == pB.x() && pA.y() == pB.y() && pA.z() == pB.z()) return false;
+	return true;
+}
+
+std::ostream& operator<<(std::ostream& pFlux, const Vector3& pV) {
 	pV.print(pFlux);
 	return pFlux;
 }
 
-Vector3 operator+(Vector3 pA, Vector3 pB) {
+Vector3 operator+(const Vector3& pA, const Vector3& pB) {
 	Vector3 result(pA);
 	result.addition(pB);
 	return result;
 }
 
-Vector3 operator-(Vector3 pA, Vector3 pB) {	
+Vector3 operator-(const Vector3& pA, const Vector3& pB) {
 	Vector3 result(pA);
 	result.substraction(pB);
 	return result;
 }
 
-Vector3 operator*(Vector3 pA, double pScalar) {
+Vector3 operator*(const Vector3& pA, double pScalar) {
 	Vector3 result(pA);
 	result.multiplication(pScalar);
 	return result;
 }
 
-Vector3 operator/(Vector3 pA, double pScalar) {
+Vector3 operator/(const Vector3& pA, double pScalar) {
 	Vector3 result(pA);
 	result.division(pScalar);
 	return result;
 }
 
-double operator*(Vector3 pA, Vector3 pB){
+double operator*(const Vector3& pA, const Vector3& pB){
 	return pA.dot(pB);
 }

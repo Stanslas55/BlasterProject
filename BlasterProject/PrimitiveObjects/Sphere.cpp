@@ -1,40 +1,38 @@
 #include "Sphere.hpp"
 
-Sphere::Sphere() {
+Sphere::Sphere() : PrimitiveObject(Material::defaultMaterial) {
     m_center = Vector3(0.0, 0.0, 0.0);
     m_radius = 1.0;
+    m_sqRadius = 1.0;
 }
 
-Sphere::Sphere(const Vector3& pCenter, double pRadius) {
+Sphere::Sphere(const Vector3& pCenter, double pRadius, const Material& pMaterial) : PrimitiveObject(pMaterial) {
     m_center = pCenter;
     m_radius = pRadius;
+    m_sqRadius = m_radius * m_radius;
 }
 
 // https://ibb.co/TY0W1n2
 // According to the schema, L will be the direction Vector going from the origin of the ray, and going to the center of the sphere.
 // tc stands for "t-cut"
-std::vector<Vector3> Sphere::intersect(const Ray& pRay) const {
-    std::vector<Vector3> result;
-    double radius = m_radius, d, tc, t1c;
-    Vector3 L = m_center - pRay.origin();
+const Collision Sphere::intersect(const Ray& pRay) const {
+    double d, tc, t1c;
+    const Vector3& L = m_center - pRay.origin();
 
     tc = L * pRay.direction();
 
-    if (tc < 0) {
-        //std::cout << "\nNo intersection";
-        return result;
-    }
-    d = sqrt(L * L - tc * tc);
-    if (d > radius) {
-        //std::cout << "\nNo intersection";
-        return result;
-    }
-    t1c = sqrt(radius * radius - d * d);
+    if (tc < 0)
+        return Collision::noCollision;
 
-    result.push_back(pRay.point(tc - t1c));
-    result.push_back(pRay.point(tc + t1c));
+    d = L * L - tc * tc;
+    if (d > m_sqRadius)
+        return Collision::noCollision;
 
-    return result;
+    t1c = sqrt(m_sqRadius - d);
+
+    const Vector3 point(pRay.point(tc - t1c));
+
+    return Collision(point, m_material, Vector3::normalize(point - m_center), true);
 }
 
 void Sphere::print(std::ostream& pFlux) const {        

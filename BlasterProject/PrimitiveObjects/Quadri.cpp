@@ -1,10 +1,10 @@
 #include "Quadri.h"
 
-Quadri::Quadri(): Polygon(4, Vector3(0,0,0), Vector3(0,0,0)) {	
-	m_corners[0] = Vector3(0, 0, 0);
-	m_corners[1] = Vector3(0, 0, 0);
-	m_corners[2] = Vector3(0, 0, 0);
-	m_corners[3] = Vector3(0, 0, 0);	
+Quadri::Quadri(): Polygon(4, Vector3::zero, Vector3::zero) {
+	m_corners[0] = Vector3::zero;
+	m_corners[1] = Vector3::zero;
+	m_corners[2] = Vector3::zero;
+	m_corners[3] = Vector3::zero;	
 }
 
 Quadri::Quadri(const Quadri& pCopy): Polygon(4, pCopy.m_center, pCopy.m_normal) {
@@ -14,7 +14,7 @@ Quadri::Quadri(const Quadri& pCopy): Polygon(4, pCopy.m_center, pCopy.m_normal) 
 	m_corners[3] = pCopy.D();
 }
 
-Quadri::Quadri(Vector3 pCorners[4], const Vector3& pCenter, const Vector3& pNormal): Polygon(4, pCenter, pNormal) {
+Quadri::Quadri(Vector3 pCorners[4], const Vector3& pCenter, const Vector3& pNormal, const Material& pMaterial) : Polygon(4, pCenter, pNormal, pMaterial) {
 
 	m_corners[0] = pCorners[0];
 	m_corners[1] = pCorners[1];
@@ -24,8 +24,7 @@ Quadri::Quadri(Vector3 pCorners[4], const Vector3& pCenter, const Vector3& pNorm
 
 Quadri::~Quadri() {}
 
-std::vector<Vector3> Quadri::intersect(const Ray& pRay) const {
-	
+const Collision Quadri::intersect(const Ray& pRay) const {
 	return Polygon::intersect(pRay);
 }
 

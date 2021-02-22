@@ -10,6 +10,8 @@ class Vector3{
 
 	public:	
 		
+		static const Vector3 zero;
+
 		inline double& x() { return m_data[0]; }
 		inline double& y() { return m_data[1]; }
 		inline double& z() { return m_data[2]; }
@@ -104,6 +106,26 @@ class Vector3{
 		static Vector3 normalize(const Vector3& pV); 
 
 		/**
+		 * \fn      distance
+		 * \brief   Compute euclidian distance between two vectors.
+		 * 
+		 * \param[in]   pA
+		 * \param[in]   pB
+		 * \return      const double		Euclidian distance between pA and pB
+		 */
+		static const double distance(const Vector3& pA, const Vector3& pB);
+
+		/**
+		 * \fn      sqDistance
+		 * \brief   Compute squared euclidian distance between two vectors.
+		 *
+		 * \param[in]   pA
+		 * \param[in]   pB
+		 * \return      const double		Sqared euclidian distance between pA and pB
+		 */
+		static const double sqDdistance(const Vector3& pA, const Vector3& pB);
+
+		/**
 		 *  \fn     print
 		 *  \brief  Print a Vector3.
 		 *
@@ -111,14 +133,129 @@ class Vector3{
 		 *  \return         void			This function returns nothing.
 		 */
 		void print(std::ostream& pFlux) const;
-		Vector3& operator=(const Vector3& pOther);					
+
+		/**
+		 * \fn      operator=
+		 * \brief   Assignation operator.
+		 * 
+		 * \param[in]   pOther
+		 * \return      Vector&		Reference to this after being assigned pOther
+		 */
+		Vector3& operator=(const Vector3& pOther);
+
+		/**
+		 * \fn      operator+=
+		 * \brief   Add pV to this element-wise.
+		 * 
+		 * \param[in]   pV
+		 * \return      Vector3&	this plus pV element-wise
+		 */
+		Vector3& operator+=(const Vector3& pV);
+
+		/**
+		 * \fn      operator-=
+		 * \brief   Substract pV to this element-wise.
+		 *
+		 * \param[in]   pV
+		 * \return      Vector3&	this minus pV element-wise
+		 */
+		Vector3& operator-=(const Vector3& pV);
+
+		/**
+		 * \fn      operator*=
+		 * \brief   Multiply this by pScalar
+		 *
+		 * \param[in]   pScalar
+		 * \return      Vector3&	this multiplied by pScalar
+		 */
+		Vector3& operator*=(const double& pScalar);
+
+		/**
+		 * \fn      operator/=
+		 * \brief   Divide this by pScalar
+		 *
+		 * \param[in]   pScalar
+		 * \return      Vector3&	this divided by pScalar
+		 */
+		Vector3& operator/=(const double& pScalar);
 };
 
-std::ostream& operator<<(std::ostream& pFlux, Vector3 pV);
-const bool operator==(const Vector3& pA, const Vector3& pB);
-Vector3 operator+(Vector3 pA, Vector3 pB);
-Vector3 operator-(Vector3 pA, Vector3 pB);
+/**
+ * \fn      operator<<
+ * \brief   Write a vector to a output stream.
+ *
+ * \param[in]   pFlux
+ * \param[in]   pV
+ * \return      std::ostream&
+ */
+std::ostream& operator<<(std::ostream& pFlux, const Vector3& pV);
 
-Vector3 operator*(Vector3 pA, double pScalar);
-Vector3 operator/(Vector3 pA, double pScalar);
-double operator*(Vector3 pA, Vector3 pB);
+/**
+ * \fn      operator==
+ * \brief   Equal operator.
+ *
+ * \param[in]   pA
+ * \param[in]   pB
+ * \return      const bool		true if pA and pB are equal, false otherwise
+ */
+const bool operator==(const Vector3& pA, const Vector3& pB);
+
+/**
+ * \fn      operator!=
+ * \brief   Not equal operator.
+ *
+ * \param[in]   pA
+ * \param[in]   pB
+ * \return      const bool		false if pA and pB are equal, true otherwise
+ */
+const bool operator!=(const Vector3& pA, const Vector3& pB);
+
+/**
+ * \fn      operator+
+ * \brief   Element wise addition between two Vector3.
+ *
+ * \param[in]   pA
+ * \param[in]   pB
+ * \return      Vector3
+ */
+Vector3 operator+(const Vector3& pA, const Vector3& pB);
+
+/**
+ * \fn      operator-
+ * \brief   Element wise substraction between two Vector3.
+ *
+ * \param[in]   pA
+ * \param[in]   pB
+ * \return      Vector3
+ */
+Vector3 operator-(const Vector3& pA, const Vector3& pB);
+
+/**
+ * \fn      operator*
+ * \brief   Multiply a Vector3 by a scalar
+ *
+ * \param[in]   pA
+ * \param[in]   pScalar
+ * \return      Vector3
+ */
+Vector3 operator*(const Vector3& pA, double pScalar);
+
+/**
+ * \fn      operator/
+ * \brief   Divides a Vector3 by a scalar
+ *
+ * \param[in]   pA
+ * \param[in]   pScalar
+ * \return      Vector3
+ */
+Vector3 operator/(const Vector3& pA, double pScalar);
+
+/**
+ * \fn      operator*
+ * \brief   Dot product between two Vector3
+ *
+ * \param[in]   pA
+ * \param[in]   pB
+ * \return      double
+ */
+double operator*(const Vector3& pA, const Vector3& pB);

@@ -39,7 +39,7 @@ void Scene::takePictureNaive(FIBITMAP** pImage) {
 
 	*pImage = FreeImage_Allocate(w, h, 32);
 
-	int i, j;
+	int i;
 
 	double offset = m_camera.m_offset;
 	double offsetd2 = offset / 2.0;
@@ -49,9 +49,6 @@ void Scene::takePictureNaive(FIBITMAP** pImage) {
 	Vector3 camOrigin = m_camera.m_position;
 
 	int wh = w * h;
-
-	RGBQUAD black = { 0, 0, 0, 0 };
-	RGBQUAD white = { 255, 255, 255, 255 };
 
 	int nbObjs = m_objects.size();
 
@@ -65,46 +62,109 @@ void Scene::takePictureNaive(FIBITMAP** pImage) {
 
 		const Ray r = Ray::fromLine(camOrigin, pos);
 
-		std::vector<Vector3> its;
-		bool setWhite = false;
+		RGBQUAD color = getPixelColor(r);
+		FreeImage_SetPixelColor(*pImage, x, y, &color);
+	}
+}
 
-		for (int k = 0; k < nbObjs; k++) {
-			if (!m_objects[k]->intersect(r).empty()) {
-				setWhite = true;
-				break;
+const Collision Scene::getClosestIntersectionNaive(const Ray& pRay, bool pEarlyStop) const {
+
+	Collision closestCollision = Collision::noCollision;
+	double sqDist = -1.0;
+	double minSqDist = -1.0;
+
+	for (std::shared_ptr<PrimitiveObject> obj : m_objects) {
+		const Collision curCollision = obj->intersect(pRay);
+
+		if (curCollision.collided()) {
+			if (closestCollision.collided()) {
+				sqDist = Vector3::sqDdistance(curCollision.point(), pRay.origin());
+
+				if (sqDist < minSqDist) {
+					closestCollision = curCollision;
+					minSqDist = sqDist;
+				}
 			}
-		}
-
-		if (setWhite) {
-			FreeImage_SetPixelColor(*pImage, x, y, &white);
-		} else {
-			FreeImage_SetPixelColor(*pImage, x, y, &black);
+			else {
+				if (pEarlyStop)
+					return curCollision;
+				closestCollision = curCollision;
+				minSqDist = Vector3::sqDdistance(closestCollision.point(), pRay.origin());
+			}
 		}
 	}
 
-	/*for (i = 0; i < h; i++) {
-		for (j = 0; j < w; j++) {
-			curPosition.x() += offset;
+	return closestCollision;
+}
 
-			Ray r = Ray::fromLine(camOrigin, curPosition);
+RGBQUAD Scene::getPixelColor(const Ray& pRay) {
 
-			std::vector<Vector3> intersections;
+	int nbLightSources = m_lightSources.size();
 
-			double nbObjs = m_objects.size();
+	if (nbLightSources == 0)
+		return m_camera.m_backgroundColor;
 
-			for (size_t k = 0; k < nbObjs; k++) {
-				std::vector<Vector3> its = m_objects[k]->intersect(r);
-				intersections.insert(intersections.end(), its.begin(), its.end());
-			}
+	/**
+	 * Find closest instersection point
+	 */
+	const Collision closestCollision = getClosestIntersectionNaive(pRay);
 
-			if (intersections.empty()) {
-				FreeImage_SetPixelColor(*pImage, j, i, &black);
-			} else {
-				FreeImage_SetPixelColor(*pImage, j, i, &white);
-			}
-		}
+	if (!closestCollision.collided()) {
+		// No collision. Return background color.
+		return m_camera.m_backgroundColor;
+	}
 
-		curPosition.x() = xLeft;
-		curPosition.y() -= offset;
-	}*/
+	Ray secondaryRay;
+
+	std::shared_ptr<PointLight> pointLight;
+	std::shared_ptr<DirectionalLight> directionalLight;
+
+	const Vector3& point = closestCollision.point();
+	const Vector3& normal = closestCollision.normal();
+	const Material& material = closestCollision.material();
+
+	RGBQUAD color = material.color();
+
+	const Vector3& L = pRay.direction() * -1.0;
+
+	Vector3 Ia = Vector3(color.rgbRed, color.rgbGreen, color.rgbBlue) * material.ka() * 0.7;
+	Vector3 Id = Vector3::zero;
+	Vector3 Is = Vector3::zero;
+
+	for (std::shared_ptr<LightSource> ls : m_lightSources) {
+
+		if (ls->type() == LightSourceType::POINT) {
+
+			pointLight = std::static_pointer_cast<PointLight>(ls);
+			secondaryRay = Ray::fromLine(closestCollision.point(), pointLight->position());
+
+		} else if (ls->type() == LightSourceType::DIRECTIONAL) {
+
+			directionalLight = std::static_pointer_cast<DirectionalLight>(ls);
+			secondaryRay = Ray(closestCollision.point(), directionalLight->direction());
+
+		} else
+			continue;
+
+		const Collision collision = getClosestIntersectionNaive(secondaryRay, true);
+
+		if (collision.collided())
+			continue;
+
+		// TODO apply attenuation function fatt_i
+
+		Id += ls->intensity() * (normal * secondaryRay.direction()) * 0.7;
+		Is += ls->intensity() * pow(normal * Vector3::normalize(secondaryRay.direction() + L), material.ke()) * 0.7;
+
+	}
+	
+	Id *= material.kd();
+	Is *= material.ks();
+
+	return {
+		(BYTE)std::max(std::min(int(std::floor(Ia.x() + Id.x() + Is.x())), 255), 0),
+		(BYTE)std::max(std::min(int(std::floor(Ia.y() + Id.y() + Is.y())), 255), 0),
+		(BYTE)std::max(std::min(int(std::floor(Ia.z() + Id.z() + Is.z())), 255), 0),
+		255
+	};
 }

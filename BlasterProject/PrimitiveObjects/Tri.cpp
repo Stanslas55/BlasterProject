@@ -1,9 +1,9 @@
 #include "Tri.h"
 
-Tri::Tri() : Polygon(3, Vector3(0, 0, 0), Vector3(0, 0, 0)) {
-	m_corners[0] = Vector3(0, 0, 0);
-	m_corners[1] = Vector3(0, 0, 0);
-	m_corners[2] = Vector3(0, 0, 0);
+Tri::Tri() : Polygon(3, Vector3::zero, Vector3::zero) {
+	m_corners[0] = Vector3::zero;
+	m_corners[1] = Vector3::zero;
+	m_corners[2] = Vector3::zero;
 }
 
 Tri::Tri(const Tri & pCopy) : Polygon(3, pCopy.m_center, pCopy.m_normal) {
@@ -12,7 +12,7 @@ Tri::Tri(const Tri & pCopy) : Polygon(3, pCopy.m_center, pCopy.m_normal) {
 	m_corners[2] = pCopy.C();
 }
 
-Tri::Tri(Vector3 pCorners[3], const Vector3& pCenter, const Vector3& pNormal): Polygon(3, pCenter, pNormal) {
+Tri::Tri(Vector3 pCorners[3], const Vector3& pCenter, const Vector3& pNormal, const Material& pMaterial): Polygon(3, pCenter, pNormal, pMaterial){
 	m_corners[0] = pCorners[0];
 	m_corners[1] = pCorners[1];
 	m_corners[2] = pCorners[2];
@@ -20,7 +20,7 @@ Tri::Tri(Vector3 pCorners[3], const Vector3& pCenter, const Vector3& pNormal): P
 
 Tri::~Tri() {}
 
-std::vector<Vector3> Tri::intersect(const Ray& pRay) const {
+const Collision Tri::intersect(const Ray& pRay) const {
 	return Polygon::intersect(pRay);
 }
 

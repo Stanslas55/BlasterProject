@@ -1,6 +1,7 @@
 #include "PrimitiveObject.h"
 
-std::vector<Vector3> PrimitiveObject::intersect(const Ray& pRay) const{
-	std::cout << "Virtual class" << std::endl;
-	return std::vector<Vector3>();
+PrimitiveObject::PrimitiveObject(const Material& pMaterial) : m_material(pMaterial) {}
+
+const Collision PrimitiveObject::intersect(const Ray& pRay) const {
+	return Collision::noCollision;
 }

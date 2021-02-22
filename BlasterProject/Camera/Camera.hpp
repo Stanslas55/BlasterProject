@@ -11,6 +11,7 @@ private:
 
 	static const int defaultWidth;
 	static const int defaultHeight;
+	static const RGBQUAD defaultBackgroundColor;
 
 	Vector3 m_position;			/*< Position in the world reference */
 	Vector3 m_rotation;			/*< Rotation of the camera in euler angles */
@@ -19,11 +20,13 @@ private:
 	Plane m_nearPlane;			/*< Near plane at 0.1f units of the camera */
 	Plane m_farPlane;			/*< Far plane  at 100.0f units of the camera */
 
+	RGBQUAD m_backgroundColor;	/*< Background color. Returned when no intersection point has been found for a pixel. */
+
 	Vector3 m_corners[4];		/*< Corners of the image projected on the focal plane */
 	double m_offset;
 
 	int m_width;				/*< Width of the image taken by the camera */
-	int m_height;			/*< Height of the image taken by the camera */
+	int m_height;				/*< Height of the image taken by the camera */
 
 	//Vector3 getPixelPosition(int pX, int pY);
 
@@ -45,7 +48,7 @@ public:
 	 * \param   pWidth		Image width
 	 * \param   pHeight		Image height
 	 */
-	Camera(const int pWidth, const int pHeight);
+	Camera(const int pWidth, const int pHeight, RGBQUAD pBackgroundColor = defaultBackgroundColor);
 	
 	/**
 	 * \fn		Camera

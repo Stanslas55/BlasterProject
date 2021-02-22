@@ -7,16 +7,18 @@ protected:
 
 public:
 	Polygon();
-	Polygon(int pCorners, const Vector3& pCenter, const Vector3& pNormal);
+	Polygon(int pCorners, const Vector3& pCenter, const Vector3& pNormal, const Material& pMaterial = Material::defaultMaterial);
 	~Polygon();
+
 	/**
 	 *  \fn     intersect
-	 *  \brief  Search the intersection points between this and a Ray.
+	 *  \brief  This function returns the intersection points for a given ray.
 	 *
-	 *  \param[in]      pRay							The to search the intersection with.
-	 *  \return         std::vector<Vector3>			vector containing the intersection points.
+	 *  \param[in]      pRay				The Ray we're searching the intersections with the PrimitiveObject.
+	 *  \return         const Collision		Collision with pRay.origin() as point if there is no intersection.
 	 */
-	std::vector<Vector3> intersect(const Ray& pRay) const;
+	const Collision intersect(const Ray& pRay) const;
+
 	void print(std::ostream& pFlux) const;
 
 	inline Vector3* corners() { return m_corners; }

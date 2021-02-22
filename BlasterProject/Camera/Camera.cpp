@@ -2,6 +2,7 @@
 
 const int Camera::defaultWidth = 1280;
 const int Camera::defaultHeight = 720;
+const RGBQUAD Camera::defaultBackgroundColor = { 150, 150, 150 };
 
 Camera::Camera() {
 	m_position = Vector3(0.0, 0.0, 0.0);
@@ -12,6 +13,8 @@ Camera::Camera() {
 	m_focalPlane = Plane(centerFocalPlane, Vector3(0.0, 0.0, -1.0));
 	m_nearPlane = Plane(Vector3(0.0, 0.0, -0.1), Vector3(0.0, 0.0, -1.0));
 	m_farPlane = Plane(Vector3(0.0, 0.0, -100.0), Vector3(0.0, 0.0, -1.0));
+
+	m_backgroundColor = defaultBackgroundColor;
 
 	m_width = Camera::defaultWidth;
 	m_height = Camera::defaultHeight;
@@ -30,7 +33,7 @@ Camera::Camera() {
 	m_offset = distHeight / (m_height + 1);
 }
 
-Camera::Camera(const int pWidth, const int pHeight) {
+Camera::Camera(const int pWidth, const int pHeight, RGBQUAD pBackgroundColor) {
 	m_position = Vector3(0.0, 0.0, 0.0);
 	m_rotation = Vector3(0.0, 0.0, 0.0);
 
@@ -39,6 +42,8 @@ Camera::Camera(const int pWidth, const int pHeight) {
 	m_focalPlane = Plane(centerFocalPlane, Vector3(0.0, 0.0, -1.0));
 	m_nearPlane = Plane(Vector3(0.0, 0.0, -0.1), Vector3(0.0, 0.0, -1.0));
 	m_farPlane = Plane(Vector3(0.0, 0.0, -100.0), Vector3(0.0, 0.0, -1.0));
+
+	m_backgroundColor = pBackgroundColor;
 	
 	m_width = pWidth;
 	m_height = pHeight;
@@ -65,6 +70,8 @@ Camera::Camera(const Camera& pCopy) {
 	m_nearPlane = pCopy.m_nearPlane;
 	m_farPlane = pCopy.m_farPlane;
 
+	m_backgroundColor = pCopy.m_backgroundColor;
+
 	m_corners[0] = pCopy.m_corners[0];	// TopLeft
 	m_corners[1] = pCopy.m_corners[1];	// TopRight
 	m_corners[2] = pCopy.m_corners[2];	// BottomLeft
@@ -82,6 +89,8 @@ Camera& Camera::operator=(const Camera& pOther) {
 	m_focalPlane = pOther.m_focalPlane;
 	m_nearPlane = pOther.m_nearPlane;
 	m_farPlane = pOther.m_farPlane;
+
+	m_backgroundColor = pOther.m_backgroundColor;
 
 	m_corners[0] = pOther.m_corners[0];	// TopLeft
 	m_corners[1] = pOther.m_corners[1];	// TopRight

@@ -102,17 +102,12 @@ void Tests::intersectionSphere() {
     Vector3 end = Vector3(5, 5, 5);
     Ray ray = Ray::fromLine(origin, end);
 
-    std::vector<Vector3> intersections;
-
-    intersections = sphere.intersect(ray);
-    size = intersections.size();
+    const Collision intersections = sphere.intersect(ray);
 
     std::cout << sphere;
     std::cout << ray;    
 
-    for (indice = 0; indice < size; indice++) {
-        std::cout << "\nIntersection point : " << intersections[indice];
-    }
+    std::cout << "\nIntersection point : " << intersections;
     /* Expected: 
     Intersection point : (4.42265, 4.42265, 4.42265)
     Intersection point : (5.57735, 5.57735, 5.57735)
@@ -125,24 +120,24 @@ void Tests::intersectionPlane() {
     
     // Test that a ray pointed the wrong way does not intersect. This ray sits above the plane and points in the opposite direction.
     Ray missedRay = Ray(Vector3(0, 3, 0), Vector3(0, 1, 0));
-    std::vector<Vector3> missResult = plane.intersect(missedRay);
+    const Collision missResult = plane.intersect(missedRay);
     std::cout << "\nTest plane creation and intersection." << std::endl << plane << std::endl;
     std::cout << missedRay << std::endl;
 
-    if (missResult.size() == 0) {
+    if (!missResult.collided()) {
         std::cout << "\nNo intersection between the ray and the plane." << std::endl << std::endl;
     }else {
-        std::cout << "\nIntersection: " << missResult[0];
+        std::cout << "\nIntersection: " << missResult;
     }
     // Test that a ray pointing at the plane will intersect. This ray sits 3 points above the plane and points directly down. if all goes well, the t value will equal 3.
     Ray hittingRay = Ray(Vector3(0, 3, 0), Vector3(0, -1, 0));
-    std::vector<Vector3> hitResult = plane.intersect(hittingRay);
+    const Collision hitResult = plane.intersect(hittingRay);
     std::cout << hittingRay; 
 
-    if (hitResult.size() == 0) {
+    if (hitResult.collided()) {
+        std::cout << "\nIntersection: " << hitResult << std::endl;
+    } else{
         std::cout << "\nNo intersection between the ray and the plane." << std::endl;
-    }else{
-        std::cout << "\nIntersection: " << hitResult[0] << std::endl;
     }
 }
 
@@ -151,7 +146,6 @@ void Tests::intersectionQuadri() {
 
     Vector3 corners[4], testCorners[4];
     Ray missedRay, hittingRay;
-    std::vector<Vector3> missResult, hitResult;
     Quadri quadri, testQuadri; 
    
     corners[0] = Vector3(1, 1, -1);
@@ -182,26 +176,24 @@ void Tests::intersectionQuadri() {
     missedRay = Ray(Vector3(-1.1, 3, 0), Vector3(0, 0.5, -1)); // Expected: (-1.1,3,0)
     std::cout << missedRay << std::endl;
 
-     missResult = testQuadri.intersect(missedRay);     
+    const Collision missResult = testQuadri.intersect(missedRay);
 
-    if (missResult.size() == 0) {
+    if (missResult.collided()) {
+        std::cout << "\nIntersection: " << missResult;
+    } else {
         std::cout << "\nNo intersection between the ray and the quadri." << std::endl << std::endl;
-    }
-    else {
-        std::cout << "\nIntersection: " << missResult[0];
     }
     
     hittingRay = Ray(Vector3(0.5, 0.5, 0.5), Vector3(0, 0.5, -1)); // Expected: (0.5,0.75,0)
     //hittingRay = Ray(Vector3(0.5, -1, 5), Vector3(0, 0.5, -1));
     std::cout << hittingRay << std::endl;
 
-    hitResult = testQuadri.intersect(hittingRay);   
+    const Collision hitResult = testQuadri.intersect(hittingRay);
 
-    if (hitResult.size() == 0) {
+    if (hitResult.collided()) {
+        std::cout << "\nIntersection: " << hitResult << std::endl;
+    } else {
         std::cout << "\nNo intersection between the ray and the quadri." << std::endl;
-    }
-    else {
-        std::cout << "\nIntersection: " << hitResult[0] << std::endl;
     }  
 }
 
@@ -209,7 +201,6 @@ void Tests::intersectionTri() {
 //https://www.geogebra.org/3d/wkataghd
     Vector3 corners[3];
     Ray missedRay, hittingRay;
-    std::vector<Vector3> missResult, hitResult;
     Tri tri;
 
     corners[0] = Vector3(-5.41, 1.59, 0); 
@@ -223,25 +214,23 @@ void Tests::intersectionTri() {
     missedRay = Ray(Vector3(-1.1, 3, 0), Vector3(0, -2, 5)); 
     std::cout << missedRay << std::endl;
 
-    missResult = tri.intersect(missedRay);
+    const Collision missResult = tri.intersect(missedRay);
 
-    if (missResult.size() == 0) {
+    if (missResult.collided()) {
+        std::cout << "\nIntersection: " << missResult;
+    } else {
         std::cout << "\nNo intersection between the ray and the tri." << std::endl << std::endl;
-    }
-    else {
-        std::cout << "\nIntersection: " << missResult[0];
     }
 
     hittingRay = Ray(Vector3(-1.1, 3, 0), Vector3(0, -2, 1));
   
     std::cout << hittingRay << std::endl;
 
-    hitResult = tri.intersect(hittingRay);
+    const Collision hitResult = tri.intersect(hittingRay);
 
-    if (hitResult.size() == 0) {
+    if (hitResult.collided()) {
+        std::cout << "\nIntersection: " << hitResult << std::endl;
+    } else {
         std::cout << "\nNo intersection between the ray and the tri." << std::endl;
-    }
-    else {
-        std::cout << "\nIntersection: " << hitResult[0] << std::endl;
     }
 }

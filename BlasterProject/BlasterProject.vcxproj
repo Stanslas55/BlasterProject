@@ -152,7 +152,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera\Camera.cpp" />
+    <ClCompile Include="LightSource\DirectionalLight\DirectionalLight.cpp" />
+    <ClCompile Include="LightSource\LightSource.cpp" />
+    <ClCompile Include="LightSource\PointLight\PointLight.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PrimitiveObjects\Collision.cpp" />
+    <ClCompile Include="PrimitiveObjects\Material\Material.cpp" />
     <ClCompile Include="Matrix4\Matrix4.cpp" />
     <ClCompile Include="PrimitiveObjects\Polygon.cpp" />
     <ClCompile Include="PrimitiveObjects\Plane.cpp" />
@@ -167,10 +172,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera\Camera.hpp" />
+    <ClInclude Include="LightSource\DirectionalLight\DirectionalLight.hpp" />
+    <ClInclude Include="LightSource\LightSource.hpp" />
+    <ClInclude Include="LightSource\LightSources.hpp" />
+    <ClInclude Include="LightSource\PointLight\PointLight.hpp" />
+    <ClInclude Include="PrimitiveObjects\Collision.hpp" />
+    <ClInclude Include="PrimitiveObjects\Material\Material.hpp" />
     <ClInclude Include="Matrix4\Matrix4.hpp" />
     <ClInclude Include="PrimitiveObjects\Polygon.h" />
     <ClInclude Include="PrimitiveObjects\Plane.h" />
     <ClInclude Include="PrimitiveObjects\PrimitiveObject.h" />
+    <ClInclude Include="PrimitiveObjects\PrimitiveObjects.hpp" />
     <ClInclude Include="PrimitiveObjects\Ray.hpp" />
     <ClInclude Include="PrimitiveObjects\Sphere.hpp" />
     <ClInclude Include="PrimitiveObjects\Quadri.h" />

@@ -1,10 +1,9 @@
 #pragma once
 #include <vector>
 
-#include "../PrimitiveObjects/PrimitiveObject.h"
+#include "../PrimitiveObjects/PrimitiveObjects.hpp"
+#include "../LightSource/LightSources.hpp"
 #include "../Camera/Camera.hpp"
-
-class LightSource {};
 
 /**
 * \class Scene
@@ -20,6 +19,10 @@ private:
 
 	Camera m_camera;											/*< Camera of the scene */
 
+	/**
+	 * \fn      Scene
+	 * \brief   Default constructor. Should not be used.
+	 */
 	Scene();
 
 public:
@@ -83,6 +86,24 @@ public:
 	 * \param[out]   pPtrImage		Address of a FIBITMAP* structure.
 	 */
 	void takePictureNaive(FIBITMAP** pPtrImage);
+
+	/**
+	 * \fn      getClosestIntersectionNaive
+	 * \brief   Naive implementation to find closest collision.
+	 *
+	 * \param[in]   pRay
+	 * \return      const Collision
+	 */
+	const Collision getClosestIntersectionNaive(const Ray& pRay, bool pEarlyStop = false) const;
+
+	/**
+	 * \fn      getPixelColor
+	 * \brief   Compute a pixel color given its ray.
+	 * 
+	 * \param[in]   pRay		Ray shot from the pixel
+	 * \return      RGBQUAD		Color of the corresponding pixel
+	 */
+	RGBQUAD getPixelColor(const Ray& pRay);
 
 	// TODO: add OBJ
 };
