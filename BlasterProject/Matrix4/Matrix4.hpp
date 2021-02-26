@@ -97,6 +97,9 @@ public:
 	 * \param   pScalar
 	 */
 	void fill(const double pScalar);
+
+	static Matrix4 changeBasis(const Vector3 pA[3], const Vector3 pB[3]);
+
 };
 
 std::ostream& operator<<(std::ostream& pFlux, Matrix4 pV);
@@ -106,9 +109,10 @@ const bool operator==(const Matrix4& pA, const Matrix4& pB);
 Matrix4 operator+(Matrix4 pA, Matrix4 pB);
 Matrix4 operator-(Matrix4 pA, Matrix4 pB);
 
-Matrix4 operator*(Matrix4 pA, Matrix4 pB);
+Matrix4 operator*(const Matrix4 &pA, const Matrix4 &pB);
 
 Matrix4 operator+(Matrix4 pA, double pScalar);
 Matrix4 operator-(Matrix4 pA, double pScalar);
 Matrix4 operator*(Matrix4 pA, double pScalar);
-Matrix4 operator/(Matrix4 pA, double pScalar);
+Matrix4 operator/(Matrix4 pA, double pScalar); 
+Vector3 operator*(const Matrix4& pA, const Vector3& pV);
