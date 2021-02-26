@@ -3,6 +3,7 @@
 #include <chrono>
 
 #define FREEIMAGE_COLORORDER FREEIMAGE_COLORORDER_RGB
+#define OMP_CANCELLATION 1
 
 #ifndef NDEBUG
 #include <vld.h>

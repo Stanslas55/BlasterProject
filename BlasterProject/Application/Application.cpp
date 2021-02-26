@@ -158,6 +158,13 @@ void Application::update() {
 			restore();
 		}
 		break;
+	case Page::COMPLEX_DEMO:
+		{
+			ComplexDemo ct = ComplexDemo(m_window, m_glContext, m_targetDim);
+			ct.mainLoop();
+			restore();
+		}
+		break;
 	default:
 		break;
 	}
@@ -220,6 +227,11 @@ void Application::mainMenu() {
 		ImGui::SetCursorPos(ImVec2(margin, yTop));
 		if (ImGui::Button("Real Time Demo", buttonSize)) {
 			m_currentPage = Page::REAL_TIME_DEMO;
+		}
+
+		ImGui::SetCursorPos(ImVec2(margin + buttonSize.x + padding, yTop));
+		if (ImGui::Button("Complex Demo", buttonSize)) {
+			m_currentPage = Page::COMPLEX_DEMO;
 		}
 
 		ImGui::PopFont();

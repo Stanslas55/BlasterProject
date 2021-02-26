@@ -1,25 +1,24 @@
-#include "RTDemo.hpp"
+#include "ComplexDemo.hpp"
 
-RTDemo::RTDemo(SDL_Window* pWindow, SDL_GLContext& pGlContext, SDL_Point pSceneSize) : Demo(pWindow, pGlContext, "Real-Time Demo", pSceneSize, { 400, 600 }), m_scene(Camera(pSceneSize.x, pSceneSize.y)) {
-	m_collisions = nullptr;
+ComplexDemo::ComplexDemo(SDL_Window* pWindow, SDL_GLContext& pGlContext, SDL_Point pSceneSize) : Demo(pWindow, pGlContext, "Real-Time Demo", pSceneSize, { 400, 600 }), m_scene(Camera(pSceneSize.x, pSceneSize.y)) {
+	m_rays = new Ray[pSceneSize.x * pSceneSize.y];
+	m_pixels = nullptr;
 }
 
-RTDemo::~RTDemo() {
-	delete[] m_collisions;
-	m_collisions = nullptr;
+ComplexDemo::~ComplexDemo() {
+	delete[] m_rays;
+	m_rays = nullptr;
 }
 
-void RTDemo::init() {
+void ComplexDemo::init() {
 	// Scene construction
-	// Real Time Demo consists of a central sphere being lightened by a moving light source
+	// Complex scene
 
 	double sphereRadius = 10.0;
 
-	m_centerOfRotation = Vector3(0.0, 0.0, -40.0);
-
 	m_scene.addPrimitive(
 		new Sphere(
-			m_centerOfRotation,
+			Vector3(0,0,0),
 			sphereRadius,
 			Material(
 				{ 255, 255, 255, 255 },
@@ -34,24 +33,6 @@ void RTDemo::init() {
 	// The point light source is situated at 20.0 units from the sphere surface
 	double radiusLight = sphereRadius * 4.0;
 
-	m_polarSystem = Vector3(
-		radiusLight,
-		-M_PI/2,
-		M_PI / 8
-	);
-
-	m_scene.addLightSource(
-		new PointLight(
-			Vector3::toCarthesian(m_polarSystem) + m_centerOfRotation,
-			{
-				255,
-				255,
-				255,
-				255
-			}
-		)
-	);
-
 	m_scene.addLightSource(
 		new DirectionalLight(
 			Vector3(-0.5, 0.5, 1.0),
@@ -64,24 +45,17 @@ void RTDemo::init() {
 		)
 	);
 
-	m_collisions = m_scene.getCollisionArray();
+	m_rays = m_scene.getRayArray();
 }
 
-void RTDemo::eventHandler(SDL_Event pEvent) {
+void ComplexDemo::eventHandler(SDL_Event pEvent) {
 	
 }
 
-void RTDemo::update(double pDeltaTime) {
+void ComplexDemo::update(double pDeltaTime) {
 
 #pragma omp master
 {
-	std::shared_ptr<PointLight> l = std::static_pointer_cast<PointLight>(m_scene.lightSources()[0]);
-
-	m_polarSystem.y() += pDeltaTime * M_PI;
-	m_polarSystem.y() = (m_polarSystem.y() > 2 * M_PI) ? m_polarSystem.y() - 2 * M_PI : m_polarSystem.y();
-
-	l->position() = Vector3::toCarthesian(m_polarSystem) + m_centerOfRotation;
-
 	Uint32 format;
 	SDL_QueryTexture(m_textureScene, &format, nullptr, nullptr, nullptr);
 }
@@ -94,28 +68,31 @@ void RTDemo::update(double pDeltaTime) {
 
 #pragma omp for
 	for (i = 0; i < wh; i++) {
-		RGBQUAD color = m_scene.getPixelColor(m_collisions[i]);
+		RGBQUAD color = m_scene.getPixelColor(m_rays[i]);
 
 		m_pixels[i] = SDL_MapRGBA(m_format, color.rgbRed, color.rgbGreen, color.rgbBlue, color.rgbReserved);
 	}
-	
+
 #pragma omp single
 	SDL_UnlockTexture(m_textureScene);
+
+	_render = true;
+
 }
 
-void RTDemo::render() {
+void ComplexDemo::render() {
+
 	if (!_render)
 		return;
 
-#pragma omp single
-	{
-		SDL_RenderClear(m_rendererScene);
-		SDL_RenderCopy(m_rendererScene, m_textureScene, nullptr, nullptr);
-		SDL_RenderPresent(m_rendererScene);
-	}
+	_render = false;
+
+	SDL_RenderClear(m_rendererScene);
+	SDL_RenderCopy(m_rendererScene, m_textureScene, nullptr, nullptr);
+	SDL_RenderPresent(m_rendererScene);
 }
 
-void RTDemo::parametersWindowRender() {
+void ComplexDemo::parametersWindowRender() {
 	// start the Dear ImGui frame
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(m_windowParams);
@@ -134,8 +111,6 @@ void RTDemo::parametersWindowRender() {
 
 		// create a window and append into it
 		ImGui::Begin("Parameters", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse);
-
-		ImGui::Text("FPS: %d", int(1.0 / m_deltaTime));
 
 		ImGui::Dummy(ImVec2(0.0f, 1.0f));
 		ImGui::Text("Material");
@@ -187,13 +162,5 @@ void RTDemo::parametersWindowRender() {
 		}
 
 		ImGui::End();
-
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		// rendering
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-		SDL_GL_SwapWindow(m_windowParams);
 	}
 }

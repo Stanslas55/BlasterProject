@@ -6,22 +6,19 @@
 
 #include "Application/Demo/Demo.hpp"
 
-class RTDemo : public Demo {
+class ComplexDemo : public Demo {
 
 private:
 
 	Scene m_scene;
 
-	Vector3 m_polarSystem;
-	Vector3 m_centerOfRotation;
-
-	Collision* m_collisions;
+	Ray* m_rays;
 
 public:
 
-	RTDemo(SDL_Window* pWindow, SDL_GLContext& pGlContext, SDL_Point pSceneSize);
+	ComplexDemo(SDL_Window* pWindow, SDL_GLContext& pGlContext, SDL_Point pSceneSize);
 
-	~RTDemo();
+	~ComplexDemo();
 
 	void init();
 
@@ -32,4 +29,5 @@ public:
 	void render();
 
 	void parametersWindowRender();
+
 };

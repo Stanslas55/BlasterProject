@@ -155,6 +155,7 @@
   <ItemGroup>
     <ClCompile Include="..\glad\src\glad.c" />
     <ClCompile Include="Application\Application.cpp" />
+    <ClCompile Include="Application\Demo\Demos\ComplexDemo\ComplexDemo.cpp" />
     <ClCompile Include="Application\Demo\Demos\RTDemo\RTDemo.cpp" />
     <ClCompile Include="Camera\Camera.cpp" />
     <ClCompile Include="Application\Demo\Demo.cpp" />
@@ -187,6 +188,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Application.hpp" />
+    <ClInclude Include="Application\Demo\Demos\ComplexDemo\ComplexDemo.hpp" />
     <ClInclude Include="Application\Demo\Demos\Demos.h" />
     <ClInclude Include="Application\Demo\Demos\RTDemo\RTDemo.hpp" />
     <ClInclude Include="Camera\Camera.hpp" />

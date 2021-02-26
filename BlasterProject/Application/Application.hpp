@@ -27,7 +27,8 @@ private:
 	enum class Page {
 		MAIN_MENU,
 
-		REAL_TIME_DEMO
+		REAL_TIME_DEMO,
+		COMPLEX_DEMO
 
 	} m_currentPage;
 

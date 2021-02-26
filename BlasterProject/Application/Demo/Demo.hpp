@@ -10,6 +10,9 @@
 #include "Scene/Scene.hpp"
 
 static Uint32* m_pixels;
+static int _res;
+static SDL_Event e;
+static bool _quit;
 
 struct Events {
 	SDL_Point mousePosition = { 0, 0 };
@@ -29,9 +32,9 @@ protected:
 	SDL_Point m_windowParamsize;			/*< Size of m_windowParams. */
 	SDL_GLContext m_glParams;				/*< OpenGL context of the parameter window. */
 
-	bool _quit = false;						/*< Quit boolean. */
-	bool _render = false;					/*< Render boolean. */
-
+	bool _update = true;					/*< Update boolean. */
+	bool _render = true;					/*< Render boolean. */
+	
 	struct Events {
 		SDL_Point mousePosition = { 0, 0 };
 		Uint32 mouseState = 0;
@@ -58,5 +61,9 @@ public:
 	virtual void update(double pDeltaTime) = 0;
 
 	virtual void render() = 0;
+
+	void parametersManager(SDL_Event* e);
+
+	virtual void parametersWindowRender();
 };
 

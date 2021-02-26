@@ -205,3 +205,30 @@ Collision* Scene::getCollisionArray() {
 
 	return collisions;
 }
+
+Ray* Scene::getRayArray() {
+
+	int w = m_camera.width(), h = m_camera.height();
+	int wh = w * h;
+
+	Ray* rays = new Ray[wh];
+
+	double offset = m_camera.m_offset;
+	double offsetd2 = offset / 2.0;
+
+	Vector3 curPosition(m_camera.m_corners[0] + Vector3(offsetd2, offsetd2, 0.0));
+	const Vector3& camOrigin = m_camera.m_position;
+
+	int i;
+#pragma omp parallel for
+	for (i = 0; i < wh; i++) {
+		const int x = i % w;
+		const int y = i / w;
+
+		const Vector3 pos = curPosition + Vector3(x * offset, -y * offset, 0.0);
+
+		rays[i] = Ray::fromLine(camOrigin, pos);
+	}
+
+	return rays;
+}

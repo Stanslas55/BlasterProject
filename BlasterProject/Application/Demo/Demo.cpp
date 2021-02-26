@@ -47,8 +47,6 @@ Demo::Demo(SDL_Window* pWindow, SDL_GLContext& pGlContext, std::string pSceneNam
 }
 
 Demo::~Demo() {
-	/*delete[] m_pixels;
-	m_pixels = nullptr;*/
 
 	SDL_DestroyRenderer(m_rendererScene);
 	m_rendererScene = nullptr;
@@ -62,40 +60,40 @@ int Demo::mainLoop() {
 	init();
 
 	m_deltaTime = 0.0;
+	_quit = false;
 
 	std::chrono::steady_clock::time_point start;
 	std::chrono::steady_clock::time_point end;
-#pragma omp parallel shared(m_pixels)
-	while (!_quit) {
-#pragma omp single
+
+#pragma omp parallel shared(m_pixels, start, end, _quit)
 {
+	while (!_quit) {
 		start = std::chrono::high_resolution_clock::now();
 
 		eventLoop();
-}
+#pragma omp barrier
 		if (!_quit)
 			update(m_deltaTime);
-#pragma omp single 
-{
+
 		if (!_quit)
 			render();
 
 		end = std::chrono::high_resolution_clock::now();
 
+#pragma omp single
 		m_deltaTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / 1000.0;
-}
 	}
-
+}
 	return EXIT_SUCCESS;
 }
 
 void Demo::eventLoop() {
 
-	SDL_Event e;
-	while (SDL_PollEvent(&e))
+	while (SDL_PollEvent(&e) && !_quit)
 	{
 		// without it you won't have keyboard input and other things
-		ImGui_ImplSDL2_ProcessEvent(&e);
+#pragma omp master
+		parametersManager(&e);
 		// you might also want to check io.WantCaptureMouse and io.WantCaptureKeyboard
 		// before processing events
 
@@ -103,13 +101,13 @@ void Demo::eventLoop() {
 		{
 		case SDL_QUIT:
 			_quit = true;
-			return;
+			break;
 
 		case SDL_KEYDOWN:
 			switch (e.key.keysym.sym) {
 			case SDLK_ESCAPE:
 				_quit = true;
-				return;
+				break;
 			}
 			break;
 		}
@@ -121,4 +119,13 @@ void Demo::eventLoop() {
 void Demo::eventHandler(SDL_Event pEvent) {
 	std::cerr << "Demo::eventHandler() method not implemented" << std::endl;
 	return;
+}
+
+void Demo::parametersManager(SDL_Event* e) {
+	_update = ImGui_ImplSDL2_ProcessEvent(e);
+	parametersWindowRender();
+}
+
+void Demo::parametersWindowRender() {
+	std::cerr << "Demo::parametersWindowRender() not implemented" << std::endl;
 }
