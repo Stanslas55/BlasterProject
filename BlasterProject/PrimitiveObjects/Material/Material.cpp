@@ -1,6 +1,6 @@
 #include "Material.hpp"
 
-Material Material::defaultMaterial = Material();
+const Material Material::defaultMaterial = Material();
 
 Material::Material() {
 	m_Ia = { 255, 255, 255, 255 };

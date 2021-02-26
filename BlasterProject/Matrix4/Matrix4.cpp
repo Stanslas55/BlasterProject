@@ -1,5 +1,7 @@
 #include "Matrix4.hpp"
 
+const Matrix4 Matrix4::identity = Matrix4();
+
 Matrix4::Matrix4() {
 	m_matrix[0] = &m_data[0];
 	m_matrix[1] = &m_data[4];

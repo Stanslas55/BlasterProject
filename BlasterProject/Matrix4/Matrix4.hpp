@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Vector3/Vector3.hpp"
+#include "Vector3/Vector3.hpp"
 
 /**
 * \class Matrix4
@@ -20,6 +20,8 @@ private:
 	double* m_matrix[4];
 
 public:
+
+	static const Matrix4 identity;
 
 	/**
 	* \fn Matrix4
@@ -97,6 +99,8 @@ public:
 	 * \param   pScalar
 	 */
 	void fill(const double pScalar);
+
+	
 };
 
 std::ostream& operator<<(std::ostream& pFlux, Matrix4 pV);

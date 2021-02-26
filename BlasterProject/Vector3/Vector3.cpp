@@ -89,12 +89,32 @@ Vector3 Vector3::normalize(const Vector3& pV) {
 	return pV / sqrt(pV.m_data[0] * pV.m_data[0] + pV.m_data[1] * pV.m_data[1] + pV.m_data[2] * pV.m_data[2]);
 }
 
+const double Vector3::magnitude() const {
+	return sqrt(pow(m_data[0], 2) + pow(m_data[1], 2) + pow(m_data[2], 2));
+}
+
 const double Vector3::distance(const Vector3& pA, const Vector3& pB) {
 	return sqrt(pow(pA.m_data[0] - pB.m_data[0], 2) + pow(pA.m_data[1] - pB.m_data[1], 2) + pow(pA.m_data[2] - pB.m_data[2], 2));
 }
 
 const double Vector3::sqDdistance(const Vector3& pA, const Vector3& pB) {
 	return pow(pA.m_data[0] - pB.m_data[0], 2) + pow(pA.m_data[1] - pB.m_data[1], 2) + pow(pA.m_data[2] - pB.m_data[2], 2);
+}
+
+const Vector3 Vector3::toPolar(const Vector3& pV) {
+	return Vector3(
+		pV.magnitude(),
+		atan2(sqrt(pow(pV.x(), 2) + pow(pV.y(), 2)), pV.z()),
+		atan2(pV.y(), pV.x())
+	);
+}
+
+const Vector3 Vector3::toCarthesian(const Vector3& pV) {
+	return Vector3(
+		pV.x() * sin(pV.y()) * cos(pV.z()),
+		pV.x() * sin(pV.y()) * sin(pV.z()),
+		pV.x() * cos(pV.y())
+	);
 }
 
 void Vector3::print(std::ostream& pFlux) const {

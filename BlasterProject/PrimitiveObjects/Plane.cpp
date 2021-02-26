@@ -44,8 +44,8 @@ const Collision Plane::intersect(const Ray& pRay) const {
        double t = ((m_center - pRay.origin()) * m_normal) / denominator;
        if (t < 0)
            return Collision::noCollision; // The plane is behind the Ray's origin.       
-               
-       return Collision(pRay.point(t) + m_normal * 1e-6, m_material, m_normal, true);
+       
+       return Collision(pRay.point(t) + m_normal * 1e-6, m_normal, -pRay.direction());
     }
     return Collision::noCollision;
 }

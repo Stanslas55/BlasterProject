@@ -49,7 +49,7 @@ const Collision Polygon::intersect(const Ray& pRay) const{
             inter2 = !inter2;
     }
 
-    return (!(inter & 1) && !(inter2 & 1)) ? Collision::noCollision : Collision(point, m_material, collision.normal(), true); // If a both are even, it's not in the polygon.
+    return (!(inter & 1) && !(inter2 & 1)) ? Collision::noCollision : Collision(point, collision.normal(), -pRay.direction()); // If a both are even, it's not in the polygon.
 }
 
 void Polygon::print(std::ostream& pFlux) const {

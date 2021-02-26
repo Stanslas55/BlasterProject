@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../LightSource.hpp"
-#include "../../Vector3/Vector3.hpp"
+#include "Vector3/Vector3.hpp"
 
 class DirectionalLight : public LightSource {
 

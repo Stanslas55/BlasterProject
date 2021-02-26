@@ -20,7 +20,7 @@ protected:
 
 public:
 
-	static Material defaultMaterial;
+	static const Material defaultMaterial;
 
 	/**
 	 * \fn      Material

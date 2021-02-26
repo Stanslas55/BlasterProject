@@ -1,9 +1,9 @@
 #pragma once
 #include <vector>
 
-#include "../PrimitiveObjects/PrimitiveObjects.hpp"
-#include "../LightSource/LightSources.hpp"
-#include "../Camera/Camera.hpp"
+#include "PrimitiveObjects/PrimitiveObjects.hpp"
+#include "LightSource/LightSources.hpp"
+#include "Camera/Camera.hpp"
 
 /**
 * \class Scene
@@ -26,6 +26,14 @@ private:
 	Scene();
 
 public:
+
+	friend class Application;
+
+	inline const Camera& camera() const { return m_camera; };
+	inline Camera& camera() { return m_camera; };
+
+	inline const std::vector<std::shared_ptr<PrimitiveObject>>& objects() const { return m_objects; }
+	inline const std::vector<std::shared_ptr<LightSource>>& lightSources() const { return m_lightSources; }
 
 	/**
 	* \fn		Scene
@@ -50,7 +58,6 @@ public:
 	 *
 	 * \param[in]   pPrimitive
 	 */
-	//template<class T> 
 	void addPrimitive(PrimitiveObject* pPrimitive);
 
 	/**
@@ -68,7 +75,6 @@ public:
 	 * 
 	 * \param[in]	pLightSource
 	 */
-	//template<class T> 
 	void addLightSource(LightSource* pLightSource);
 
 	/**
@@ -104,6 +110,23 @@ public:
 	 * \return      RGBQUAD		Color of the corresponding pixel
 	 */
 	RGBQUAD getPixelColor(const Ray& pRay);
+
+	/**
+	 * \fn      getPixelColor
+	 * \brief   Compute a pixel color given its inital collision.
+	 *
+	 * \param[in]   pCollision	Initial collision
+	 * \return      RGBQUAD		Color of the corresponding pixel
+	 */
+	RGBQUAD getPixelColor(const Collision& pCollision);
+
+	/**
+	 * \fn      getCollisionArray
+	 * \brief   Get all collisions of a frame. Useful wheneve a scene is fixed and thus those collisions will not change between frames.
+	 * 
+	 * \return	Collision*		Allocated array of width*height Collisions of the scene. The parent caller must assure dealocation.
+	 */
+	Collision* getCollisionArray();
 
 	// TODO: add OBJ
 };
