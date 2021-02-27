@@ -14,7 +14,7 @@ void RTDemo::init() {
 	// Real Time Demo consists of a central sphere being lightened by a moving light source
 
 	double sphereRadius = 10.0;
-
+	RGBQUAD couleur = { 255, 255, 255, 255 };
 	m_centerOfRotation = Vector3(0.0, 0.0, -40.0);
 
 	m_scene.addPrimitive(
@@ -22,7 +22,7 @@ void RTDemo::init() {
 			m_centerOfRotation,
 			sphereRadius,
 			Material(
-				{ 255, 255, 255, 255 },
+				couleur,
 				0.2,
 				1.0,
 				0.8,

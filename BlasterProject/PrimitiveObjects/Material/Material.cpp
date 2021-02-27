@@ -1,6 +1,6 @@
 #include "Material.hpp"
 
-const Material Material::defaultMaterial = Material();
+Material Material::defaultMaterial = Material();
 
 Material::Material() {
 	m_Ia = { 255, 255, 255, 255 };
@@ -16,6 +16,48 @@ Material::Material(RGBQUAD pColor, double pKa, double pKd, double pKs, double pK
 	m_kd = pKd;
 	m_ks = pKs;
 	m_ke = pKe;
+}
+
+Material::Material(const std::shared_ptr<RGBQUAD[]>& pTexture, const int pWidth, const Vector3 pPoints[3], const Vector3 pVertex[3], double pKa, double pKd, double pKs, double pKe) :m_width(pWidth)
+{
+	m_texture = pTexture;
+
+	m_transform = Matrix4::changeBasis(pVertex, pPoints);
+}
+
+Material::Material(const std::string pPathTexture, double pKa, double pKd, double pKs, double pKe) {
+	m_ka = pKa;
+	m_kd = pKd;
+	m_ks = pKs;
+	m_ke = pKe;	
+
+	FREE_IMAGE_FORMAT fif = FreeImage_GetFIFFromFilename(pPathTexture.c_str());
+	FIBITMAP* bmp = FreeImage_Load(fif, pPathTexture.c_str());
+
+	unsigned w = FreeImage_GetWidth(bmp);
+	unsigned h = FreeImage_GetHeight(bmp);
+	m_width = w;
+	int i, wh = w * h;
+	
+	m_texture = std::shared_ptr<RGBQUAD[]>(new RGBQUAD[wh]);
+
+	// Parcourir l'image de taille width*height
+#pragma omp parallel for
+	for (i = 0; i < wh; i++) {
+
+		const int x = i % w;
+		const int y = h - i / w;
+		FreeImage_GetPixelColor(bmp, x, y, &m_texture[i]);		
+	}	
+}
+
+RGBQUAD Material::getColor(const Vector3& pV) const
+{
+	if (!m_texture)
+		return m_Ia;
+
+	const Vector3 v = m_transform * pV;
+	return m_texture[v.x() + v.y() * m_width];
 }
 
 Material& Material::operator=(const Material& pOther) {

@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
-
+#include "Vector3/Vector3.hpp"
+#include "Matrix4/Matrix4.hpp"
 #include "FreeImage.h"
 
 /**
@@ -17,10 +18,15 @@ protected:
 	double m_kd;				/*< Diffuse reflection coefficient */
 	double m_ks;				/*< Specular reflection coefficient */
 	double m_ke;				/*< Specular Exponent (shiness). Ranges from 0.0 to 100.0. */
+	Matrix4 m_transform;
+	std::shared_ptr <RGBQUAD[]> m_texture = nullptr;
+	int m_width = 0;
+	int m_height = 0;
+	
 
 public:
 
-	static const Material defaultMaterial;
+	static Material defaultMaterial;
 
 	/**
 	 * \fn      Material
@@ -31,7 +37,7 @@ public:
 	/**
 	 * \fn      Material
 	 * \brief   Recommended constructor.
-	 * 
+	 *
 	 * \param[in]   pColor
 	 * \param[in]   pKa		Ambiant reflection coefficient. Defaults to 1.0.
 	 * \param[in]   pKd		Diffuse reflection coefficient. Defaults to 1.0.
@@ -39,6 +45,12 @@ public:
 	 * \param[in]   pKe		Specular Exponent (shiness). Ranges from 0.0 to 100.0. Defaults to 0.0.
 	 */
 	Material(RGBQUAD pColor, double pKa = 1.0, double pKd = 1.0, double pKs = 1.0, double pKe = 0.0);
+
+
+	Material(const std::shared_ptr<RGBQUAD[]>& pTexture, const int pMidth, const Vector3 pPoints[3], const Vector3 pVertex[3], double pKa = 1.0, double pKd = 1.0, double pKs = 1.0, double pKe = 0.0);
+	Material(const std::string pPathTexture, double pKa = 1.0, double pKd = 1.0, double pKs = 1.0, double pKe = 0.0);
+
+	RGBQUAD getColor(const Vector3& pV) const;
 
 	/**
 	 * \fn      operator=
@@ -63,6 +75,12 @@ public:
 
 	inline const double& ke() const { return m_ke; }
 	inline double& ke() { return m_ke; }
+
+	inline const int& width() const { return m_width; }
+	inline const int& height() const { return m_height; }
+
+	inline const std::shared_ptr<RGBQUAD[]>& texture() const { return m_texture; }
+	inline std::shared_ptr<RGBQUAD[]>& texture() { return m_texture; }
 };
 
 /**
