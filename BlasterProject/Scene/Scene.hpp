@@ -1,9 +1,9 @@
 #pragma once
 #include <vector>
 
-#include "../PrimitiveObjects/PrimitiveObjects.hpp"
-#include "../LightSource/LightSources.hpp"
-#include "../Camera/Camera.hpp"
+#include "PrimitiveObjects/PrimitiveObjects.hpp"
+#include "LightSource/LightSources.hpp"
+#include "Camera/Camera.hpp"
 
 /**
 * \class Scene
@@ -17,7 +17,7 @@ private:
 
 	std::vector<std::shared_ptr<LightSource>> m_lightSources;	/*< Contains every light sources of the scene */
 
-	Camera m_camera;											/*< Camera of the scene */
+	Camera m_camera;											/*< Camera of the scene */			
 
 	/**
 	 * \fn      Scene
@@ -26,6 +26,14 @@ private:
 	Scene();
 
 public:
+
+	friend class Application;
+
+	inline const Camera& camera() const { return m_camera; };
+	inline Camera& camera() { return m_camera; };
+
+	inline const std::vector<std::shared_ptr<PrimitiveObject>>& objects() const { return m_objects; }
+	inline const std::vector<std::shared_ptr<LightSource>>& lightSources() const { return m_lightSources; }
 
 	/**
 	* \fn		Scene
@@ -50,16 +58,7 @@ public:
 	 *
 	 * \param[in]   pPrimitive
 	 */
-	//template<class T> 
 	void addPrimitive(PrimitiveObject* pPrimitive);
-
-	/**
-	* \fn		addPrimitives
-	* \brief	Utility method to add multiple primitive objects to the scene
-	*
-	* \param[in]	pPrimitives		std::vector of Primitive objects to add the the scene
-	*/
-	//inline void addPrimitives(std::vector<PrimitiveObject*> pPrimitives) { m_objects.insert(m_objects.end(), pPrimitives.begin(), pPrimitives.end()); }
 	
 	/**
 	 * \fn      addLightSource
@@ -68,17 +67,8 @@ public:
 	 * 
 	 * \param[in]	pLightSource
 	 */
-	//template<class T> 
 	void addLightSource(LightSource* pLightSource);
 
-	/**
-	* \fn addLightSources
-	* \brief Utility method to add multiple light sources to the scene
-	*
-	* \param[in]	pLightSources		std::vector of LightSource objects to add the the scene
-	*/
-	//inline void addLightSources(std::vector<LightSource> pLightSources) { m_lightSources.insert(m_lightSources.end(), pLightSources.begin(), pLightSources.end()); }
-	
 	/**
 	 * \fn      takePictureNaive
 	 * \brief   Takes a picture and save it to a FreeImage FIBITMAP* structure.
@@ -99,11 +89,36 @@ public:
 	/**
 	 * \fn      getPixelColor
 	 * \brief   Compute a pixel color given its ray.
-	 * 
+	 *
 	 * \param[in]   pRay		Ray shot from the pixel
 	 * \return      RGBQUAD		Color of the corresponding pixel
 	 */
 	RGBQUAD getPixelColor(const Ray& pRay);
+
+	/**
+	 * \fn      getPixelColor
+	 * \brief   Compute a pixel color given its inital collision.
+	 *
+	 * \param[in]   pCollision	Initial collision
+	 * \return      RGBQUAD		Color of the corresponding pixel
+	 */
+	RGBQUAD getPixelColor(const Collision& pCollision);
+
+	/**
+	 * \fn      getCollisionArray
+	 * \brief   Get all collisions of a frame. Useful wheneve a scene is fixed and thus those collisions will not change between frames.
+	 * 
+	 * \return	Collision*	Allocated array of width*height Collisions of the scene. The parent caller must assure dealocation.
+	 */
+	Collision* getCollisionArray();
+
+	/**
+	 * \fn      getRayArray
+	 * \brief   Get all the primary rays precomputed.
+	 * 
+	 * \return	Ray*		Allocated array of width*height Rays of the scene. The parent caller must assure dealocation.
+	 */
+	Ray* getRayArray();
 
 	// TODO: add OBJ
 };

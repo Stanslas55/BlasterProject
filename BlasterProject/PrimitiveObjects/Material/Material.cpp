@@ -1,6 +1,6 @@
 #include "Material.hpp"
 
-Material Material::defaultMaterial = Material();
+const Material Material::defaultMaterial = Material();
 
 Material::Material() {
 	m_Ia = { 255, 255, 255, 255 };
@@ -16,22 +16,6 @@ Material::Material(RGBQUAD pColor, double pKa, double pKd, double pKs, double pK
 	m_kd = pKd;
 	m_ks = pKs;
 	m_ke = pKe;
-}
-
-Material::Material(const std::shared_ptr<RGBQUAD[]>& pTexture, const int pWidth, const Vector3 pPoints[3], const Vector3 pVertex[3]) :m_width(pWidth)
-{
-	m_texture = pTexture;
-
-	m_transform = Matrix4::changeBasis(pVertex, pPoints);
-}
-
-RGBQUAD Material::getColor(const Vector3& pV) const
-{
-	if (!m_texture)
-		return m_Ia;
-
-	const Vector3 v = m_transform * pV;
-	return m_texture[v.x() + v.y()*m_width] ;
 }
 
 Material& Material::operator=(const Material& pOther) {

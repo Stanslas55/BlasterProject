@@ -103,7 +103,15 @@ class Vector3{
 		 *  \param[in]      pV              The Vector3 to be normalized.		
 		 *  \return         Vector3			The resulting normalized Vector3.
 		 */
-		static Vector3 normalize(const Vector3& pV); 
+		static Vector3 normalize(const Vector3& pV);
+
+		/**
+		 * \fn      magnitude
+		 * \brief   Compute magnitude of this.
+		 * 
+		 * \return		double		Magnitude of this
+		 */
+		const double magnitude() const;
 
 		/**
 		 * \fn      distance
@@ -124,6 +132,24 @@ class Vector3{
 		 * \return      const double		Sqared euclidian distance between pA and pB
 		 */
 		static const double sqDdistance(const Vector3& pA, const Vector3& pB);
+
+		/**
+		 * \fn      toPolar
+		 * \brief   Convert a carthesian Vector3 to the polar system.
+		 * 
+		 * \param[in]   pV
+		 * \return      Vector3		pV in the polar system
+		 */
+		static const Vector3 toPolar(const Vector3& pV);
+
+		/**
+		 * \fn      toCarthesian
+		 * \brief   Convert a polar system Vector3 to the Carthesian system.
+		 * 
+		 * \param[in]   pV
+		 * \return      Vector3		pV in the Carthesian system
+		 */
+		static const Vector3 toCarthesian(const Vector3& pV);
 
 		/**
 		 *  \fn     print

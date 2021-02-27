@@ -46,11 +46,9 @@ void Scene::takePictureNaive(FIBITMAP** pImage) {
 	double xLeft = m_camera.m_corners[0].x() + offsetd2;
 
 	Vector3 curPosition(m_camera.m_corners[0] + Vector3(offsetd2, offsetd2, 0.0));
-	Vector3 camOrigin = m_camera.m_position;
+	const Vector3& camOrigin = m_camera.m_position;
 
 	int wh = w * h;
-
-	int nbObjs = m_objects.size();
 
 #pragma omp parallel for
 	for (i = 0; i < wh; i++) {
@@ -82,6 +80,7 @@ const Collision Scene::getClosestIntersectionNaive(const Ray& pRay, bool pEarlyS
 
 				if (sqDist < minSqDist) {
 					closestCollision = curCollision;
+					closestCollision.object(obj.get());
 					minSqDist = sqDist;
 				}
 			}
@@ -89,6 +88,7 @@ const Collision Scene::getClosestIntersectionNaive(const Ray& pRay, bool pEarlyS
 				if (pEarlyStop)
 					return curCollision;
 				closestCollision = curCollision;
+				closestCollision.object(obj.get());
 				minSqDist = Vector3::sqDdistance(closestCollision.point(), pRay.origin());
 			}
 		}
@@ -107,9 +107,13 @@ RGBQUAD Scene::getPixelColor(const Ray& pRay) {
 	/**
 	 * Find closest instersection point
 	 */
-	const Collision& closestCollision = getClosestIntersectionNaive(pRay);
 
-	if (!closestCollision.collided()) {
+	return getPixelColor(getClosestIntersectionNaive(pRay));
+}
+
+RGBQUAD Scene::getPixelColor(const Collision& pCollsision) {
+
+	if (!pCollsision.collided()) {
 		// No collision. Return background color.
 		return m_camera.m_backgroundColor;
 	}
@@ -119,13 +123,13 @@ RGBQUAD Scene::getPixelColor(const Ray& pRay) {
 	std::shared_ptr<PointLight> pointLight;
 	std::shared_ptr<DirectionalLight> directionalLight;
 
-	const Vector3& point = closestCollision.point();
-	const Vector3& normal = closestCollision.normal();
-	const Material& material = closestCollision.material();
+	const Vector3& point = pCollsision.point();
+	const Vector3& normal = pCollsision.normal();
+	const Material& material = pCollsision.object()->material();
 
 	RGBQUAD color = material.color();
 
-	const Vector3& L = pRay.direction() * -1.0;
+	const Vector3& L = pCollsision.directionToOrigin();
 
 	Vector3 Ia = Vector3(color.rgbRed, color.rgbGreen, color.rgbBlue) * material.ka() * 0.7;
 	Vector3 Id = Vector3::zero;
@@ -136,35 +140,95 @@ RGBQUAD Scene::getPixelColor(const Ray& pRay) {
 		if (ls->type() == LightSourceType::POINT) {
 
 			pointLight = std::static_pointer_cast<PointLight>(ls);
-			secondaryRay = Ray::fromLine(closestCollision.point(), pointLight->position());
+			secondaryRay = Ray::fromLine(pCollsision.point(), pointLight->position());
 
-		} else if (ls->type() == LightSourceType::DIRECTIONAL) {
+		}
+		else if (ls->type() == LightSourceType::DIRECTIONAL) {
 
 			directionalLight = std::static_pointer_cast<DirectionalLight>(ls);
-			secondaryRay = Ray(closestCollision.point(), directionalLight->direction());
+			secondaryRay = Ray(pCollsision.point(), directionalLight->direction());
 
-		} else
+		}
+		else
 			continue;
 
 		const Collision& collision = getClosestIntersectionNaive(secondaryRay, true);
 
 		if (collision.collided())
 			continue;
-		
+
 		// TODO apply attenuation function fatt_i
 
 		Id += ls->intensity() * (normal * secondaryRay.direction()) * 0.7;
 		Is += ls->intensity() * pow(normal * Vector3::normalize(secondaryRay.direction() + L), material.ke()) * 0.7;
 
 	}
-	
+
 	Id *= material.kd();
 	Is *= material.ks();
 
 	return {
-		(BYTE)std::max(std::min(int(std::floor(Ia.z() + Id.z() + Is.z())), 255), 0),		// B
+		(BYTE)std::max(std::min(int(std::floor(Ia.x() + Id.x() + Is.x())), 255), 0),		// B
 		(BYTE)std::max(std::min(int(std::floor(Ia.y() + Id.y() + Is.y())), 255), 0),		// G
-		(BYTE)std::max(std::min(int(std::floor(Ia.x() + Id.x() + Is.x())), 255), 0),		// R
+		(BYTE)std::max(std::min(int(std::floor(Ia.z() + Id.z() + Is.z())), 255), 0),		// R
 		255
 	};
+}
+
+Collision* Scene::getCollisionArray() {
+	
+	int i;
+	int w = m_camera.m_width, h = m_camera.m_height;
+	int wh = w * h;
+
+	Collision* collisions = new Collision[wh];
+
+	double offset = m_camera.m_offset;
+	double offsetd2 = offset / 2.0;
+	double xLeft = m_camera.m_corners[0].x() + offsetd2;
+
+	Vector3 curPosition(m_camera.m_corners[0] + Vector3(offsetd2, offsetd2, 0.0));
+	const Vector3& camOrigin = m_camera.m_position;
+
+#pragma omp parallel for
+	for (i = 0; i < wh; i++) {
+
+		const int x = i % w;
+		const int y = i / w;
+
+		const Vector3 pos = curPosition + Vector3(x * offset, -y * offset, 0.0);
+
+		const Ray r = Ray::fromLine(camOrigin, pos);
+
+		collisions[i] = getClosestIntersectionNaive(r);
+	}
+
+	return collisions;
+}
+
+Ray* Scene::getRayArray() {
+
+	int w = m_camera.width(), h = m_camera.height();
+	int wh = w * h;
+
+	Ray* rays = new Ray[wh];
+
+	double offset = m_camera.m_offset;
+	double offsetd2 = offset / 2.0;
+
+	Vector3 curPosition(m_camera.m_corners[0] + Vector3(offsetd2, offsetd2, 0.0));
+	const Vector3& camOrigin = m_camera.m_position;
+
+	int i;
+#pragma omp parallel for
+	for (i = 0; i < wh; i++) {
+		const int x = i % w;
+		const int y = i / w;
+
+		const Vector3 pos = curPosition + Vector3(x * offset, -y * offset, 0.0);
+
+		rays[i] = Ray::fromLine(camOrigin, pos);
+	}
+
+	return rays;
 }

@@ -30,9 +30,9 @@ const Collision Sphere::intersect(const Ray& pRay) const {
 
     t1c = sqrt(m_sqRadius - d);
 
-    const Vector3 point(pRay.point(tc - t1c));
+    const Vector3& point(pRay.point(tc - t1c));
 
-    return Collision(point, m_material, Vector3::normalize(point - m_center), true);
+    return Collision(point, Vector3::normalize(point - m_center), -pRay.direction());
 }
 
 void Sphere::print(std::ostream& pFlux) const {        

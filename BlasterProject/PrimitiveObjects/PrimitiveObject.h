@@ -4,6 +4,9 @@
 #include "Vector3/Vector3.hpp"
 #include "Ray.hpp"
 #include "Material/material.hpp"
+
+class Collision;
+
 #include "Collision.hpp"
 
 class PrimitiveObject {   

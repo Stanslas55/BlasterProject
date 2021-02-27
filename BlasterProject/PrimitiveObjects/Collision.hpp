@@ -1,16 +1,21 @@
 #pragma once
 
-#include "../Vector3/Vector3.hpp" 
+class PrimitiveObject;
+
+#include "Vector3/Vector3.hpp" 
 #include "Material/Material.hpp"
+#include "PrimitiveObject.h"
+
 
 class Collision {
 
 private:
 
-	Vector3 m_point;
-	Material m_material;
-	Vector3 m_normal;
 	bool m_collided;
+	PrimitiveObject* m_object;
+	Vector3 m_point;
+	Vector3 m_normal;
+	Vector3 m_directionToOrigin;
 
 public:
 
@@ -22,8 +27,10 @@ public:
 	 * 
 	 * \param[in]   pPoint
 	 * \param[in]   m_normal
+	 * \param[in]   pDirectionToOrigin
+	 * \param[in]   pCollided
 	 */
-	Collision(const Vector3& pPoint, const Material& pMaterial = Material::defaultMaterial, const Vector3& m_normal = Vector3::zero, const bool pCollided = false);
+	Collision(const Vector3& pPoint = Vector3::zero, const Vector3& m_normal = Vector3::zero, const Vector3& pDirectionToOrigin = Vector3::zero, const bool pCollided = true);
 
 	/**
 	 * \fn      Collision
@@ -33,10 +40,12 @@ public:
 	 */
 	Collision(const Collision& pSrc);
 
+	inline PrimitiveObject* object() const { return m_object; }
+	inline void object(PrimitiveObject* pObject) { m_object = pObject; }
 	inline const Vector3& point() const { return m_point; }
-	inline const Material& material() const { return m_material; }
 	inline const Vector3& normal() const { return m_normal; }
 	inline const bool collided() const { return m_collided; }
+	inline const Vector3& directionToOrigin() const { return m_directionToOrigin; }
 
 	Collision& operator=(const Collision& pSrc);
 };

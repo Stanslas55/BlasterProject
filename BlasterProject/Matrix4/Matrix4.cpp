@@ -1,5 +1,7 @@
 #include "Matrix4.hpp"
 
+const Matrix4 Matrix4::identity = Matrix4();
+
 Matrix4::Matrix4() {
 	m_matrix[0] = &m_data[0];
 	m_matrix[1] = &m_data[4];
@@ -242,39 +244,6 @@ void Matrix4::fill(const double pScalar) {
     m_data[15] = pScalar;
 }
 
-Matrix4 Matrix4::changeBasis(const Vector3 pA[3], const Vector3 pB[3])
-{
-	// A
-	Matrix4 a;
-	a.m_matrix[0][0] = pA[0].x();
-	a.m_matrix[1][0] = pA[0].y();
-	a.m_matrix[2][0] = pA[0].z();
-
-	a.m_matrix[0][1] = pA[1].x();
-	a.m_matrix[1][1] = pA[1].y();
-	a.m_matrix[2][1] = pA[1].z();
-
-	a.m_matrix[0][2] = pA[2].x();
-	a.m_matrix[1][2] = pA[2].y();
-	a.m_matrix[2][2] = pA[2].z();
-
-	// B
-	Matrix4 b;
-	b.m_matrix[0][0] = pB[0].x();
-	b.m_matrix[1][0] = pB[0].y();
-	b.m_matrix[2][0] = pB[0].z();
-
-	b.m_matrix[0][1] = pB[1].x();
-	b.m_matrix[1][1] = pB[1].y();
-	b.m_matrix[2][1] = pB[1].z();
-
-	b.m_matrix[0][2] = pB[2].x();
-	b.m_matrix[1][2] = pB[2].y();
-	b.m_matrix[2][2] = pB[2].z();
-
-	return b.inverse() * a;
-}
-
 std::ostream& operator<<(std::ostream& pFlux, Matrix4 pV) {
     pFlux << "["
         << pV[0][0] << ", " << pV[0][1] << ", " << pV[0][2] << ", " << pV[0][3] << std::endl
@@ -448,31 +417,64 @@ Matrix4 operator/(Matrix4 pA, double pScalar) {
 }
 
 Matrix4 operator*(const Matrix4& pA, const Matrix4& pB) {
-	Matrix4 c;
-	c[0][0] = pA[0][0] * pB[0][0] + pA[0][1] * pB[1][0] + pA[0][2] * pB[2][0] + pA[0][3] * pB[3][0];
-	c[0][1] = pA[0][0] * pB[0][1] + pA[0][1] * pB[1][1] + pA[0][2] * pB[2][1] + pA[0][3] * pB[3][1];
-	c[0][2] = pA[0][0] * pB[0][2] + pA[0][1] * pB[1][2] + pA[0][2] * pB[2][2] + pA[0][3] * pB[3][2];
-	c[0][3] = pA[0][0] * pB[0][3] + pA[0][1] * pB[1][3] + pA[0][2] * pB[2][3] + pA[0][3] * pB[3][3];
-	c[1][0] = pA[1][0] * pB[0][0] + pA[1][1] * pB[1][0] + pA[1][2] * pB[2][0] + pA[1][3] * pB[3][0];
-	c[1][1] = pA[1][0] * pB[0][1] + pA[1][1] * pB[1][1] + pA[1][2] * pB[2][1] + pA[1][3] * pB[3][1];
-	c[1][2] = pA[1][0] * pB[0][2] + pA[1][1] * pB[1][2] + pA[1][2] * pB[2][2] + pA[1][3] * pB[3][2];
-	c[1][3] = pA[1][0] * pB[0][3] + pA[1][1] * pB[1][3] + pA[1][2] * pB[2][3] + pA[1][3] * pB[3][3];
-	c[2][0] = pA[2][0] * pB[0][0] + pA[2][1] * pB[1][0] + pA[2][2] * pB[2][0] + pA[2][3] * pB[3][0];
-	c[2][1] = pA[2][0] * pB[0][1] + pA[2][1] * pB[1][1] + pA[2][2] * pB[2][1] + pA[2][3] * pB[3][1];
-	c[2][2] = pA[2][0] * pB[0][2] + pA[2][1] * pB[1][2] + pA[2][2] * pB[2][2] + pA[2][3] * pB[3][2];
-	c[2][3] = pA[2][0] * pB[0][3] + pA[2][1] * pB[1][3] + pA[2][2] * pB[2][3] + pA[2][3] * pB[3][3];
-	c[3][0] = pA[3][0] * pB[0][0] + pA[3][1] * pB[1][0] + pA[3][2] * pB[2][0] + pA[3][3] * pB[3][0];
-	c[3][1] = pA[3][0] * pB[0][1] + pA[3][1] * pB[1][1] + pA[3][2] * pB[2][1] + pA[3][3] * pB[3][1];
-	c[3][2] = pA[3][0] * pB[0][2] + pA[3][1] * pB[1][2] + pA[3][2] * pB[2][2] + pA[3][3] * pB[3][2];
-	c[3][3] = pA[3][0] * pB[0][3] + pA[3][1] * pB[1][3] + pA[3][2] * pB[2][3] + pA[3][3] * pB[3][3];
+    Matrix4 c;
+    c[0][0] = pA[0][0] * pB[0][0] + pA[0][1] * pB[1][0] + pA[0][2] * pB[2][0] + pA[0][3] * pB[3][0];
+    c[0][1] = pA[0][0] * pB[0][1] + pA[0][1] * pB[1][1] + pA[0][2] * pB[2][1] + pA[0][3] * pB[3][1];
+    c[0][2] = pA[0][0] * pB[0][2] + pA[0][1] * pB[1][2] + pA[0][2] * pB[2][2] + pA[0][3] * pB[3][2];
+    c[0][3] = pA[0][0] * pB[0][3] + pA[0][1] * pB[1][3] + pA[0][2] * pB[2][3] + pA[0][3] * pB[3][3];
+    c[1][0] = pA[1][0] * pB[0][0] + pA[1][1] * pB[1][0] + pA[1][2] * pB[2][0] + pA[1][3] * pB[3][0];
+    c[1][1] = pA[1][0] * pB[0][1] + pA[1][1] * pB[1][1] + pA[1][2] * pB[2][1] + pA[1][3] * pB[3][1];
+    c[1][2] = pA[1][0] * pB[0][2] + pA[1][1] * pB[1][2] + pA[1][2] * pB[2][2] + pA[1][3] * pB[3][2];
+    c[1][3] = pA[1][0] * pB[0][3] + pA[1][1] * pB[1][3] + pA[1][2] * pB[2][3] + pA[1][3] * pB[3][3];
+    c[2][0] = pA[2][0] * pB[0][0] + pA[2][1] * pB[1][0] + pA[2][2] * pB[2][0] + pA[2][3] * pB[3][0];
+    c[2][1] = pA[2][0] * pB[0][1] + pA[2][1] * pB[1][1] + pA[2][2] * pB[2][1] + pA[2][3] * pB[3][1];
+    c[2][2] = pA[2][0] * pB[0][2] + pA[2][1] * pB[1][2] + pA[2][2] * pB[2][2] + pA[2][3] * pB[3][2];
+    c[2][3] = pA[2][0] * pB[0][3] + pA[2][1] * pB[1][3] + pA[2][2] * pB[2][3] + pA[2][3] * pB[3][3];
+    c[3][0] = pA[3][0] * pB[0][0] + pA[3][1] * pB[1][0] + pA[3][2] * pB[2][0] + pA[3][3] * pB[3][0];
+    c[3][1] = pA[3][0] * pB[0][1] + pA[3][1] * pB[1][1] + pA[3][2] * pB[2][1] + pA[3][3] * pB[3][1];
+    c[3][2] = pA[3][0] * pB[0][2] + pA[3][1] * pB[1][2] + pA[3][2] * pB[2][2] + pA[3][3] * pB[3][2];
+    c[3][3] = pA[3][0] * pB[0][3] + pA[3][1] * pB[1][3] + pA[3][2] * pB[2][3] + pA[3][3] * pB[3][3];
 
-	return c;
+    return c;
 }
 
 Vector3 operator*(const Matrix4& pA, const Vector3& pV) {
-	return Vector3(
-		pA[0][0] * pV.x() + pA[0][1] * pV.y() + pA[0][2] * pV.z(),
-		pA[1][0] * pV.x() + pA[1][1] * pV.y() + pA[1][2] * pV.z(),
-		pA[2][0] * pV.x() + pA[2][1] * pV.y() + pA[2][2] * pV.z()
-	);
+    return Vector3(
+        pA[0][0] * pV.x() + pA[0][1] * pV.y() + pA[0][2] * pV.z(),
+        pA[1][0] * pV.x() + pA[1][1] * pV.y() + pA[1][2] * pV.z(),
+        pA[2][0] * pV.x() + pA[2][1] * pV.y() + pA[2][2] * pV.z()
+    );
+}
+
+Matrix4 Matrix4::changeBasis(const Vector3 pA[3], const Vector3 pB[3]) {
+
+    // A
+    Matrix4 a;
+    a.m_matrix[0][0] = pA[0].x();
+    a.m_matrix[1][0] = pA[0].y();
+    a.m_matrix[2][0] = pA[0].z();
+
+    a.m_matrix[0][1] = pA[1].x();
+    a.m_matrix[1][1] = pA[1].y();
+    a.m_matrix[2][1] = pA[1].z();
+
+    a.m_matrix[0][2] = pA[2].x();
+    a.m_matrix[1][2] = pA[2].y();
+    a.m_matrix[2][2] = pA[2].z();
+
+    // B
+    Matrix4 b;
+    b.m_matrix[0][0] = pB[0].x();
+    b.m_matrix[1][0] = pB[0].y();
+    b.m_matrix[2][0] = pB[0].z();
+                        
+    b.m_matrix[0][1] = pB[1].x();
+    b.m_matrix[1][1] = pB[1].y();
+    b.m_matrix[2][1] = pB[1].z();
+                        
+    b.m_matrix[0][2] = pB[2].x();
+    b.m_matrix[1][2] = pB[2].y();
+    b.m_matrix[2][2] = pB[2].z();
+
+    return b.inverse() * a;
 }

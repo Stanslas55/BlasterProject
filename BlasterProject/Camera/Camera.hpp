@@ -1,9 +1,9 @@
 #pragma once
 
 #include "FreeImage.h"
-#include "../Vector3/Vector3.hpp"
-#include "../PrimitiveObjects/Plane.h"
-#include "../PrimitiveObjects/Quadri.h"
+#include "Vector3/Vector3.hpp"
+#include "PrimitiveObjects/Plane.h"
+#include "PrimitiveObjects/Quadri.h"
 
 class Camera {
 
@@ -28,11 +28,16 @@ private:
 	int m_width;				/*< Width of the image taken by the camera */
 	int m_height;				/*< Height of the image taken by the camera */
 
-	//Vector3 getPixelPosition(int pX, int pY);
-
 public:
 
 	friend class Scene;
+	friend class Application;
+
+	inline const int width() const { return m_width; }
+	inline const int height() const { return m_height; }
+
+	inline const RGBQUAD& backgroundColor() const { return m_backgroundColor; };
+	inline RGBQUAD& backgroundColor() { return m_backgroundColor; };
 
 	/**
 	 * \fn		Camera

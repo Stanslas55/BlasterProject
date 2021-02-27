@@ -2,7 +2,7 @@
 
 const int Camera::defaultWidth = 1280;
 const int Camera::defaultHeight = 720;
-const RGBQUAD Camera::defaultBackgroundColor = { 150, 150, 150 };
+const RGBQUAD Camera::defaultBackgroundColor = { 50, 50, 50, 255 };
 
 Camera::Camera() {
 	m_position = Vector3(0.0, 0.0, 0.0);

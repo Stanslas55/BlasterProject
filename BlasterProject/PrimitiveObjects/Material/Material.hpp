@@ -1,7 +1,6 @@
 #pragma once
 #include <iostream>
-#include "Vector3/Vector3.hpp"
-#include "Matrix4/Matrix4.hpp"
+
 #include "FreeImage.h"
 
 /**
@@ -18,13 +17,10 @@ protected:
 	double m_kd;				/*< Diffuse reflection coefficient */
 	double m_ks;				/*< Specular reflection coefficient */
 	double m_ke;				/*< Specular Exponent (shiness). Ranges from 0.0 to 100.0. */
-	Matrix4 m_transform;
-	std::shared_ptr <RGBQUAD[]> m_texture = nullptr;
-	const int m_width = 0;
 
 public:
 
-	static Material defaultMaterial;
+	static const Material defaultMaterial;
 
 	/**
 	 * \fn      Material
@@ -43,11 +39,6 @@ public:
 	 * \param[in]   pKe		Specular Exponent (shiness). Ranges from 0.0 to 100.0. Defaults to 0.0.
 	 */
 	Material(RGBQUAD pColor, double pKa = 1.0, double pKd = 1.0, double pKs = 1.0, double pKe = 0.0);
-
-	
-	Material(const std::shared_ptr<RGBQUAD []> & pTexture, const int pMidth, const Vector3 pPoints[3], const Vector3 pVertex[3]);
-
-	RGBQUAD getColor(const Vector3& pV) const;
 
 	/**
 	 * \fn      operator=

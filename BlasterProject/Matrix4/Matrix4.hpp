@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Vector3/Vector3.hpp"
+#include "Vector3/Vector3.hpp"
 
 /**
 * \class Matrix4
@@ -20,6 +20,8 @@ private:
 	double* m_matrix[4];
 
 public:
+
+	static const Matrix4 identity;
 
 	/**
 	* \fn Matrix4
@@ -99,7 +101,6 @@ public:
 	void fill(const double pScalar);
 
 	static Matrix4 changeBasis(const Vector3 pA[3], const Vector3 pB[3]);
-
 };
 
 std::ostream& operator<<(std::ostream& pFlux, Matrix4 pV);
@@ -109,10 +110,10 @@ const bool operator==(const Matrix4& pA, const Matrix4& pB);
 Matrix4 operator+(Matrix4 pA, Matrix4 pB);
 Matrix4 operator-(Matrix4 pA, Matrix4 pB);
 
-Matrix4 operator*(const Matrix4 &pA, const Matrix4 &pB);
+Matrix4 operator*(const Matrix4& pA, const Matrix4& pB);
+Vector3 operator*(const Matrix4& pA, const Vector3& pV);
 
 Matrix4 operator+(Matrix4 pA, double pScalar);
 Matrix4 operator-(Matrix4 pA, double pScalar);
 Matrix4 operator*(Matrix4 pA, double pScalar);
-Matrix4 operator/(Matrix4 pA, double pScalar); 
-Vector3 operator*(const Matrix4& pA, const Vector3& pV);
+Matrix4 operator/(Matrix4 pA, double pScalar);

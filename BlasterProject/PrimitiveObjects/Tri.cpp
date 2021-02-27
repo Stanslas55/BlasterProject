@@ -4,7 +4,10 @@ Tri::Tri() : Polygon({ Vector3::zero, Vector3::zero, Vector3::zero }, Material::
 
 Tri::Tri(const Tri & pCopy) : Polygon(pCopy) {}
 
-Tri::Tri(const std::initializer_list<Vector3>& pCorners, const Material& pMaterial) : Polygon(pCorners, pMaterial) {}
+Tri::Tri(const std::initializer_list<Vector3>& pCorners, const Material& pMaterial) : Polygon(pCorners, pMaterial) {
+	if (pCorners.size() != 3)
+		throw std::exception::exception("Tri has not been given 3 corners");
+}
 
 Tri::Tri(const Vector3& pA, const Vector3& pB, const Vector3& pC, const Material& pMaterial) : Polygon({ pA, pB, pC }, pMaterial) {}
 

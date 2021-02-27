@@ -4,7 +4,10 @@ Quadri::Quadri() : Polygon({ Vector3::zero, Vector3::zero, Vector3::zero, Vector
 
 Quadri::Quadri(const Quadri& pCopy) : Polygon(pCopy) {}
 
-Quadri::Quadri(const std::initializer_list<Vector3>& pCorners, const Material& pMaterial) : Polygon(pCorners, pMaterial) {}
+Quadri::Quadri(const std::initializer_list<Vector3>& pCorners, const Material& pMaterial) : Polygon(pCorners, pMaterial) {
+	if (pCorners.size() != 4)
+		throw std::exception::exception("Quadri has not been given 4 corners");
+}
 
 Quadri::Quadri(const Vector3& pA, const Vector3& pB, const Vector3& pC, const Vector3& pD, const Material& pMaterial) : Polygon({ pA, pB, pC, pD }, pMaterial) {}
 
