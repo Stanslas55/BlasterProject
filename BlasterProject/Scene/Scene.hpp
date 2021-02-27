@@ -4,6 +4,7 @@
 #include "PrimitiveObjects/PrimitiveObjects.hpp"
 #include "LightSource/LightSources.hpp"
 #include "Camera/Camera.hpp"
+#include "PrimitiveObjects/Model.hpp""
 
 /**
 * \class Scene
@@ -18,6 +19,8 @@ private:
 	std::vector<std::shared_ptr<LightSource>> m_lightSources;	/*< Contains every light sources of the scene */
 
 	Camera m_camera;											/*< Camera of the scene */			
+
+	std::vector<std::shared_ptr<Model>> m_models;				/*< Models of the scene. */
 
 	/**
 	 * \fn      Scene
@@ -69,6 +72,8 @@ public:
 	 */
 	void addLightSource(LightSource* pLightSource);
 
+	void addModel(Model* pModel);
+
 	/**
 	 * \fn      takePictureNaive
 	 * \brief   Takes a picture and save it to a FreeImage FIBITMAP* structure.
@@ -91,18 +96,20 @@ public:
 	 * \brief   Compute a pixel color given its ray.
 	 *
 	 * \param[in]   pRay		Ray shot from the pixel
+	 * \param[in]   pDepth		Reflection depth
 	 * \return      RGBQUAD		Color of the corresponding pixel
 	 */
-	RGBQUAD getPixelColor(const Ray& pRay);
+	RGBQUAD getPixelColor(const Ray& pRay, int pDepth = 1);
 
 	/**
 	 * \fn      getPixelColor
 	 * \brief   Compute a pixel color given its inital collision.
 	 *
 	 * \param[in]   pCollision	Initial collision
+	 * \param[in]   pDepth		Reflection depth
 	 * \return      RGBQUAD		Color of the corresponding pixel
 	 */
-	RGBQUAD getPixelColor(const Collision& pCollision);
+	RGBQUAD getPixelColor(const Collision& pCollision, int pDepth = 1);
 
 	/**
 	 * \fn      getCollisionArray

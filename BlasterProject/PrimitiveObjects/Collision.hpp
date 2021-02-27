@@ -15,6 +15,7 @@ private:
 	PrimitiveObject* m_object;
 	Vector3 m_point;
 	Vector3 m_normal;
+	double m_dist;
 	Vector3 m_directionToOrigin;
 
 public:
@@ -44,6 +45,8 @@ public:
 	inline void object(PrimitiveObject* pObject) { m_object = pObject; }
 	inline const Vector3& point() const { return m_point; }
 	inline const Vector3& normal() const { return m_normal; }
+	inline const double& distance() const { return m_dist; }
+	inline double& distance() { return m_dist; }
 	inline const bool collided() const { return m_collided; }
 	inline const Vector3& directionToOrigin() const { return m_directionToOrigin; }
 

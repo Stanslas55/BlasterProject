@@ -33,6 +33,12 @@ void Scene::addLightSource(LightSource* pLightSource) {
 	m_lightSources.push_back(std::move(ptr_obj));
 }
 
+void Scene::addModel(Model* pModel) {
+	std::shared_ptr<Model> ptr_obj(pModel);
+	m_models.push_back(std::move(ptr_obj));
+}
+
+
 void Scene::takePictureNaive(FIBITMAP** pImage) {
 
 	int w = m_camera.m_width, h = m_camera.m_height;
@@ -94,10 +100,12 @@ const Collision Scene::getClosestIntersectionNaive(const Ray& pRay, bool pEarlyS
 		}
 	}
 
+	if (closestCollision.collided())
+		closestCollision.distance() = sqrt(minSqDist);
 	return closestCollision;
 }
 
-RGBQUAD Scene::getPixelColor(const Ray& pRay) {
+RGBQUAD Scene::getPixelColor(const Ray& pRay, int pDepth) {
 
 	int nbLightSources = m_lightSources.size();
 
@@ -108,10 +116,10 @@ RGBQUAD Scene::getPixelColor(const Ray& pRay) {
 	 * Find closest instersection point
 	 */
 
-	return getPixelColor(getClosestIntersectionNaive(pRay));
+	return getPixelColor(getClosestIntersectionNaive(pRay), pDepth);
 }
 
-RGBQUAD Scene::getPixelColor(const Collision& pCollsision) {
+RGBQUAD Scene::getPixelColor(const Collision& pCollsision, int pDepth) {
 
 	if (!pCollsision.collided()) {
 		// No collision. Return background color.
@@ -120,57 +128,72 @@ RGBQUAD Scene::getPixelColor(const Collision& pCollsision) {
 
 	Ray secondaryRay;
 
-	std::shared_ptr<PointLight> pointLight;
-	std::shared_ptr<DirectionalLight> directionalLight;
+	std::shared_ptr<PointLight> pointLight = nullptr;
+	std::shared_ptr<DirectionalLight> directionalLight = nullptr;
 
 	const Vector3& point = pCollsision.point();
 	const Vector3& normal = pCollsision.normal();
 	const Material& material = pCollsision.object()->material();
+	const double distance = pCollsision.distance();
 
 	RGBQUAD color = material.color();
 
 	const Vector3& L = pCollsision.directionToOrigin();
+	const Vector3& I = -L;
 
-	Vector3 Ia = Vector3(color.rgbRed, color.rgbGreen, color.rgbBlue) * material.ka() * 0.7;
+	Vector3 Ia = Vector3(color.rgbRed, color.rgbGreen, color.rgbBlue);
 	Vector3 Id = Vector3::zero;
 	Vector3 Is = Vector3::zero;
+
+	/*if (pDepth > 1) {
+		const Collision reflectionCollision = getClosestIntersectionNaive(Ray(point, I - normal * 2 * (I * normal)));
+
+		if (reflectionCollision.collided()) {
+			color = getPixelColor(reflectionCollision, pDepth - 1);
+			Ia += Vector3(color.rgbRed, color.rgbGreen, color.rgbBlue);
+		}
+	}*/
+
+	Ia *= material.ka();
 
 	for (std::shared_ptr<LightSource> ls : m_lightSources) {
 
 		if (ls->type() == LightSourceType::POINT) {
-
 			pointLight = std::static_pointer_cast<PointLight>(ls);
 			secondaryRay = Ray::fromLine(pCollsision.point(), pointLight->position());
-
 		}
 		else if (ls->type() == LightSourceType::DIRECTIONAL) {
-
 			directionalLight = std::static_pointer_cast<DirectionalLight>(ls);
 			secondaryRay = Ray(pCollsision.point(), directionalLight->direction());
-
 		}
 		else
 			continue;
 
-		const Collision& collision = getClosestIntersectionNaive(secondaryRay, true);
+		const Collision collision = getClosestIntersectionNaive(secondaryRay, true);
 
 		if (collision.collided())
 			continue;
 
-		// TODO apply attenuation function fatt_i
+		if (ls->type() == LightSourceType::POINT) {
+			pointLight->fAtt().precomputeCoeff(distance);
+		} else if (ls->type() == LightSourceType::DIRECTIONAL) {
+			directionalLight->fAtt().precomputeCoeff();
+		}
 
-		Id += ls->intensity() * (normal * secondaryRay.direction()) * 0.7;
-		Is += ls->intensity() * pow(normal * Vector3::normalize(secondaryRay.direction() + L), material.ke()) * 0.7;
+		if (material.kd() != 0)
+			Id += ls->fAtt().fAtt(ls->intensity() * (normal * secondaryRay.direction()));
 
+		if (material.ks() != 0 || material.ke() != 0)
+			Is += ls->fAtt().fAtt(ls->intensity() * pow(normal * Vector3::normalize(secondaryRay.direction() + L), material.ke()));
 	}
-
+	
 	Id *= material.kd();
 	Is *= material.ks();
 
 	return {
-		(BYTE)std::max(std::min(int(std::floor(Ia.x() + Id.x() + Is.x())), 255), 0),		// B
+		(BYTE)std::max(std::min(int(std::floor(Ia.x() + Id.x() + Is.x())), 255), 0),		// R
 		(BYTE)std::max(std::min(int(std::floor(Ia.y() + Id.y() + Is.y())), 255), 0),		// G
-		(BYTE)std::max(std::min(int(std::floor(Ia.z() + Id.z() + Is.z())), 255), 0),		// R
+		(BYTE)std::max(std::min(int(std::floor(Ia.z() + Id.z() + Is.z())), 255), 0),		// B
 		255
 	};
 }

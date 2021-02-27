@@ -95,7 +95,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(MSBuildProjectDirectory);$(SolutionDir)FreeImage;$(SolutionDir)glad\include;$(SolutionDir)SDL2-2.0.14\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <OpenMPSupport>true</OpenMPSupport>
+      <OpenMPSupport>false</OpenMPSupport>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -175,6 +175,7 @@
     <ClCompile Include="PrimitiveObjects\Collision.cpp" />
     <ClCompile Include="PrimitiveObjects\Material\Material.cpp" />
     <ClCompile Include="Matrix4\Matrix4.cpp" />
+    <ClCompile Include="PrimitiveObjects\Model.cpp" />
     <ClCompile Include="PrimitiveObjects\Polygon.cpp" />
     <ClCompile Include="PrimitiveObjects\Plane.cpp" />
     <ClCompile Include="PrimitiveObjects\PrimitiveObject.cpp" />
@@ -210,6 +211,7 @@
     <ClInclude Include="PrimitiveObjects\Collision.hpp" />
     <ClInclude Include="PrimitiveObjects\Material\Material.hpp" />
     <ClInclude Include="Matrix4\Matrix4.hpp" />
+    <ClInclude Include="PrimitiveObjects\Model.hpp" />
     <ClInclude Include="PrimitiveObjects\Polygon.h" />
     <ClInclude Include="PrimitiveObjects\Plane.h" />
     <ClInclude Include="PrimitiveObjects\PrimitiveObject.h" />

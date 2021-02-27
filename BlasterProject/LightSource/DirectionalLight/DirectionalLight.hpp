@@ -24,7 +24,7 @@ public:
 	 * \param[in]   pPosition
 	 * \param[in]   pColor
 	 */
-	DirectionalLight(Vector3 pDirection, RGBQUAD pColor = { 255, 255, 255 });
+	DirectionalLight(Vector3 pDirection, RGBQUAD pColor = { 255, 255, 255 }, const AttenuationFunction& pFatt = AttenuationFunction());
 
 	inline const Vector3& direction() const { return m_direction; }
 	inline Vector3& direction() { return m_direction; }

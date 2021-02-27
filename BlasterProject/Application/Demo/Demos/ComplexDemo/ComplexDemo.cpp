@@ -14,11 +14,11 @@ void ComplexDemo::init() {
 	// Scene construction
 	// Complex scene
 
-	double sphereRadius = 10.0;
+	double sphereRadius = 3.0;
 
-	m_scene.addPrimitive(
+	/*m_scene.addPrimitive(
 		new Sphere(
-			Vector3(0,0,-20),
+			Vector3(-15.0,-5.0,-50.0),
 			sphereRadius,
 			Material(
 				{ 255, 0, 0, 255 },
@@ -30,18 +30,59 @@ void ComplexDemo::init() {
 		)
 	);
 
-	// The point light source is situated at 20.0 units from the sphere surface
-	double radiusLight = sphereRadius * 4.0;
+	m_scene.addPrimitive(
+		new Sphere(
+			Vector3(15.0, -5.0, -50.0),
+			sphereRadius,
+			Material(
+				{ 255, 255, 0, 255 },
+				0.2,
+				1.0,
+				0.8,
+				100.0
+			)
+		)
+	);*/
+
+	m_scene.addPrimitive(
+		new Sphere(
+			Vector3(0.0, 0.0, -20.0),
+			sphereRadius,
+			Material(
+				{ 255, 0, 255, 255 },
+				0.4,
+				1.0,
+				1.0,
+				100.0
+			)
+		)
+	);
+
+	m_scene.addPrimitive(
+		new Sphere(
+			Vector3(10.0, 0.0, -25.0),
+			sphereRadius,
+			Material(
+				{ 255, 255, 255, 255 },
+				0.4,
+				1.0,
+				1.0,
+				100.0
+			)
+		)
+	);
 
 	m_scene.addLightSource(
-		new DirectionalLight(
-			Vector3(-0.5, 0.5, 1.0),
+		new PointLight(
+			Vector3(-10.0, -5.0, -25.0),
 			{
-				100,
-				100,
-				100,
+				255,
+				255,
+				255,
 				255
-			}
+			},
+			QuadraticAttenuation()
+			//AttenuationFunction()
 		)
 	);
 
@@ -69,13 +110,15 @@ void ComplexDemo::update(double pDeltaTime) {
 	int wh = m_scene.camera().width() * m_scene.camera().height();
 	int pitch = wh * sizeof(RGBQUAD);
 
-	int i;
 #pragma omp single
 	SDL_LockTexture(m_textureScene, nullptr, (void**)&_pixels, &pitch);
 
+	int i;
+	int depth = 4;
+
 #pragma omp for
 	for (i = 0; i < wh; i++) {
-		RGBQUAD color = m_scene.getPixelColor(m_rays[i]);
+		RGBQUAD color = m_scene.getPixelColor(m_rays[i], depth);
 
 		_pixels[i] = SDL_MapRGBA(m_format, color.rgbRed, color.rgbGreen, color.rgbBlue, color.rgbReserved);
 	}

@@ -24,7 +24,7 @@ public:
 	 * \param[in]   pPosition
 	 * \param[in]   pColor
 	 */
-	PointLight(Vector3 pPosition, RGBQUAD pColor = { 255, 255, 255, 255 });
+	PointLight(Vector3 pPosition, RGBQUAD pColor = { 255, 255, 255, 255 }, const AttenuationFunction& pFatt = AttenuationFunction());
 
 	inline const Vector3& position() const { return m_position; }
 	inline Vector3& position() { return m_position; }

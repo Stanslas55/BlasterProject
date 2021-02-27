@@ -48,7 +48,8 @@ void RTDemo::init() {
 				255,
 				255,
 				255
-			}
+			},
+			QuadraticAttenuation()
 		)
 	);
 
@@ -60,7 +61,8 @@ void RTDemo::init() {
 				100,
 				100,
 				255
-			}
+			},
+			ConstantAttenuation(0.7)
 		)
 	);
 
@@ -162,9 +164,9 @@ bool RTDemo::parametersWindowRender() {
 
 		Vector3 li = m_scene.lightSources()[0]->intensity();
 		static ImVec4 cli(
-			li.z() / 255,
-			li.y() / 255,
-			li.x() / 255,
+			float(li.z()) / 255.0f,
+			float(li.y()) / 255.0f,
+			float(li.x()) / 255.0f,
 			1.0f
 		);
 
