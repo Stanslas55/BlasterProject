@@ -1,6 +1,7 @@
 #pragma once
 
 #include <chrono>
+#include <omp.h>
 
 #include "SDL.h"
 #include <glad/glad.h>
@@ -9,10 +10,12 @@
 #include "imgui/Utils/Utils.hpp"
 #include "Scene/Scene.hpp"
 
-static Uint32* m_pixels;
+static Uint32* _pixels;
 static int _res;
 static SDL_Event e;
 static bool _quit;
+static bool _render;					/*< Render boolean. */
+
 
 struct Events {
 	SDL_Point mousePosition = { 0, 0 };
@@ -33,7 +36,6 @@ protected:
 	SDL_GLContext m_glParams;				/*< OpenGL context of the parameter window. */
 
 	bool _update = true;					/*< Update boolean. */
-	bool _render = true;					/*< Render boolean. */
 	
 	struct Events {
 		SDL_Point mousePosition = { 0, 0 };
@@ -54,7 +56,7 @@ public:
 
 	int mainLoop();
 
-	void eventLoop();
+	bool eventLoop();
 
 	virtual void eventHandler(SDL_Event pEvent);
 
@@ -62,8 +64,8 @@ public:
 
 	virtual void render() = 0;
 
-	void parametersManager(SDL_Event* e);
+	bool parametersManager(SDL_Event* e);
 
-	virtual void parametersWindowRender();
+	virtual bool parametersWindowRender();
 };
 

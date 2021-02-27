@@ -62,38 +62,43 @@ int Demo::mainLoop() {
 	m_deltaTime = 0.0;
 	_quit = false;
 
-	std::chrono::steady_clock::time_point start;
-	std::chrono::steady_clock::time_point end;
+	std::chrono::steady_clock::time_point start = std::chrono::high_resolution_clock::now();
+	std::chrono::steady_clock::time_point end = std::chrono::high_resolution_clock::now();
 
-#pragma omp parallel shared(m_pixels, start, end, _quit)
+#pragma omp parallel shared(_pixels, start, end, _quit)
 {
+#pragma omp barrier
 	while (!_quit) {
 		start = std::chrono::high_resolution_clock::now();
 
-		eventLoop();
+#pragma omp master
+		_render = eventLoop();
 #pragma omp barrier
+
 		if (!_quit)
 			update(m_deltaTime);
 
+#pragma omp single
 		if (!_quit)
 			render();
+#pragma omp barrier
 
 		end = std::chrono::high_resolution_clock::now();
 
 #pragma omp single
 		m_deltaTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / 1000.0;
+#pragma omp barrier
 	}
 }
 	return EXIT_SUCCESS;
 }
 
-void Demo::eventLoop() {
+bool Demo::eventLoop() {
 
 	while (SDL_PollEvent(&e) && !_quit)
 	{
 		// without it you won't have keyboard input and other things
-#pragma omp master
-		parametersManager(&e);
+		_render = parametersManager(&e);
 		// you might also want to check io.WantCaptureMouse and io.WantCaptureKeyboard
 		// before processing events
 
@@ -114,6 +119,8 @@ void Demo::eventLoop() {
 
 		eventHandler(e);
 	}
+
+	return _quit;
 }
 
 void Demo::eventHandler(SDL_Event pEvent) {
@@ -121,11 +128,28 @@ void Demo::eventHandler(SDL_Event pEvent) {
 	return;
 }
 
-void Demo::parametersManager(SDL_Event* e) {
-	_update = ImGui_ImplSDL2_ProcessEvent(e);
-	parametersWindowRender();
+bool Demo::parametersManager(SDL_Event* e) {
+	ImGui_ImplSDL2_ProcessEvent(e);
+
+	// start the Dear ImGui frame
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplSDL2_NewFrame(m_windowParams);
+	ImGui::NewFrame();
+
+	_render = parametersWindowRender();
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	// rendering
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+	SDL_GL_SwapWindow(m_windowParams);
+	
+	return _render;
 }
 
-void Demo::parametersWindowRender() {
+bool Demo::parametersWindowRender() {
 	std::cerr << "Demo::parametersWindowRender() not implemented" << std::endl;
+	return false;
 }

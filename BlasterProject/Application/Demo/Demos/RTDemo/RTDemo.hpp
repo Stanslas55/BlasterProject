@@ -31,5 +31,5 @@ public:
 
 	void render();
 
-	void parametersWindowRender();
+	bool parametersWindowRender();
 };

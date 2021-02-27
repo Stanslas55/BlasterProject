@@ -14,6 +14,8 @@ private:
 
 	Ray* m_rays;
 
+	Uint32* m_pixels;
+
 public:
 
 	ComplexDemo(SDL_Window* pWindow, SDL_GLContext& pGlContext, SDL_Point pSceneSize);
@@ -28,6 +30,6 @@ public:
 
 	void render();
 
-	void parametersWindowRender();
+	bool parametersWindowRender();
 
 };

@@ -65,6 +65,8 @@ void RTDemo::init() {
 	);
 
 	m_collisions = m_scene.getCollisionArray();
+
+	_render = true;
 }
 
 void RTDemo::eventHandler(SDL_Event pEvent) {
@@ -81,22 +83,20 @@ void RTDemo::update(double pDeltaTime) {
 	m_polarSystem.y() = (m_polarSystem.y() > 2 * M_PI) ? m_polarSystem.y() - 2 * M_PI : m_polarSystem.y();
 
 	l->position() = Vector3::toCarthesian(m_polarSystem) + m_centerOfRotation;
-
-	Uint32 format;
-	SDL_QueryTexture(m_textureScene, &format, nullptr, nullptr, nullptr);
 }
+
 	int wh = m_scene.camera().width() * m_scene.camera().height();
 	int pitch = wh * sizeof(RGBQUAD);
 
 	int i;
 #pragma omp single
-	SDL_LockTexture(m_textureScene, nullptr, (void**)&m_pixels, &pitch);
+	SDL_LockTexture(m_textureScene, nullptr, (void**)&_pixels, &pitch);
 
 #pragma omp for
 	for (i = 0; i < wh; i++) {
 		RGBQUAD color = m_scene.getPixelColor(m_collisions[i]);
 
-		m_pixels[i] = SDL_MapRGBA(m_format, color.rgbRed, color.rgbGreen, color.rgbBlue, color.rgbReserved);
+		_pixels[i] = SDL_MapRGBA(m_format, color.rgbRed, color.rgbGreen, color.rgbBlue, color.rgbReserved);
 	}
 	
 #pragma omp single
@@ -104,22 +104,12 @@ void RTDemo::update(double pDeltaTime) {
 }
 
 void RTDemo::render() {
-	if (!_render)
-		return;
-
-#pragma omp single
-	{
-		SDL_RenderClear(m_rendererScene);
-		SDL_RenderCopy(m_rendererScene, m_textureScene, nullptr, nullptr);
-		SDL_RenderPresent(m_rendererScene);
-	}
+	SDL_RenderClear(m_rendererScene);
+	SDL_RenderCopy(m_rendererScene, m_textureScene, nullptr, nullptr);
+	SDL_RenderPresent(m_rendererScene);
 }
 
-void RTDemo::parametersWindowRender() {
-	// start the Dear ImGui frame
-	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplSDL2_NewFrame(m_windowParams);
-	ImGui::NewFrame();
+bool RTDemo::parametersWindowRender() {
 
 	// a window is defined by Begin/End pair
 	{
@@ -187,13 +177,7 @@ void RTDemo::parametersWindowRender() {
 		}
 
 		ImGui::End();
-
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		// rendering
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-		SDL_GL_SwapWindow(m_windowParams);
 	}
+
+	return true;
 }
