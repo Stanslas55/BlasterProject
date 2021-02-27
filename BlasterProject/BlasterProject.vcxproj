@@ -175,6 +175,7 @@
     <ClCompile Include="PrimitiveObjects\Collision.cpp" />
     <ClCompile Include="PrimitiveObjects\Material\Material.cpp" />
     <ClCompile Include="Matrix4\Matrix4.cpp" />
+    <ClCompile Include="PrimitiveObjects\Model.cpp" />
     <ClCompile Include="PrimitiveObjects\Polygon.cpp" />
     <ClCompile Include="PrimitiveObjects\Plane.cpp" />
     <ClCompile Include="PrimitiveObjects\PrimitiveObject.cpp" />
@@ -210,6 +211,7 @@
     <ClInclude Include="PrimitiveObjects\Collision.hpp" />
     <ClInclude Include="PrimitiveObjects\Material\Material.hpp" />
     <ClInclude Include="Matrix4\Matrix4.hpp" />
+    <ClInclude Include="PrimitiveObjects\Model.hpp" />
     <ClInclude Include="PrimitiveObjects\Polygon.h" />
     <ClInclude Include="PrimitiveObjects\Plane.h" />
     <ClInclude Include="PrimitiveObjects\PrimitiveObject.h" />
@@ -224,6 +226,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="INF4034 - Cours 2.pdf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="ObjFiles\bunny.obj" />
+    <Object Include="ObjFiles\cube.obj" />
+    <Object Include="ObjFiles\dragon.obj" />
+    <Object Include="ObjFiles\suzanne.obj" />
+    <Object Include="ObjFiles\teapot.obj" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -111,6 +111,9 @@
     <ClCompile Include="Application\Demo\Demos\ComplexDemo\ComplexDemo.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="PrimitiveObjects\Model.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tests.h">
@@ -215,8 +218,18 @@
     <ClInclude Include="Application\Demo\Demos\ComplexDemo\ComplexDemo.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="PrimitiveObjects\Model.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="INF4034 - Cours 2.pdf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="ObjFiles\bunny.obj" />
+    <Object Include="ObjFiles\cube.obj" />
+    <Object Include="ObjFiles\dragon.obj" />
+    <Object Include="ObjFiles\suzanne.obj" />
+    <Object Include="ObjFiles\teapot.obj" />
   </ItemGroup>
 </Project>
