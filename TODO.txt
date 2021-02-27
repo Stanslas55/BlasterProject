@@ -1,0 +1,9 @@
+Transformation avec référenciel (matrice de transformation 4x4)
+
+Implémenter le scale, translate, rotation, changement de base (
+
+
+Modele : hérite de primitive objet
+	Contient des primitives objects
+
+	ParseObj
