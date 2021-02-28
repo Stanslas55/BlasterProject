@@ -16,6 +16,9 @@ private:
 
 	Uint32* m_pixels;
 
+	std::chrono::high_resolution_clock::time_point m_start;
+	std::chrono::high_resolution_clock::time_point m_end;
+
 public:
 
 	ComplexDemo(SDL_Window* pWindow, SDL_GLContext& pGlContext, SDL_Point pSceneSize);

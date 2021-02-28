@@ -36,6 +36,10 @@ private:
 	static Material m_suzanneMaterial;
 	static const Vector3 m_suzannePosition;
 
+	static const std::string m_dragonPath;
+	static Material m_dragonMaterial;
+	static const Vector3 m_dragonPosition;
+
 	static Material m_defaultMaterial;
 	static const Vector3 m_defaultPosition;
 

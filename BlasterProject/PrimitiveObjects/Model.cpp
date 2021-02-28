@@ -47,8 +47,6 @@ Model::Model(const Vector3& pPosition, const std::string path, const Material& p
 		}
 		else if (prefix == "vt") {
 			ss >> tempTexture.x() >> tempTexture.y();
-			tempTexture.x() *= pMaterial.width();
-			tempTexture.y() *= pMaterial.height();
 			vertex_texcoords.push_back(tempTexture);
 		}
 		else if (prefix == "vn") {
@@ -109,38 +107,14 @@ Model::Model(const Vector3& pPosition, const std::string path, const Material& p
 	Vector3 textures[3];
 	size_t size = vertex_position_indicies.size();
 	for (i = 0; i < size; i += 3) {
-			
+
 		sommets[0] = vertex_positions[vertex_position_indicies[i] - 1] + pPosition;
 		sommets[1] = vertex_positions[vertex_position_indicies[i + 1] - 1] + pPosition;
 		sommets[2] = vertex_positions[vertex_position_indicies[i + 2] - 1] + pPosition;
-		if (textcoordsPresent && m_material.texture()) {
-			// Add texture handling.
-			textures[0] = vertex_texcoords[vertex_texcoord_indicies[i] - 1];
-			textures[1] = vertex_texcoords[vertex_texcoord_indicies[i + 1] - 1];
-			textures[2] = vertex_texcoords[vertex_texcoord_indicies[i + 2] - 1];	
 
-			this->addPrimitive(
-				new Tri(sommets[2], sommets[1], sommets[0], 
-					Material(
-						m_material.texture(),
-						m_material.width(),
-						m_material.height(),
-						textures,
-						sommets,
-						m_material.ka(), 
-						m_material.kd(),
-						m_material.ks(),
-						m_material.ke()
-					)
-				)
-			);
-		}
-		else {
-			this->addPrimitive(
-				new Tri(sommets[2], sommets[1], sommets[0], pMaterial)
-			);
-		}
-					
-	}	
+		this->addPrimitive(
+			new Tri(sommets[2], sommets[1], sommets[0], pMaterial)
+		);
+	}
 	//Loaded success
 }

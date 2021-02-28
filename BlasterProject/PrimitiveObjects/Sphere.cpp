@@ -32,14 +32,14 @@ const Collision Sphere::intersect(const Ray& pRay) const {
 
     const Vector3& point(pRay.point(tc - t1c));
     const Vector3& normal = Vector3::normalize(point - m_center);
-    return Collision(point + normal * 1e-6, normal, -pRay.direction());
+    return Collision(point + normal * 1e-9, normal, -pRay.direction());
 }
 
-void Sphere::print(std::ostream& pFlux) const {        
-    pFlux << "\nSphere: {Center: " << m_center << ", Radius: " << m_radius << "}" << std::endl;            
+void Sphere::print(std::ostream& pFlux) const {
+    pFlux << "\nSphere: {Center: " << m_center << ", Radius: " << m_radius << "}" << std::endl;
 }
 
-std::ostream& operator<<(std::ostream& pFlux, const Sphere& pSphere) {   
+std::ostream& operator<<(std::ostream& pFlux, const Sphere& pSphere) {
     pSphere.print(pFlux);
-    return pFlux;   
+    return pFlux;
 }

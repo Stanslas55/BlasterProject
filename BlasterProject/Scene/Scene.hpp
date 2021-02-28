@@ -4,7 +4,6 @@
 #include "PrimitiveObjects/PrimitiveObjects.hpp"
 #include "LightSource/LightSources.hpp"
 #include "Camera/Camera.hpp"
-#include "PrimitiveObjects/Model.hpp"
 
 /**
 * \class Scene
@@ -18,7 +17,7 @@ private:
 
 	std::vector<std::shared_ptr<LightSource>> m_lightSources;	/*< Contains every light sources of the scene */
 
-	Camera m_camera;											/*< Camera of the scene */			
+	Camera m_camera;											/*< Camera of the scene */
 
 	std::vector<std::shared_ptr<Model>> m_models;				/*< Models of the scene. */
 
@@ -38,6 +37,12 @@ public:
 	inline const std::vector<std::shared_ptr<PrimitiveObject>>& objects() const { return m_objects; }
 	inline const std::vector<std::shared_ptr<LightSource>>& lightSources() const { return m_lightSources; }
 
+	/**
+	 * \fn      reset
+	 * \brief   Deletes the objects of the scene. Lights can be keeped.
+	 *
+	 * \param[in]   lightsOff
+	 */
 	inline void reset(bool lightsOff = true) {
 		m_objects.clear();
 		if (lightsOff)
@@ -48,14 +53,14 @@ public:
 	/**
 	* \fn		Scene
 	* \brief	Scene copy Constructor
-	* 
+	*
 	* \param[in]	pCopy		Scene object to copy
 	*/
 	Scene(const Scene& pCopy);
 
 	/**
 	* \fn		Scene
-	* \brief	Recommended constructor for the Scene 
+	* \brief	Recommended constructor for the Scene
 	*
 	* \param[in]	pCamera		Camera associated to the scene. The scene will contain its copy within its members.
 	*/
@@ -69,22 +74,38 @@ public:
 	 * \param[in]   pPrimitive
 	 */
 	void addPrimitive(PrimitiveObject* pPrimitive);
-	
+
 	/**
 	 * \fn      addLightSource
 	 * \brief   Method to add a light source to the scene.
 	 * > Do not pass the adress of a local object. You must pass the adress of an allocated object
-	 * 
+	 *
 	 * \param[in]	pLightSource
 	 */
 	void addLightSource(LightSource* pLightSource);
 
+	/**
+	 * \fn      addModel
+	 * \brief   Method to add a Model to the scene.
+	 * > Do not pass the adress of a local object. You must pass the adress of an allocated object
+	 *
+	 * \param[in]   pModel
+	 */
 	void addModel(Model* pModel);
+
+	/**
+	 * \fn      savePicture
+	 * \brief   Save pData as a PNG picture at pPath location.
+	 *
+	 * \param[in]   pPath
+	 * \param[in]   pData
+	 */
+	void savePicture(std::string pPath, RGBQUAD* pData);
 
 	/**
 	 * \fn      takePictureNaive
 	 * \brief   Takes a picture and save it to a FreeImage FIBITMAP* structure.
-	 * 
+	 *
 	 * \param[out]   pPtrImage		Address of a FIBITMAP* structure.
 	 */
 	void takePictureNaive(FIBITMAP** pPtrImage);
@@ -103,25 +124,23 @@ public:
 	 * \brief   Compute a pixel color given its ray.
 	 *
 	 * \param[in]   pRay		Ray shot from the pixel
-	 * \param[in]   pDepth		Reflection depth
 	 * \return      RGBQUAD		Color of the corresponding pixel
 	 */
-	RGBQUAD getPixelColor(const Ray& pRay, int pDepth = 1);
+	RGBQUAD getPixelColor(const Ray& pRay);
 
 	/**
 	 * \fn      getPixelColor
 	 * \brief   Compute a pixel color given its inital collision.
 	 *
 	 * \param[in]   pCollision	Initial collision
-	 * \param[in]   pDepth		Reflection depth
 	 * \return      RGBQUAD		Color of the corresponding pixel
 	 */
-	RGBQUAD getPixelColor(const Collision& pCollision, int pDepth = 1);
+	RGBQUAD getPixelColor(const Collision& pCollision);
 
 	/**
 	 * \fn      getCollisionArray
 	 * \brief   Get all collisions of a frame. Useful wheneve a scene is fixed and thus those collisions will not change between frames.
-	 * 
+	 *
 	 * \return	Collision*	Allocated array of width*height Collisions of the scene. The parent caller must assure dealocation.
 	 */
 	Collision* getCollisionArray();
@@ -129,10 +148,8 @@ public:
 	/**
 	 * \fn      getRayArray
 	 * \brief   Get all the primary rays precomputed.
-	 * 
+	 *
 	 * \return	Ray*		Allocated array of width*height Rays of the scene. The parent caller must assure dealocation.
 	 */
 	Ray* getRayArray();
-
-	// TODO: add OBJ
 };

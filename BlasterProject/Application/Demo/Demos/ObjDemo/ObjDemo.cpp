@@ -40,13 +40,22 @@ Material ObjDemo::m_suzanneMaterial = Material(
 );
 const Vector3 ObjDemo::m_suzannePosition = Vector3(0.0, 0.0, -4.0);
 
+const std::string ObjDemo::m_dragonPath = "./ObjFiles/dragon.obj";
+Material ObjDemo::m_dragonMaterial = Material(
+	{ 90, 239, 54, 255 },
+	0.815,
+	0.540,
+	1.0,
+	100.0
+);
+const Vector3 ObjDemo::m_dragonPosition = Vector3(0.0, 0.0, -5.0);
+
 Material ObjDemo::m_defaultMaterial = Material::defaultMaterial;
 static const Vector3 m_defaultPosition = Vector3(0.0, 0.0, -5.0);
 
 ObjDemo::ObjDemo(SDL_Window* pWindow, SDL_GLContext& pGlContext, SDL_Point pSceneSize) : Demo(pWindow, pGlContext, "Obj Demo", pSceneSize, { 400, 600 }), m_scene(Camera(pSceneSize.x, pSceneSize.y)) {
 	m_rays = nullptr;
 	m_pixels = nullptr;
-
 }
 
 ObjDemo::~ObjDemo() {
@@ -57,7 +66,7 @@ ObjDemo::~ObjDemo() {
 void ObjDemo::init() {
 	// Scene construction
 	// Obj scene
-	
+
 	m_materialModel = &m_cubeMaterial;
 	m_pathModel = m_cubePath;
 	m_positionModel = m_cubePosition;
@@ -76,7 +85,7 @@ void ObjDemo::init() {
 }
 
 void ObjDemo::eventHandler(SDL_Event pEvent) {
-	
+
 }
 
 void ObjDemo::update(double pDeltaTime) {
@@ -115,8 +124,10 @@ void ObjDemo::update(double pDeltaTime) {
 	}
 
 #pragma omp master
-	m_end = std::chrono::high_resolution_clock::now();
-
+	{
+		m_pixels = _pixels;
+		m_end = std::chrono::high_resolution_clock::now();
+	}
 #pragma omp single
 	SDL_UnlockTexture(m_textureScene);
 }
@@ -134,7 +145,7 @@ void ObjDemo::render() {
 }
 
 bool ObjDemo::parametersWindowRender() {
-	
+
 	// a window is defined by Begin/End pair
 	{
 		int sdl_width = 0, sdl_height = 0;
@@ -172,6 +183,11 @@ bool ObjDemo::parametersWindowRender() {
 			m_pathModel = m_teapotPath;
 			m_positionModel = m_teapotPosition;
 		}
+		if (ImGui::RadioButton("Dragon (waaay too long)", m_pathModel == m_dragonPath)) {
+			m_materialModel = &m_dragonMaterial;
+			m_pathModel = m_dragonPath;
+			m_positionModel = m_dragonPosition;
+		}
 
 		ImGui::Text("Material");
 
@@ -204,7 +220,7 @@ bool ObjDemo::parametersWindowRender() {
 
 		if (ImGui::SliderFloat("kE", &k[3], 0.0f, 100.0f))
 			m_materialModel->ke() = double(k[3]);
-		
+
 		Vector3 li = m_scene.lightSources()[0]->intensity();
 		static ImVec4 cli(
 			float(li.z()) / 255.0f,
@@ -223,6 +239,10 @@ bool ObjDemo::parametersWindowRender() {
 
 		if (ImGui::Button("Render")) {
 			_render = true;
+		}
+
+		if (ImGui::Button("Save Picture as 'out.png'")) {
+			m_scene.savePicture("out.png", (RGBQUAD*)m_pixels);
 		}
 
 		if (_render)

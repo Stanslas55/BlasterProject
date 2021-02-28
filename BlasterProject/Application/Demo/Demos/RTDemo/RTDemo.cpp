@@ -32,11 +32,11 @@ void RTDemo::init() {
 	);
 
 	// The point light source is situated at 20.0 units from the sphere surface
-	double radiusLight = sphereRadius * 4.0;
+	m_radiusLight = sphereRadius * 4.0;
 
 	m_polarSystem = Vector3(
-		radiusLight,
-		-M_PI/2,
+		m_radiusLight,
+		-M_PI / 2,
 		M_PI / 8
 	);
 
@@ -72,20 +72,22 @@ void RTDemo::init() {
 }
 
 void RTDemo::eventHandler(SDL_Event pEvent) {
-	
+
 }
 
 void RTDemo::update(double pDeltaTime) {
 
 #pragma omp master
-{
-	std::shared_ptr<PointLight> l = std::static_pointer_cast<PointLight>(m_scene.lightSources()[0]);
+	{
+		std::shared_ptr<PointLight> l = std::static_pointer_cast<PointLight>(m_scene.lightSources()[0]);
 
-	m_polarSystem.y() += pDeltaTime * M_PI;
-	m_polarSystem.y() = (m_polarSystem.y() > 2 * M_PI) ? m_polarSystem.y() - 2 * M_PI : m_polarSystem.y();
+		m_polarSystem.x() = m_radiusLight;
 
-	l->position() = Vector3::toCarthesian(m_polarSystem) + m_centerOfRotation;
-}
+		m_polarSystem.y() += pDeltaTime * M_PI;
+		m_polarSystem.y() = (m_polarSystem.y() > 2 * M_PI) ? m_polarSystem.y() - 2 * M_PI : m_polarSystem.y();
+
+		l->position() = Vector3::toCarthesian(m_polarSystem) + m_centerOfRotation;
+	}
 
 	int wh = m_scene.camera().width() * m_scene.camera().height();
 	int pitch = wh * sizeof(RGBQUAD);
@@ -100,7 +102,7 @@ void RTDemo::update(double pDeltaTime) {
 
 		_pixels[i] = SDL_MapRGBA(m_format, color.rgbRed, color.rgbGreen, color.rgbBlue, color.rgbReserved);
 	}
-	
+
 #pragma omp single
 	SDL_UnlockTexture(m_textureScene);
 }
@@ -162,19 +164,25 @@ bool RTDemo::parametersWindowRender() {
 		if (ImGui::SliderFloat("kE", &k[3], 0.0f, 100.0f))
 			m_scene.objects()[0]->material().ke() = double(k[3]);
 
+
 		Vector3 li = m_scene.lightSources()[0]->intensity();
 		static ImVec4 cli(
-			float(li.z()) / 255.0f,
-			float(li.y()) / 255.0f,
 			float(li.x()) / 255.0f,
+			float(li.y()) / 255.0f,
+			float(li.z()) / 255.0f,
 			1.0f
 		);
 
+		float radiusLight = float(m_radiusLight);
+
+		if (ImGui::SliderFloat("Light distance", &radiusLight, 10.1f, 40.0f))
+			m_radiusLight = double(radiusLight);
+
 		if (ImGui::ColorEdit4("Light Color", (float*)&cli), ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_Uint8 | ImGuiColorEditFlags_InputRGB | ImGuiColorEditFlags_NoOptions | ImGuiColorEditFlags_NoAlpha) {
 			m_scene.lightSources()[0]->intensity() = Vector3(
-				cli.z * 255.0,
+				cli.x * 255.0,
 				cli.y * 255.0,
-				cli.x * 255.0
+				cli.z * 255.0
 			);
 		}
 

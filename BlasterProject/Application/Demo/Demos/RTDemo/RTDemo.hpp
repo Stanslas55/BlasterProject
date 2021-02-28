@@ -17,6 +17,8 @@ private:
 
 	Collision* m_collisions;
 
+	double m_radiusLight;
+
 public:
 
 	RTDemo(SDL_Window* pWindow, SDL_GLContext& pGlContext, SDL_Point pSceneSize);

@@ -18,9 +18,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Tests.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="PrimitiveObjects\PrimitiveObject.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
@@ -119,9 +116,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Tests.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="PrimitiveObjects\PrimitiveObject.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
@@ -229,13 +223,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="INF4034 - Cours 2.pdf" />
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="ObjFiles\cube.png">
-      <Filter>Fichiers de ressources</Filter>
-    </Image>
-    <Image Include="..\bin\ObjFiles\cube.bmp">
       <Filter>Fichiers de ressources</Filter>
     </Image>
   </ItemGroup>

@@ -18,11 +18,6 @@ protected:
 	double m_kd;				/*< Diffuse reflection coefficient */
 	double m_ks;				/*< Specular reflection coefficient */
 	double m_ke;				/*< Specular Exponent (shiness). Ranges from 0.0 to 100.0. */
-	Vector3 m_points[3];
-	std::shared_ptr <RGBQUAD[]> m_texture = nullptr;
-	int m_width = 0;
-	int m_height = 0;
-	double m_AB;
 
 public:
 
@@ -45,12 +40,6 @@ public:
 	 * \param[in]   pKe		Specular Exponent (shiness). Ranges from 0.0 to 100.0. Defaults to 0.0.
 	 */
 	Material(RGBQUAD pColor, double pKa = 1.0, double pKd = 1.0, double pKs = 1.0, double pKe = 0.0);
-
-	Material(const std::shared_ptr<RGBQUAD[]>& pTexture, const int pMidth, const int pHeight, const Vector3 pPoints[3], const Vector3 pVertex[3], double pKa = 1.0, double pKd = 1.0, double pKs = 1.0, double pKe = 0.0);
-
-	//Material(const std::string pPathTexture, double pKa = 1.0, double pKd = 1.0, double pKs = 1.0, double pKe = 0.0);
-
-	RGBQUAD getColor(const Vector3& pA, const Vector3& pB, const Vector3& pP) const;
 
 	/**
 	 * \fn      operator=
@@ -76,11 +65,13 @@ public:
 	inline const double& ke() const { return m_ke; }
 	inline double& ke() { return m_ke; }
 
-	inline const int& width() const { return m_width; }
-	inline const int& height() const { return m_height; }
-
-	inline const std::shared_ptr<RGBQUAD[]>& texture() const { return m_texture; }
-	inline std::shared_ptr<RGBQUAD[]>& texture() { return m_texture; }
+	/**
+	 * \fn      randomMaterial
+	 * \brief   Generates a random Material. Beware, it WILL be hideous.
+	 *
+	 * \return	const Material
+	 */
+	static const Material randomMaterial();
 };
 
 /**

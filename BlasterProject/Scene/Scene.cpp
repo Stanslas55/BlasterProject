@@ -39,6 +39,26 @@ void Scene::addModel(Model* pModel) {
 	m_models.push_back(std::move(ptr_obj));
 }
 
+void Scene::savePicture(std::string pPath, RGBQUAD* pData) {
+
+	FIBITMAP* image = FreeImage_Allocate(m_camera.m_width, m_camera.m_height, 32);
+
+	int w = m_camera.m_width, h = m_camera.m_height;
+	int x, y;
+
+	int wh = w * h;
+
+	for (x = 0; x < w; x++) {
+		for (y = 0; y < h; y++) {
+			RGBQUAD c = pData[x + y * w];
+			RGBQUAD inv = { c.rgbGreen, c.rgbBlue, c.rgbReserved, c.rgbRed };
+			FreeImage_SetPixelColor(image, x, h - y, &inv);
+		}
+	}
+
+	FreeImage_Save(FIF_PNG, image, "out.png");
+}
+
 void Scene::takePictureNaive(FIBITMAP** pImage) {
 
 	int w = m_camera.m_width, h = m_camera.m_height;
@@ -105,7 +125,7 @@ const Collision Scene::getClosestIntersectionNaive(const Ray& pRay, bool pEarlyS
 	return closestCollision;
 }
 
-RGBQUAD Scene::getPixelColor(const Ray& pRay, int pDepth) {
+RGBQUAD Scene::getPixelColor(const Ray& pRay) {
 
 	int nbLightSources = m_lightSources.size();
 
@@ -115,11 +135,10 @@ RGBQUAD Scene::getPixelColor(const Ray& pRay, int pDepth) {
 	/**
 	 * Find closest instersection point
 	 */
-
-	return getPixelColor(getClosestIntersectionNaive(pRay), pDepth);
+	return getPixelColor(getClosestIntersectionNaive(pRay));
 }
 
-RGBQUAD Scene::getPixelColor(const Collision& pCollsision, int pDepth) {
+RGBQUAD Scene::getPixelColor(const Collision& pCollsision) {
 
 	if (!pCollsision.collided()) {
 		// No collision. Return background color.
@@ -136,9 +155,7 @@ RGBQUAD Scene::getPixelColor(const Collision& pCollsision, int pDepth) {
 	const Material& material = pCollsision.object()->material();
 	const double distance = pCollsision.distance();
 
-	const Polygon* p = dynamic_cast<Polygon*>(pCollsision.object());
-
-	RGBQUAD color = (p) ? material.getColor(p->corners()[0], p->corners()[1], point) : material.color();
+	RGBQUAD color = material.color();
 
 	const Vector3& L = pCollsision.directionToOrigin();
 	const Vector3& I = -L;
@@ -146,15 +163,6 @@ RGBQUAD Scene::getPixelColor(const Collision& pCollsision, int pDepth) {
 	Vector3 Ia = Vector3(color.rgbRed, color.rgbGreen, color.rgbBlue);
 	Vector3 Id = Vector3::zero;
 	Vector3 Is = Vector3::zero;
-
-	/*if (pDepth > 1) {
-		const Collision reflectionCollision = getClosestIntersectionNaive(Ray(point, I - normal * 2 * (I * normal)));
-
-		if (reflectionCollision.collided()) {
-			color = getPixelColor(reflectionCollision, pDepth - 1);
-			Ia += Vector3(color.rgbRed, color.rgbGreen, color.rgbBlue);
-		}
-	}*/
 
 	Ia *= material.ka();
 
@@ -178,7 +186,8 @@ RGBQUAD Scene::getPixelColor(const Collision& pCollsision, int pDepth) {
 
 		if (ls->type() == LightSourceType::POINT) {
 			pointLight->fAtt().precomputeCoeff(distance);
-		} else if (ls->type() == LightSourceType::DIRECTIONAL) {
+		}
+		else if (ls->type() == LightSourceType::DIRECTIONAL) {
 			directionalLight->fAtt().precomputeCoeff();
 		}
 
@@ -188,7 +197,7 @@ RGBQUAD Scene::getPixelColor(const Collision& pCollsision, int pDepth) {
 		if (material.ks() != 0 || material.ke() != 0)
 			Is += ls->fAtt().fAtt(ls->intensity() * pow(normal * Vector3::normalize(secondaryRay.direction() + L), material.ke()));
 	}
-	
+
 	Id *= material.kd();
 	Is *= material.ks();
 
@@ -201,7 +210,7 @@ RGBQUAD Scene::getPixelColor(const Collision& pCollsision, int pDepth) {
 }
 
 Collision* Scene::getCollisionArray() {
-	
+
 	int i;
 	int w = m_camera.m_width, h = m_camera.m_height;
 	int wh = w * h;

@@ -184,7 +184,6 @@
     <ClCompile Include="PrimitiveObjects\Sphere.cpp" />
     <ClCompile Include="PrimitiveObjects\Quadri.cpp" />
     <ClCompile Include="Scene\Scene.cpp" />
-    <ClCompile Include="Tests.cpp" />
     <ClCompile Include="PrimitiveObjects\Tri.cpp" />
     <ClCompile Include="Vector3\Vector3.cpp" />
   </ItemGroup>
@@ -222,15 +221,10 @@
     <ClInclude Include="PrimitiveObjects\Sphere.hpp" />
     <ClInclude Include="PrimitiveObjects\Quadri.h" />
     <ClInclude Include="Scene\Scene.hpp" />
-    <ClInclude Include="Tests.h" />
     <ClInclude Include="PrimitiveObjects\Tri.h" />
     <ClInclude Include="Vector3\Vector3.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="INF4034 - Cours 2.pdf" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\bin\ObjFiles\cube.bmp" />
     <Image Include="ObjFiles\cube.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
