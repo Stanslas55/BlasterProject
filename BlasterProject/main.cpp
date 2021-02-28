@@ -1,14 +1,26 @@
+#pragma once
 #include <iostream>
+#include <chrono>
 
-#include "Vector3.hpp"
+#ifndef NDEBUG
+//#include <vld.h>
+#endif // !NDEBUG
+
+#include "Vector3/Vector3.hpp"
+#include "PrimitiveObjects/PrimitiveObject.h"
+#include "LightSource/LightSource.hpp"
+
 #include "Tests.h"
+#include "Camera/Camera.hpp"
+#include "Scene/Scene.hpp"
+#include "Application/Demo/Demos/Demos.h"
+#include "Application/Application.hpp"
 
-#include <vld.h>
+int main(int argc, char* argv[]) {
+	SDL_SetMainReady();
 
-int main(int argc, char* argv[]) {	
-
-	Tests test;
-	test.tests();
+	Application app = Application();
+	app.mainLoop();
 
 	return EXIT_SUCCESS;
 }

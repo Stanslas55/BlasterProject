@@ -23,9 +23,10 @@ x86/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
 bld/
-[Bb]in/
 [Oo]bj/
 [Ll]og/
+
+!lib/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -87,6 +88,8 @@ StyleCopReport.xml
 *.pidb
 *.svclog
 *.scc
+*.exe
+*.ini
 
 # Chutzpah Test files
 _Chutzpah*
