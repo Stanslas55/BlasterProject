@@ -17,6 +17,8 @@ The graphical interface has been developed with imgui using opengl (necessary an
 
 Please ensure .obj files under ./BlasterProject/ObjFiles/ are well downloaded. The third demo won't work if so. (This error seems to occur when download project as .zip)
 
+# Credits
+
 This project is brought to you by
 - BEUCHER Maxime
 - CISTERNAS Nicolas
