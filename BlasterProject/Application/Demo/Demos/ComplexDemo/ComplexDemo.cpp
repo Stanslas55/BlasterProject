@@ -15,21 +15,24 @@ void ComplexDemo::init() {
 	// Complex scene
 
 	m_scene.addModel(
-		new Model(Vector3(0,0,-2), "ObjFiles/cube.obj", Material("ObjFiles/cube.png")
+		new Model(
+			Vector3(-0.5,-0.5,-3),
+			"ObjFiles/cube.obj", 
+			Material::defaultMaterial
 		)
 	);
 
 	m_scene.addLightSource(
 		new PointLight(
-			Vector3(-10.0, -5.0, -25.0),
+			Vector3(0.0, 0.0, 0.0),
 			{
-				255,
-				255,
-				255,
+				50,
+				50,
+				50,
 				255
 			},
-			QuadraticAttenuation()
-			//AttenuationFunction()
+			//QuadraticAttenuation()
+			AttenuationFunction()
 		)
 	);
 

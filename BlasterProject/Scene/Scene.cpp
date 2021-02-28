@@ -35,9 +35,9 @@ void Scene::addLightSource(LightSource* pLightSource) {
 
 void Scene::addModel(Model* pModel) {
 	std::shared_ptr<Model> ptr_obj(pModel);
+	m_objects.insert(m_objects.end(), ptr_obj->children().begin(), ptr_obj->children().end());
 	m_models.push_back(std::move(ptr_obj));
 }
-
 
 void Scene::takePictureNaive(FIBITMAP** pImage) {
 
@@ -136,7 +136,9 @@ RGBQUAD Scene::getPixelColor(const Collision& pCollsision, int pDepth) {
 	const Material& material = pCollsision.object()->material();
 	const double distance = pCollsision.distance();
 
-	RGBQUAD color = material.color();
+	const Polygon* p = dynamic_cast<Polygon*>(pCollsision.object());
+
+	RGBQUAD color = (p) ? material.getColor(p->corners()[0], p->corners()[1], point) : material.color();
 
 	const Vector3& L = pCollsision.directionToOrigin();
 	const Vector3& I = -L;

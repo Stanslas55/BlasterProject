@@ -4,7 +4,7 @@
 #include "PrimitiveObjects/PrimitiveObjects.hpp"
 #include "LightSource/LightSources.hpp"
 #include "Camera/Camera.hpp"
-#include "PrimitiveObjects/Model.hpp""
+#include "PrimitiveObjects/Model.hpp"
 
 /**
 * \class Scene
@@ -37,6 +37,13 @@ public:
 
 	inline const std::vector<std::shared_ptr<PrimitiveObject>>& objects() const { return m_objects; }
 	inline const std::vector<std::shared_ptr<LightSource>>& lightSources() const { return m_lightSources; }
+
+	inline void reset(bool lightsOff = true) {
+		m_objects.clear();
+		if (lightsOff)
+			m_lightSources.clear();
+		m_models.clear();
+	};
 
 	/**
 	* \fn		Scene

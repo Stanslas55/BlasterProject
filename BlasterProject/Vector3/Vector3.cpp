@@ -117,6 +117,13 @@ const Vector3 Vector3::toCarthesian(const Vector3& pV) {
 	);
 }
 
+const double Vector3::angle(const Vector3& pA, const Vector3& pB, const Vector3& pC) {
+	const Vector3& ab = pB - pA;
+	const Vector3& ac = pC - pA;
+
+	return acos(ab * ac / (ab.magnitude() * ac.magnitude()));
+}
+
 void Vector3::print(std::ostream& pFlux) const {
 	pFlux << "(" << x() << ", " << y() << ", " << z() << ")";
 }

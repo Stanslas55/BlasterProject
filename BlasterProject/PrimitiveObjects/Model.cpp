@@ -8,12 +8,12 @@ void Model::addPrimitive(PrimitiveObject* pPrimitive) {
 	m_children.push_back(std::move(ptr_obj));
 }
 
-Model::Model(const Vector3& pPosition, const std::string path, const Material& pMaterial) {
+Model::Model(const Vector3& pPosition, const std::string path, const Material& pMaterial) : m_material(pMaterial) {
 	if (!m_children.empty()) {
 		std::cout << "m_shildren not empty." << std::endl;
 		return;
 	}
-	m_material = pMaterial;
+
 	std::ifstream in_file(path);
 
 	if (!in_file.is_open()) { //File open error check.
@@ -115,23 +115,23 @@ Model::Model(const Vector3& pPosition, const std::string path, const Material& p
 		sommets[1] = vertex_positions[vertex_position_indicies[i + 1] - 1] + pPosition;
 		sommets[2] = vertex_positions[vertex_position_indicies[i + 2] - 1] + pPosition;
 		if (textcoordsPresent && m_material.texture()) {
-			// Add texture handling.					
+			// Add texture handling.
 			textures[0] = vertex_texcoords[vertex_texcoord_indicies[i] - 1];
 			textures[1] = vertex_texcoords[vertex_texcoord_indicies[i + 1] - 1];
 			textures[2] = vertex_texcoords[vertex_texcoord_indicies[i + 2] - 1];	
 
-
-
 			this->addPrimitive(
-				new Tri(sommets[2], sommets[1], sommets[0], Material(
-					m_material.texture(),
-					m_material.width(),
-					textures,
-					sommets,
-					m_material.ka(), 
-					m_material.kd(),
-					m_material.ks(),
-					m_material.ke()
+				new Tri(sommets[2], sommets[1], sommets[0], 
+					Material(
+						m_material.texture(),
+						m_material.width(),
+						m_material.height(),
+						textures,
+						sommets,
+						m_material.ka(), 
+						m_material.kd(),
+						m_material.ks(),
+						m_material.ke()
 					)
 				)
 			);

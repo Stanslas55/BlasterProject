@@ -18,11 +18,11 @@ protected:
 	double m_kd;				/*< Diffuse reflection coefficient */
 	double m_ks;				/*< Specular reflection coefficient */
 	double m_ke;				/*< Specular Exponent (shiness). Ranges from 0.0 to 100.0. */
-	Matrix4 m_transform;
+	Vector3 m_points[3];
 	std::shared_ptr <RGBQUAD[]> m_texture = nullptr;
 	int m_width = 0;
 	int m_height = 0;
-	
+	double m_AB;
 
 public:
 
@@ -46,11 +46,11 @@ public:
 	 */
 	Material(RGBQUAD pColor, double pKa = 1.0, double pKd = 1.0, double pKs = 1.0, double pKe = 0.0);
 
+	Material(const std::shared_ptr<RGBQUAD[]>& pTexture, const int pMidth, const int pHeight, const Vector3 pPoints[3], const Vector3 pVertex[3], double pKa = 1.0, double pKd = 1.0, double pKs = 1.0, double pKe = 0.0);
 
-	Material(const std::shared_ptr<RGBQUAD[]>& pTexture, const int pMidth, const Vector3 pPoints[3], const Vector3 pVertex[3], double pKa = 1.0, double pKd = 1.0, double pKs = 1.0, double pKe = 0.0);
-	Material(const std::string pPathTexture, double pKa = 1.0, double pKd = 1.0, double pKs = 1.0, double pKe = 0.0);
+	//Material(const std::string pPathTexture, double pKa = 1.0, double pKd = 1.0, double pKs = 1.0, double pKe = 0.0);
 
-	RGBQUAD getColor(const Vector3& pV) const;
+	RGBQUAD getColor(const Vector3& pA, const Vector3& pB, const Vector3& pP) const;
 
 	/**
 	 * \fn      operator=

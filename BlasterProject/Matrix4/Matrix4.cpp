@@ -445,36 +445,3 @@ Vector3 operator*(const Matrix4& pA, const Vector3& pV) {
         pA[2][0] * pV.x() + pA[2][1] * pV.y() + pA[2][2] * pV.z()
     );
 }
-
-Matrix4 Matrix4::changeBasis(const Vector3 pA[3], const Vector3 pB[3]) {
-
-    // A
-    Matrix4 a;
-    a.m_matrix[0][0] = pA[0].x();
-    a.m_matrix[1][0] = pA[0].y();
-    a.m_matrix[2][0] = pA[0].z();
-
-    a.m_matrix[0][1] = pA[1].x();
-    a.m_matrix[1][1] = pA[1].y();
-    a.m_matrix[2][1] = pA[1].z();
-
-    a.m_matrix[0][2] = pA[2].x();
-    a.m_matrix[1][2] = pA[2].y();
-    a.m_matrix[2][2] = pA[2].z();
-
-    // B
-    Matrix4 b;
-    b.m_matrix[0][0] = pB[0].x();
-    b.m_matrix[1][0] = pB[0].y();
-    b.m_matrix[2][0] = pB[0].z();
-                        
-    b.m_matrix[0][1] = pB[1].x();
-    b.m_matrix[1][1] = pB[1].y();
-    b.m_matrix[2][1] = pB[1].z();
-                        
-    b.m_matrix[0][2] = pB[2].x();
-    b.m_matrix[1][2] = pB[2].y();
-    b.m_matrix[2][2] = pB[2].z();
-
-    return b.inverse() * a;
-}
