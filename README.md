@@ -14,6 +14,3 @@ The graphical interface has been developed with imgui using opengl (necessary to
 Escape' to exit.
 
 This project is brought to you by Beasse Maxime, Beucher Maxime, Cisternas Nicolas & Deroche Victor.
-
-Translated with www.DeepL.com/Translator (free version)
-
