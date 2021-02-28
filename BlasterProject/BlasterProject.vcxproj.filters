@@ -114,6 +114,9 @@
     <ClCompile Include="PrimitiveObjects\Model.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="Application\Demo\Demos\ObjDemo\ObjDemo.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tests.h">
@@ -221,8 +224,19 @@
     <ClInclude Include="PrimitiveObjects\Model.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="Application\Demo\Demos\ObjDemo\ObjDemo.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="INF4034 - Cours 2.pdf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="ObjFiles\cube.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="..\bin\ObjFiles\cube.bmp">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
   </ItemGroup>
 </Project>

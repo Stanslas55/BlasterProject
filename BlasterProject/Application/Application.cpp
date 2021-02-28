@@ -153,15 +153,22 @@ void Application::update() {
 		break;
 	case Page::REAL_TIME_DEMO:
 		{
-			RTDemo rt = RTDemo(m_window, m_glContext, m_targetDim);
-			rt.mainLoop();
+			RTDemo rtd = RTDemo(m_window, m_glContext, m_targetDim);
+			rtd.mainLoop();
 			restore();
 		}
 		break;
 	case Page::COMPLEX_DEMO:
 		{
-			ComplexDemo ct = ComplexDemo(m_window, m_glContext, m_targetDim);
-			ct.mainLoop();
+			ComplexDemo cd = ComplexDemo(m_window, m_glContext, m_targetDim);
+			cd.mainLoop();
+			restore();
+		}
+		break;
+	case Page::OBJ_DEMO:
+		{
+			ObjDemo od = ObjDemo(m_window, m_glContext, m_targetDim);
+			od.mainLoop();
 			restore();
 		}
 		break;
@@ -234,6 +241,11 @@ void Application::mainMenu() {
 			m_currentPage = Page::COMPLEX_DEMO;
 		}
 
+		ImGui::SetCursorPos(ImVec2(margin + (buttonSize.x + padding) * 2, yTop));
+		if (ImGui::Button("OBJ Demo", buttonSize)) {
+			m_currentPage = Page::OBJ_DEMO;
+		}
+		
 		ImGui::PopFont();
 
 		// Credits

@@ -156,6 +156,7 @@
     <ClCompile Include="..\glad\src\glad.c" />
     <ClCompile Include="Application\Application.cpp" />
     <ClCompile Include="Application\Demo\Demos\ComplexDemo\ComplexDemo.cpp" />
+    <ClCompile Include="Application\Demo\Demos\ObjDemo\ObjDemo.cpp" />
     <ClCompile Include="Application\Demo\Demos\RTDemo\RTDemo.cpp" />
     <ClCompile Include="Camera\Camera.cpp" />
     <ClCompile Include="Application\Demo\Demo.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="Application\Application.hpp" />
     <ClInclude Include="Application\Demo\Demos\ComplexDemo\ComplexDemo.hpp" />
     <ClInclude Include="Application\Demo\Demos\Demos.h" />
+    <ClInclude Include="Application\Demo\Demos\ObjDemo\ObjDemo.hpp" />
     <ClInclude Include="Application\Demo\Demos\RTDemo\RTDemo.hpp" />
     <ClInclude Include="Camera\Camera.hpp" />
     <ClInclude Include="Application\Demo\Demo.hpp" />
@@ -226,6 +228,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="INF4034 - Cours 2.pdf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\bin\ObjFiles\cube.bmp" />
+    <Image Include="ObjFiles\cube.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

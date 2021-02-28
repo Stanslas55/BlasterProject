@@ -1,72 +1,5 @@
 #include "Model.hpp"
 
-
-/*
-
-void Mesh::LoadObjModel(const char *filename)
-{
-  std::ifstream in(filename, std::ios::in);
-  if (!in)
-	{
-		std::cerr << "Cannot open " << filename << std::endl;
-		exit(1);
-
-	}
-  std::string line;
-  while (std::getline(in, line))
-  {
-	//check v for vertices
-	 if (line.substr(0,2)=="v "){
-		std::istringstream v(line.substr(2));
-		glm::vec3 vert;
-		double x,y,z;
-		v>>x;v>>y;v>>z;
-		vert=glm::vec3(x,y,z);
-		vertices.push_back(vert);
-  }
-  //check for texture co-ordinate
-  else if(line.substr(0,2)=="vt"){
-
-	  std::istringstream v(line.substr(3));
-	  glm::vec2 tex;
-	  int U,V;
-	  v>>U;v>>V;
-	  tex=glm::vec2(U,V);
-	  texture.push_back(tex);
-
-  }
-  //check for faces
-  else if(line.substr(0,2)=="f "){
-	int a,b,c; //to store mesh index
-	int A,B,C; //to store texture index
-	//std::istringstream v;
-  //v.str(line.substr(2));
-  const char* chh=line.c_str();
-	sscanf (chh, "f %i/%i %i/%i %i/%i",&a,&A,&b,&B,&c,&C); //here it read the line start with f and store the corresponding values in the variables
-
-	//v>>a;v>>b;v>>c;
-	a--;b--;c--;
-	A--;B--;C--;
-	//std::cout<<a<<b<<c<<A<<B<<C;
-	faceIndex.push_back(a);textureIndex.push_back(A);
-	faceIndex.push_back(b);textureIndex.push_back(B);
-	faceIndex.push_back(c);textureIndex.push_back(C);
-  }
-
-}
-//the mesh data is finally calculated here
-for(unsigned int i=0;i<faceIndex.size();i++)
-{
-	glm::vec3 meshData;
-	glm::vec2 texData;
-	meshData=glm::vec3(vertices[faceIndex[i]].x,vertices[faceIndex[i]].y,vertices[faceIndex[i]].z);
-	texData=glm::vec2(texture[textureIndex[i]].x,texture[textureIndex[i]].y);
-	meshVertices.push_back(meshData);
-	texCoord.push_back(texData);
-}
-
-}*/
-
 Model::Model() : m_children() {}
 
 void Model::addPrimitive(PrimitiveObject* pPrimitive) {
@@ -75,11 +8,12 @@ void Model::addPrimitive(PrimitiveObject* pPrimitive) {
 	m_children.push_back(std::move(ptr_obj));
 }
 
-Model::Model(const Vector3& pPosition, const std::string path, const Material& pMaterial) {
+Model::Model(const Vector3& pPosition, const std::string path, const Material& pMaterial) : m_material(pMaterial) {
 	if (!m_children.empty()) {
 		std::cout << "m_shildren not empty." << std::endl;
 		return;
 	}
+
 	std::ifstream in_file(path);
 
 	if (!in_file.is_open()) { //File open error check.
@@ -113,6 +47,8 @@ Model::Model(const Vector3& pPosition, const std::string path, const Material& p
 		}
 		else if (prefix == "vt") {
 			ss >> tempTexture.x() >> tempTexture.y();
+			tempTexture.x() *= pMaterial.width();
+			tempTexture.y() *= pMaterial.height();
 			vertex_texcoords.push_back(tempTexture);
 		}
 		else if (prefix == "vn") {
@@ -168,32 +104,41 @@ Model::Model(const Vector3& pPosition, const std::string path, const Material& p
 			}
 		}
 	}
-	// Load in all indices.
-	
-	Vector3 A, B, C;
+	// Load in all indices.	
+	Vector3 sommets[3];
+	Vector3 textures[3];
 	size_t size = vertex_position_indicies.size();
 	std::cout << "positions size: " << size << std::endl;
 	for (i = 0; i < size; i += 3) {
 			
-		A = vertex_positions[vertex_position_indicies[i] - 1] + pPosition;
-		B = vertex_positions[vertex_position_indicies[i + 1] - 1] + pPosition;
-		C = vertex_positions[vertex_position_indicies[i + 2] - 1] + pPosition;
-		if (textcoordsPresent) {
+		sommets[0] = vertex_positions[vertex_position_indicies[i] - 1] + pPosition;
+		sommets[1] = vertex_positions[vertex_position_indicies[i + 1] - 1] + pPosition;
+		sommets[2] = vertex_positions[vertex_position_indicies[i + 2] - 1] + pPosition;
+		if (textcoordsPresent && m_material.texture()) {
 			// Add texture handling.
-			//vertices[i].texcoord = vertex_texcoords[vertex_texcoord_indicies[i] - 1];
-			//Material test(point à mettre);
-			Material test = pMaterial;
-
-			//
+			textures[0] = vertex_texcoords[vertex_texcoord_indicies[i] - 1];
+			textures[1] = vertex_texcoords[vertex_texcoord_indicies[i + 1] - 1];
+			textures[2] = vertex_texcoords[vertex_texcoord_indicies[i + 2] - 1];	
 
 			this->addPrimitive(
-				new Tri(C, B, A, test
+				new Tri(sommets[2], sommets[1], sommets[0], 
+					Material(
+						m_material.texture(),
+						m_material.width(),
+						m_material.height(),
+						textures,
+						sommets,
+						m_material.ka(), 
+						m_material.kd(),
+						m_material.ks(),
+						m_material.ke()
+					)
 				)
 			);
 		}
 		else {
 			this->addPrimitive(
-				new Tri(C, B, A, pMaterial)
+				new Tri(sommets[2], sommets[1], sommets[0], pMaterial)
 			);
 		}
 					

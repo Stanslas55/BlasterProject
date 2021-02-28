@@ -152,6 +152,17 @@ class Vector3{
 		static const Vector3 toCarthesian(const Vector3& pV);
 
 		/**
+		 * \fn      angle
+		 * \brief   Angle between 3 points, A being the vertex.
+		 * 
+		 * \param[in]   pA
+		 * \param[in]   pB
+		 * \param[in]   pC
+		 * \return      double 
+		 */
+		static const double angle(const Vector3& pA, const Vector3& pB, const Vector3& pC);
+
+		/**
 		 *  \fn     print
 		 *  \brief  Print a Vector3.
 		 *

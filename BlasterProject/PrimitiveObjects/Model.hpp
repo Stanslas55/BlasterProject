@@ -10,6 +10,7 @@
 class Model {
 	private:
 		std::vector<std::shared_ptr<PrimitiveObject>> m_children;
+		Material m_material;
 		Vector3 m_position;
 
 	public:

@@ -28,7 +28,8 @@ private:
 		MAIN_MENU,
 
 		REAL_TIME_DEMO,
-		COMPLEX_DEMO
+		COMPLEX_DEMO,
+		OBJ_DEMO
 
 	} m_currentPage;
 

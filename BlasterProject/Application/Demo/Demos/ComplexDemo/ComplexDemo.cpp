@@ -14,75 +14,25 @@ void ComplexDemo::init() {
 	// Scene construction
 	// Complex scene
 
-	double sphereRadius = 3.0;
-
-	/*m_scene.addPrimitive(
-		new Sphere(
-			Vector3(-15.0,-5.0,-50.0),
-			sphereRadius,
-			Material(
-				{ 255, 0, 0, 255 },
-				0.2,
-				1.0,
-				0.8,
-				100.0
-			)
-		)
-	);
-
-	m_scene.addPrimitive(
-		new Sphere(
-			Vector3(15.0, -5.0, -50.0),
-			sphereRadius,
-			Material(
-				{ 255, 255, 0, 255 },
-				0.2,
-				1.0,
-				0.8,
-				100.0
-			)
-		)
-	);*/
-
-	m_scene.addPrimitive(
-		new Sphere(
-			Vector3(0.0, 0.0, -20.0),
-			sphereRadius,
-			Material(
-				{ 255, 0, 255, 255 },
-				0.4,
-				1.0,
-				1.0,
-				100.0
-			)
-		)
-	);
-
-	m_scene.addPrimitive(
-		new Sphere(
-			Vector3(10.0, 0.0, -25.0),
-			sphereRadius,
-			Material(
-				{ 255, 255, 255, 255 },
-				0.4,
-				1.0,
-				1.0,
-				100.0
-			)
+	m_scene.addModel(
+		new Model(
+			Vector3(-0.5,-0.5,-3),
+			"ObjFiles/cube.obj", 
+			Material::defaultMaterial
 		)
 	);
 
 	m_scene.addLightSource(
 		new PointLight(
-			Vector3(-10.0, -5.0, -25.0),
+			Vector3(0.0, 0.0, 0.0),
 			{
-				255,
-				255,
-				255,
+				50,
+				50,
+				50,
 				255
 			},
-			QuadraticAttenuation()
-			//AttenuationFunction()
+			//QuadraticAttenuation()
+			AttenuationFunction()
 		)
 	);
 
