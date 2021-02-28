@@ -2,8 +2,6 @@
 #include <iostream>
 #include <chrono>
 
-#define FREEIMAGE_COLORORDER FREEIMAGE_COLORORDER_RGB
-
 #ifndef NDEBUG
 //#include <vld.h>
 #endif // !NDEBUG

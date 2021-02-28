@@ -108,7 +108,6 @@ Model::Model(const Vector3& pPosition, const std::string path, const Material& p
 	Vector3 sommets[3];
 	Vector3 textures[3];
 	size_t size = vertex_position_indicies.size();
-	std::cout << "positions size: " << size << std::endl;
 	for (i = 0; i < size; i += 3) {
 			
 		sommets[0] = vertex_positions[vertex_position_indicies[i] - 1] + pPosition;
@@ -144,5 +143,4 @@ Model::Model(const Vector3& pPosition, const std::string path, const Material& p
 					
 	}	
 	//Loaded success
-	std::cout << "OBJ file loaded!" << "\n";
 }

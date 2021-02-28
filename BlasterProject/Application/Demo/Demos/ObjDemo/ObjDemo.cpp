@@ -18,17 +18,17 @@ Material ObjDemo::m_bunnyMaterial = Material(
 	0.0,
 	0.0
 );
-const Vector3 ObjDemo::m_bunnyPosition = Vector3(0.0, 0.5, -0.5);
+const Vector3 ObjDemo::m_bunnyPosition = Vector3(0.0, -0.12, -0.3);
 
 const std::string ObjDemo::m_teapotPath = "./ObjFiles/teapot.obj";
 Material ObjDemo::m_teapotMaterial = Material(
 	{ 255, 255, 255, 255 },
-	0.6,
-	0.8,
+	0.5,
+	1.0,
 	1.0,
 	100.0
 );
-const Vector3 ObjDemo::m_teapotPosition = Vector3(0.0, 0.0, -7.0);
+const Vector3 ObjDemo::m_teapotPosition = Vector3(0.0, -1.8, -7.0);
 
 const std::string ObjDemo::m_suzannePath = "./ObjFiles/suzanne.obj";
 Material ObjDemo::m_suzanneMaterial = Material(
@@ -42,7 +42,6 @@ const Vector3 ObjDemo::m_suzannePosition = Vector3(0.0, 0.0, -4.0);
 
 Material ObjDemo::m_defaultMaterial = Material::defaultMaterial;
 static const Vector3 m_defaultPosition = Vector3(0.0, 0.0, -5.0);
-
 
 ObjDemo::ObjDemo(SDL_Window* pWindow, SDL_GLContext& pGlContext, SDL_Point pSceneSize) : Demo(pWindow, pGlContext, "Obj Demo", pSceneSize, { 400, 600 }), m_scene(Camera(pSceneSize.x, pSceneSize.y)) {
 	m_rays = nullptr;
@@ -65,7 +64,7 @@ void ObjDemo::init() {
 
 	m_scene.addLightSource(
 		new DirectionalLight(
-			Vector3(1.0, 1.0, 0.5),
+			Vector3(-1.0, 1.0, 0.5),
 			{ 150, 150, 150, 255 },
 			ConstantAttenuation(0.7)
 		)
@@ -172,6 +171,54 @@ bool ObjDemo::parametersWindowRender() {
 			m_materialModel = &m_teapotMaterial;
 			m_pathModel = m_teapotPath;
 			m_positionModel = m_teapotPosition;
+		}
+
+		ImGui::Text("Material");
+
+		ImVec4 color = { m_materialModel->color().rgbRed / 255.0f, m_materialModel->color().rgbGreen / 255.0f, m_materialModel->color().rgbBlue / 255.0f, 1.0f };
+
+		if (ImGui::ColorEdit4("Color", (float*)&color), ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_Uint8 | ImGuiColorEditFlags_InputRGB | ImGuiColorEditFlags_NoOptions) {
+			m_materialModel->color() = {
+				BYTE(color.x * 255),
+				BYTE(color.y * 255),
+				BYTE(color.z * 255),
+				BYTE(color.w * 255)
+			};
+		}
+
+		float k[4] = {
+			float(m_materialModel->ka()),
+			float(m_materialModel->kd()),
+			float(m_materialModel->ks()),
+			float(m_materialModel->ke())
+		};
+
+		if (ImGui::SliderFloat("kA", &k[0], 0.0f, 1.0f))
+			m_materialModel->ka() = double(k[0]);
+
+		if (ImGui::SliderFloat("kD", &k[1], 0.0f, 1.0f))
+			m_materialModel->kd() = double(k[1]);
+
+		if (ImGui::SliderFloat("kS", &k[2], 0.0f, 1.0f))
+			m_materialModel->ks() = double(k[2]);
+
+		if (ImGui::SliderFloat("kE", &k[3], 0.0f, 100.0f))
+			m_materialModel->ke() = double(k[3]);
+		
+		Vector3 li = m_scene.lightSources()[0]->intensity();
+		static ImVec4 cli(
+			float(li.z()) / 255.0f,
+			float(li.y()) / 255.0f,
+			float(li.x()) / 255.0f,
+			1.0f
+		);
+
+		if (ImGui::ColorEdit4("Light Color", (float*)&cli), ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_Uint8 | ImGuiColorEditFlags_InputRGB | ImGuiColorEditFlags_NoOptions | ImGuiColorEditFlags_NoAlpha) {
+			m_scene.lightSources()[0]->intensity() = Vector3(
+				cli.z * 255.0,
+				cli.y * 255.0,
+				cli.x * 255.0
+			);
 		}
 
 		if (ImGui::Button("Render")) {

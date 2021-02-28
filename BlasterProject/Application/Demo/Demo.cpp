@@ -97,10 +97,7 @@ bool Demo::eventLoop() {
 
 	while (SDL_PollEvent(&e) && !_quit)
 	{
-		// without it you won't have keyboard input and other things
 		_render = parametersManager(&e);
-		// you might also want to check io.WantCaptureMouse and io.WantCaptureKeyboard
-		// before processing events
 
 		switch (e.type)
 		{

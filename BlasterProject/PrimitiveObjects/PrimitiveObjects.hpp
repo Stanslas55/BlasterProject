@@ -1,5 +1,7 @@
 #pragma once
 
+#define FREEIMAGE_COLORORDER FREEIMAGE_COLORORDER_RGB
+
 #include "PrimitiveObject.h"
 #include "Material/Material.hpp"
 #include "Ray.hpp"
